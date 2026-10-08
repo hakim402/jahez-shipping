@@ -6,7 +6,7 @@ from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 
 BASE_DIR = Path(__file__).resolve().parents[2]
-APP_VERSION = "0.1.0"
+APP_VERSION = "0.2.0"
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "")
 if len(SECRET_KEY) < 50 or SECRET_KEY.startswith(("REPLACE_", "GENERATE_")):
     raise ImproperlyConfigured("DJANGO_SECRET_KEY must contain at least 50 characters. Generate a private environment file with scripts/init_dev_env.py.")
@@ -50,6 +50,7 @@ TRACK17_ENABLED = os.environ.get("TRACK17_ENABLED", "false").lower() == "true"
 GROQ_ENABLED = os.environ.get("GROQ_ENABLED", "false").lower() == "true"
 # Provider implementations are intentionally outside Phase 1.
 FOUNDATION_PREVIEW = True
+PUBLIC_UI_PREVIEW_ENABLED = False
 CSRF_TRUSTED_ORIGINS = [s.strip() for s in os.environ.get("DJANGO_CSRF_TRUSTED_ORIGINS", "http://localhost:18744,http://127.0.0.1:18744").split(",") if s.strip()]
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_REFERRER_POLICY = "same-origin"

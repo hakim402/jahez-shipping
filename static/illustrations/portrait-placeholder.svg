@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="460" viewBox="0 0 400 460" fill="none">
+<defs><linearGradient id="portrait-bg" x1="0" y1="0" x2="400" y2="460" gradientUnits="userSpaceOnUse"><stop stop-color="#EAE2FB"/><stop offset="1" stop-color="#CAB7ED"/></linearGradient><linearGradient id="portrait-silhouette" x1="121" y1="165" x2="280" y2="388" gradientUnits="userSpaceOnUse"><stop stop-color="#B29BD7"/><stop offset="1" stop-color="#8468B3"/></linearGradient></defs>
+<rect width="400" height="460" rx="24" fill="url(#portrait-bg)"/><circle cx="200" cy="195" r="122" fill="#F3EEFB" opacity=".7"/>
+<path d="M54 419c0-93 65-145 146-145s146 52 146 145v41H54v-41Z" fill="url(#portrait-silhouette)"/><circle cx="200" cy="190" r="65" fill="#B29BD7"/>
+<path d="m175 275 25 58 25-58" fill="#F4F0FB"/><path d="m196 330-8 58 12 19 12-19-8-58" fill="#705294"/>
+<path d="M32 44h42m9 0h15M311 385h48m-21 17h21M38 376h20" stroke="#AC8EDA" stroke-width="3" stroke-linecap="round" opacity=".6"/>
+<circle cx="335" cy="77" r="5" fill="#B298DE"/><circle cx="58" cy="133" r="4" fill="#BEA8E4"/>
+</svg>

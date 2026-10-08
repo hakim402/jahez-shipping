@@ -18,3 +18,6 @@ CSRF_COOKIE_SECURE = True
 SECURE_HSTS_SECONDS = 0  # Activate only after Phase 9 verifies TLS.
 SECURE_HSTS_INCLUDE_SUBDOMAINS = False
 SECURE_HSTS_PRELOAD = False
+
+# This cannot be enabled through a production environment variable.
+PUBLIC_UI_PREVIEW_ENABLED = False

@@ -2,7 +2,7 @@
 
 An independent English/Arabic Django shipping platform for JAHEZ TRADE CO.
 
-**Current scope: Phase 1 foundation preview. Owner approval pending.** Tracking lookup, shipment operations, carrier integration, AI, and the complete company page are not implemented yet. There are no live or fake shipment records in this phase. Existing JAHEZ website sources and services are read-only.
+**Current scope: Phase 2 public UI, ready for owner review. Phase 1 approved.** The complete bilingual homepage and company page are available, with eight development-only tracking states and an explicitly synthetic result. Real tracking lookup, shipment operations, carrier integration, and AI await later phases. No shipment/customer records are created by the preview. Existing JAHEZ website sources and services are read-only.
 
 ## Local quick start
 
@@ -26,7 +26,7 @@ The helper creates a private `.env.dev` with an independent random secret; it ne
 
 Create your own admin interactively with a strong unique password (minimum 12 characters). No default admin account/password is shipped.
 
-[Local development](docs/LOCAL_DEVELOPMENT.md) · [Phase progress](docs/PROGRESS.md) · [Technical decisions](docs/TECHNICAL_DECISIONS.md) · [Project boundaries](docs/PROJECT_BOUNDARIES.md) · [Asset manifest](docs/ASSET_MANIFEST.md) · [Complete project specification](PROJECT_PROMPT.md)
+[Phase 2 review](docs/phases/PHASE_02_PUBLIC_UI.md) · [Company/CEO copy](docs/PUBLIC_COPY_REVIEW.md) · [Local development](docs/LOCAL_DEVELOPMENT.md) · [Phase progress](docs/PROGRESS.md) · [Technical decisions](docs/TECHNICAL_DECISIONS.md) · [Project boundaries](docs/PROJECT_BOUNDARIES.md) · [Asset manifest](docs/ASSET_MANIFEST.md) · [Complete project specification](PROJECT_PROMPT.md)
 
 ## Focused verification
 

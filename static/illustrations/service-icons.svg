@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+<symbol id="sourcing" viewBox="0 0 24 24"><path d="m3 7 9-4 9 4-9 4-9-4Zm0 0v10l9 4 9-4V7M12 11v10M7 5l10 4"/></symbol>
+<symbol id="supplier" viewBox="0 0 24 24"><path d="M3 21V10l6 3V9l6 4V3h5v18H3Z"/><path d="M6 17h1m4 0h1m4 0h1"/></symbol>
+<symbol id="quotes" viewBox="0 0 24 24"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2V3ZM9 7h6m-6 4h6m-6 4h3"/></symbol>
+<symbol id="inspection" viewBox="0 0 24 24"><rect x="3" y="6" width="12" height="12" rx="3"/><path d="m15 10 6-3v10l-6-3M7 12l2 2 3-4"/></symbol>
+<symbol id="shipping" viewBox="0 0 24 24"><path d="M3 17v-8h11v8M14 12h4l3 4v3h-3m-10 0h7M3 17v2h2"/><circle cx="7" cy="19" r="2"/><circle cx="17" cy="19" r="2"/></symbol>
+<symbol id="tracking" viewBox="0 0 24 24"><path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 1 1 14 0Z"/><circle cx="12" cy="10" r="2"/></symbol>
+</svg>
