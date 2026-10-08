@@ -1,0 +1,44 @@
+msgid ""
+msgstr ""
+"Language: ar\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "JAHEZ Shipping"
+msgstr "جاهز للشحن"
+
+msgid "Operations workspace"
+msgstr "مساحة العمليات"
+
+msgid "Workspace"
+msgstr "مساحة العمل"
+
+msgid "Dashboard"
+msgstr "لوحة الإدارة"
+
+msgid "View tracking preview"
+msgstr "معاينة التتبع"
+
+msgid "Access management"
+msgstr "إدارة الوصول"
+
+msgid "Users"
+msgstr "المستخدمون"
+
+msgid "Groups"
+msgstr "المجموعات"
+
+msgid "Return to site"
+msgstr "العودة إلى الموقع"
+
+msgid "Light"
+msgstr "فاتح"
+
+msgid "Dark"
+msgstr "داكن"
+
+msgid "System"
+msgstr "النظام"
+
+msgid "Welcome back to"
+msgstr "مرحبًا بك في"

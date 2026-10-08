@@ -1,0 +1,31 @@
+{% load static %}
+<!doctype html>
+<html lang="{{ lang }}" dir="{{ direction }}">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{% if page == 'about' %}{{ c.about_page_title }}{% else %}{{ c.page_title }}{% endif %}</title>
+  <meta name="description" content="{{ c.intro }}"><meta name="robots" content="noindex,nofollow">
+  <meta name="referrer" content="same-origin"><meta name="theme-color" content="#5734C9">
+  <link rel="icon" href="{% static 'brand/jahez-icon-brand.png' %}">
+  <link rel="stylesheet" href="{% static 'css/site.css' %}">
+  <link rel="alternate" hreflang="en" href="/en/{% if page == 'about' %}who-we-are/{% endif %}">
+  <link rel="alternate" hreflang="ar" href="/ar/{% if page == 'about' %}who-we-are/{% endif %}">
+  <script defer src="{% static 'js/alpine.min.js' %}"></script>
+</head>
+<body>
+  <a href="#main" class="skip-link">{% if lang == 'ar' %}انتقل إلى المحتوى{% else %}Skip to content{% endif %}</a>
+  <header class="site-header wrap">
+    <a class="brand" href="/{{ lang }}/"><img src="{% static 'brand/jahez-icon-brand.png' %}" alt="JAHEZ" width="52" height="52"><span>{{ c.brand }}<small>JAHEZ TRADE CO.</small></span></a>
+    <nav aria-label="{% if lang == 'ar' %}التنقل الرئيسي{% else %}Main navigation{% endif %}">
+      <a class="nav-about" href="/{{ lang }}/who-we-are/" {% if page == 'about' %}aria-current="page"{% endif %}>{{ c.nav_about }}</a>
+      <a class="main-site" href="https://jahez.online/{{ lang }}">{{ c.main_site }} <span aria-hidden="true">↗</span></a>
+      <a class="language-switch" href="/{{ other_lang }}/{% if page == 'about' %}who-we-are/{% endif %}" lang="{{ other_lang }}" hreflang="{{ other_lang }}"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c5 5 5 13 0 18-5-5-5-13 0-18Z"/></svg>{{ c.switch }}</a>
+    </nav>
+  </header>
+  <main id="main">{% block content %}{% endblock %}</main>
+  <footer class="site-footer wrap">
+    <div><strong>{{ c.rights }}</strong><p>{{ c.footer }}</p><a href="https://jahez.online/{{ lang }}">{{ c.main_site }} ↗</a></div>
+    <div class="footer-end"><a href="mailto:info@jahez.online" dir="ltr">info@jahez.online</a><p>{{ c.privacy }}</p></div>
+  </footer>
+</body>
+</html>

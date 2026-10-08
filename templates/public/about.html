@@ -1,0 +1,6 @@
+{% extends "public/base.html" %}{% load static %}
+{% block content %}
+<section class="about-hero wrap"><div class="eyebrow">{{ c.about_eyebrow }}</div><h1>{{ c.about_title }}</h1><p>{{ c.about_intro }}</p><a class="text-link" href="/{{ lang }}/">{{ c.back_tracking }} <span aria-hidden="true">↗</span></a></section>
+<section class="about-card wrap"><div><img src="{% static 'brand/jahez-master-brand.png' %}" width="180" height="180" alt="JAHEZ TRADE CO. / شركة جاهز للتجارة"></div><div><h2>{{ c.about_card_title }}</h2><p>{{ c.about_card_body }}</p></div></section>
+<div class="preview-banner wrap"><span class="preview-badge">{{ c.preview }}</span><p>{{ c.about_note }}</p></div>
+{% endblock %}

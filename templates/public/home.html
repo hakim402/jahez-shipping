@@ -1,0 +1,26 @@
+{% extends "public/base.html" %}{% load static %}
+{% block content %}
+<section class="hero wrap">
+  <div class="hero-copy">
+    <div class="eyebrow"><span class="eyebrow-line"></span>{{ c.eyebrow }}</div>
+    <h1>{{ c.headline_a }}<br><span>{{ c.headline_b }}</span></h1>
+    <p class="hero-intro">{{ c.intro }}</p>
+    <form class="tracking-form" method="post" action="/{{ lang }}/" x-data="{ busy: false }" x-on:submit="busy = true">
+      {% csrf_token %}
+      <label for="reference">{{ c.reference }}</label>
+      <div class="tracking-controls"><span class="search-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg></span><input id="reference" name="reference" type="text" autocomplete="off" maxlength="80" placeholder="{{ c.placeholder }}" aria-describedby="tracking-help" dir="auto" required><button type="submit" x-bind:disabled="busy">{{ c.track }} <span class="arrow" aria-hidden="true">→</span></button></div>
+      <p id="tracking-help" class="tracking-help"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M7 10V7a5 5 0 0 1 10 0v3"/><rect x="5" y="10" width="14" height="11" rx="3"/></svg>{{ c.tracking_hint }}</p>
+    </form>
+    {% if submitted %}<div class="preview-response" role="status">{{ c.disabled }}</div>{% endif %}
+    <div class="trust-strip"><span><i aria-hidden="true">✓</i>{{ c.trust_a }}</span><span><i aria-hidden="true">✓</i>{{ c.trust_b }}</span><span><i aria-hidden="true">✓</i>{{ c.trust_c }}</span></div>
+  </div>
+  <div class="hero-art">
+    <div class="route-card"><span><i class="route-dot" aria-hidden="true"></i>{{ c.china }}</span><span class="route-dash" aria-hidden="true"></span><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m3 17 9-4 9 4-9 4-9-4Zm4-2V8h10v7M10 8V4h4v4"/></svg><span class="route-dash" aria-hidden="true"></span><span>{{ c.destination }}<i class="route-dot destination-dot" aria-hidden="true"></i></span></div>
+    <img class="shipping-scene" src="{% static 'illustrations/shipping-scene.svg' %}" width="600" height="500" alt="{{ c.illustration_alt }}">
+    <p class="art-caption">{{ c.route_label }}</p>
+  </div>
+</section>
+<div class="preview-banner wrap"><span class="preview-badge">{{ c.preview }}</span><p>{{ c.preview_note }}</p></div>
+<section class="steps wrap"><div class="section-heading"><span class="eyebrow">{{ c.steps_eyebrow }}</span><h2>{{ c.steps_title }}</h2></div><div class="steps-grid"><article><span class="step-number">01</span><h3>{{ c.step1_title }}</h3><p>{{ c.step1_body }}</p></article><article><span class="step-number">02</span><h3>{{ c.step2_title }}</h3><p>{{ c.step2_body }}</p></article><article><span class="step-number">03</span><h3>{{ c.step3_title }}</h3><p>{{ c.step3_body }}</p></article></div></section>
+<section class="support wrap"><div><h2>{{ c.support_title }}</h2><p>{{ c.support_body }}</p></div><a href="mailto:info@jahez.online">{{ c.support_link }} <span aria-hidden="true">↗</span></a></section>
+{% endblock %}

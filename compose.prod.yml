@@ -1,0 +1,72 @@
+# Phase 1 production skeleton. VPS deployment awaits Phases 8 and 9.
+name: jahez-shipping-prod
+x-app: &app
+  image: jahez-shipping:0.1.0
+  build:
+    context: .
+    target: production
+  env_file: .env.prod
+  volumes:
+    - shipping_data:/data
+    - beat_state:/beat
+  depends_on:
+    redis:
+      condition: service_healthy
+  networks: [shipping]
+  restart: unless-stopped
+  stop_grace_period: 30s
+  logging:
+    driver: json-file
+    options:
+      max-size: 10m
+      max-file: "3"
+services:
+  web:
+    <<: *app
+    ports: ["127.0.0.1:${SHIPPING_BIND_PORT:-18743}:8000"]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health/ready/', timeout=5)"]
+      interval: 15s
+      timeout: 6s
+      retries: 5
+      start_period: 20s
+  worker:
+    <<: *app
+    command: celery -A config worker --concurrency=1 --loglevel=INFO --hostname=shipping@%h
+    healthcheck:
+      test: ["CMD-SHELL", "celery -A config inspect ping --timeout 5 --destination shipping@$$HOSTNAME | grep -q pong"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+  beat:
+    <<: *app
+    command: celery -A config beat --loglevel=INFO --schedule=/beat/celerybeat-schedule --pidfile=/beat/beat.pid
+    healthcheck:
+      test: ["CMD", "python", "-c", "import os; from pathlib import Path; os.kill(int(Path('/beat/beat.pid').read_text()), 0)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+  redis:
+    image: redis:7.4.11-alpine
+    command: redis-server --appendonly yes --appendfsync everysec --maxmemory-policy noeviction
+    volumes: [redis_data:/data]
+    networks: [shipping]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+networks:
+  shipping:
+volumes:
+  shipping_data:
+  redis_data:
+  beat_state:

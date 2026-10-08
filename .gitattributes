@@ -1,0 +1,2 @@
+# Preserve upstream font license notices byte-for-byte, including original CRLF/spacing.
+static/fonts/*-OFL.txt -text whitespace=-blank-at-eol
