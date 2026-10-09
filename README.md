@@ -2,7 +2,7 @@
 
 An independent English/Arabic Django shipping platform for JAHEZ TRADE CO.
 
-**Current scope: Phase 5 private AI drafts. Phases 1–4 approved; Phase 5 is ready for review.** Manual operations and 17TRACK integration remain independent. The owner's privately enabled carrier configuration is loaded, but live carrier/reference/webhook verification remains pending. Groq extraction, summaries, bilingual message drafts and explicit permission/version-checked review are implemented. Groq is currently disabled without a key; clearly labeled local fixtures support review. Existing JAHEZ website/brand sources and services remain read-only.
+**Current scope: Phase 6 read-only operational assistant. Phases 1–5 approved; Phase 6 is ready for review.** Fixed searches provide exact counts/cited shipment links, deterministic quality flags and optional private background explanations. Local searches/manual operations work independently of Groq. Both keys are loaded; Groq text/simple image and 17TRACK quota access passed limited live setup checks. Real carrier/webhook and complex bill verification remain pending. Existing JAHEZ website/brand sources and services remain read-only. See [assistant tools](docs/AI_SEARCH_TOOLS.md) and [Phase 6 report](docs/phases/PHASE_06_AI_SEARCH_VALIDATION.md).
 
 ## Local quick start
 

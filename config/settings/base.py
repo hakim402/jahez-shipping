@@ -6,7 +6,7 @@ from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 
 BASE_DIR = Path(__file__).resolve().parents[2]
-APP_VERSION = "0.5.0"
+APP_VERSION = "0.6.0"
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "")
 if len(SECRET_KEY) < 50 or SECRET_KEY.startswith(("REPLACE_", "GENERATE_")):
     raise ImproperlyConfigured("DJANGO_SECRET_KEY must contain at least 50 characters. Generate a private environment file with scripts/init_dev_env.py.")
@@ -61,6 +61,7 @@ GROQ_MAX_TOKENS = max(512, min(int(os.environ.get("GROQ_MAX_TOKENS", "4096")), 8
 GROQ_VISION_MAX_TOKENS = max(512, min(int(os.environ.get("GROQ_VISION_MAX_TOKENS", str(GROQ_MAX_TOKENS))), 8192))
 GROQ_RETENTION_DAYS = max(1, min(int(os.environ.get("GROQ_RETENTION_DAYS", "30")), 90))
 CELERY_BEAT_SCHEDULE["recover-ai-work"] = {"task": "jahez_shipping.ai.recover", "schedule": 60.0}
+CELERY_BEAT_SCHEDULE["recover-ai-assistant"] = {"task": "jahez_shipping.ai.recover_assistant", "schedule": 60.0}
 # Prevent SDK HTTP/request debug logging from revealing confidential sources/keys.
 LOGGING = {"version": 1, "disable_existing_loggers": False, "handlers": {"ai_silent": {"class": "logging.NullHandler"}}, "loggers": {name: {"handlers": ["ai_silent"], "propagate": False} for name in ("groq", "httpx", "httpcore")}}
 FOUNDATION_PREVIEW = False
@@ -109,6 +110,7 @@ UNFOLD['SIDEBAR']['navigation'].insert(2, {
 
 UNFOLD['SIDEBAR']['navigation'].insert(3, {
     'title': _('AI Workspace'), 'items': [
+        {'title': _('Operational assistant'), 'icon': 'manage_search', 'link': reverse_lazy('admin:ai_assistant'), 'permission': lambda request: request.user.has_perm('ai.query_shipments') and request.user.has_perm('shipments.view_shipment')},
         {'title': _('AI Workspace'), 'icon': 'auto_awesome', 'link': reverse_lazy('admin:ai_workspace'), 'permission': lambda request: request.user.has_perm('ai.view_aidraft')},
         {'title': _('AI drafts'), 'icon': 'rate_review', 'link': reverse_lazy('admin:ai_aidraft_changelist'), 'permission': lambda request: request.user.has_perm('ai.view_aidraft')},
     ],

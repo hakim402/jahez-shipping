@@ -1,6 +1,6 @@
 name: jahez-shipping-dev
 x-app: &app
-  image: jahez-shipping-dev:0.5.0
+  image: jahez-shipping-dev:0.6.0
   build:
     context: .
     target: development

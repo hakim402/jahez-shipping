@@ -1146,3 +1146,204 @@ msgstr "نص تجريبي محلي مخترع؛ يجب على الموظف ال�
 
 msgid "SYNTHETIC real-worker conversion/validation; no Groq request."
 msgstr "تحويل وتحقق تجريبيان عبر العامل الفعلي؛ لم يُرسل طلب إلى Groq."
+
+msgid "Operational assistant"
+msgstr "مساعد العمليات"
+
+msgid "Explanation ready"
+msgstr "التوضيح جاهز"
+
+msgid "Delayed shipments"
+msgstr "الشحنات المتأخرة"
+
+msgid "Arrivals in a date range"
+msgstr "الشحنات الواصلة خلال فترة"
+
+msgid "Shipments by status"
+msgstr "الشحنات حسب الحالة"
+
+msgid "Data quality checks"
+msgstr "فحص جودة البيانات"
+
+msgid "Missing bilingual route labels"
+msgstr "تسميات المسار باللغتين غير مكتملة"
+
+msgid "No product items recorded"
+msgstr "لا توجد منتجات مسجلة"
+
+msgid "Invalid quantity, weight or volume"
+msgstr "كمية أو وزن أو حجم غير صالح"
+
+msgid "Public item missing Arabic labels"
+msgstr "المنتج المنشور يفتقد التسميات العربية"
+
+msgid "Future actual date or delivery before arrival"
+msgstr "تاريخ فعلي مستقبلي أو تسليم قبل الوصول"
+
+msgid "Delivered status without an actual delivery date"
+msgstr "حالة تسليم دون تاريخ تسليم فعلي"
+
+msgid "Duplicate bill identifier"
+msgstr "رقم بوليصة مكرر"
+
+msgid "Duplicate order identifier"
+msgstr "رقم طلب مكرر"
+
+msgid "API or hybrid shipment without a carrier reference"
+msgstr "شحنة آلية أو مختلطة دون مرجع ناقل"
+
+msgid "Choose a supported read-only query."
+msgstr "اختر استعلاماً مدعوماً للقراءة فقط."
+
+msgid "Please clarify: choose a query and exact dates below. This question is ambiguous or unsupported."
+msgstr "يرجى التوضيح: اختر الاستعلام والتواريخ الدقيقة أدناه. السؤال غير واضح أو غير مدعوم."
+
+msgid "Unsupported query parameters."
+msgstr "معلمات الاستعلام غير مدعومة."
+
+msgid "Synthetic search is available only in development."
+msgstr "البحث التجريبي متاح في بيئة التطوير فقط."
+
+msgid "Provide both start and end dates for this query."
+msgstr "حدد تاريخ البداية والنهاية لهذا الاستعلام."
+
+msgid "Use an ordered ISO date range of at most 366 days and an aware query time."
+msgstr "استخدم فترة مرتبة بصيغة ISO لا تتجاوز 366 يوماً ووقت استعلام محدد المنطقة الزمنية."
+
+msgid "Select a valid status for the status query only."
+msgstr "حدد حالة صالحة لاستعلام الحالة فقط."
+
+msgid "Confirm sending only this search metadata to Groq."
+msgstr "أكد إرسال بيانات نتائج هذا البحث فقط إلى Groq."
+
+msgid "Configure Groq before requesting an explanation. Local search remains available."
+msgstr "أعد ضبط Groq قبل طلب التوضيح. يبقى البحث المحلي متاحاً."
+
+msgid "Search results changed. Run the local query again before requesting an explanation."
+msgstr "تغيرت النتائج. أعد البحث المحلي قبل طلب التوضيح."
+
+msgid "Optional operational question"
+msgstr "سؤال اختياري عن العمليات"
+
+msgid "Examples: Which shipments are delayed? Which shipments arrived this week? Other questions need explicit filters."
+msgstr "أمثلة: ما الشحنات المتأخرة؟ ما الشحنات التي وصلت هذا الأسبوع؟ تحتاج الأسئلة الأخرى إلى مرشحات محددة."
+
+msgid "Read-only query"
+msgstr "استعلام للقراءة فقط"
+
+msgid "Status for status query"
+msgstr "الحالة لاستعلام الحالات"
+
+msgid "Choose status"
+msgstr "اختر الحالة"
+
+msgid "Start date"
+msgstr "تاريخ البداية"
+
+msgid "End date (inclusive)"
+msgstr "تاريخ النهاية (شامل)"
+
+msgid "Search only synthetic DEMO records"
+msgstr "البحث في السجلات التجريبية فقط"
+
+msgid "Search selection expired or is invalid. Run a new local query."
+msgstr "انتهت صلاحية اختيار البحث أو أنه غير صالح. أعد البحث المحلي."
+
+msgid "Explanation is not available."
+msgstr "التوضيح غير متاح."
+
+msgid "Find answers in your shipment records"
+msgstr "اعثر على الإجابات في سجلات شحناتك"
+
+msgid "Exact database counts, clear search scope and private suggestions. Operational records stay unchanged."
+msgstr "أعداد دقيقة من قاعدة البيانات ونطاق بحث واضح واقتراحات خاصة. لا تتغير سجلات العمليات."
+
+msgid "Local queries work without Groq. Archived records are excluded. DEMO searches use only invented records."
+msgstr "تعمل الاستعلامات المحلية دون Groq وتستثني السجلات المؤرشفة. يستخدم البحث التجريبي سجلات افتراضية فقط."
+
+msgid "Search records"
+msgstr "ابحث في السجلات"
+
+msgid "Private explanation"
+msgstr "توضيح خاص"
+
+msgid "Run a new query"
+msgstr "ابدأ استعلاماً جديداً"
+
+msgid "Background processing. Refresh this page to check progress. The saved local result remains available."
+msgstr "تجري المعالجة في الخلفية. حدّث الصفحة للتحقق من التقدم. تبقى النتائج المحلية المحفوظة متاحة."
+
+msgid "Search sources changed. The saved answer is hidden; run a new query."
+msgstr "تغيرت مصادر البحث. أُخفيت الإجابة المحفوظة؛ ابدأ استعلاماً جديداً."
+
+msgid "This private answer expired. Run a new query."
+msgstr "انتهت صلاحية الإجابة الخاصة. ابدأ استعلاماً جديداً."
+
+msgid "Synthetic records only"
+msgstr "سجلات تجريبية فقط"
+
+msgid "matching shipments · exact database count"
+msgstr "شحنات مطابقة · عدد دقيق من قاعدة البيانات"
+
+msgid "Active records only"
+msgstr "السجلات غير المؤرشفة فقط"
+
+msgid "Query time"
+msgstr "وقت الاستعلام"
+
+msgid "Date scope"
+msgstr "نطاق التاريخ"
+
+msgid "Actual arrival date"
+msgstr "تاريخ الوصول الفعلي"
+
+msgid "Record creation date"
+msgstr "تاريخ إنشاء السجل"
+
+msgid "All dates"
+msgstr "كل التواريخ"
+
+msgid "Delayed means a confirmed delay or overdue known ETA, excluding delivered, returned and cancelled shipments. Missing ETA or provider outage alone is not a delay."
+msgstr "التأخر يعني تأخراً مؤكداً أو تجاوز موعد وصول معروف، مع استثناء الشحنات المسلمة والمرتجعة والملغاة. غياب الموعد أو تعطل المزود وحده لا يعني التأخر."
+
+msgid "Arrival searches use the recorded actual arrival date. A status or event without that date does not establish an arrival in this range. This week means Monday through Sunday."
+msgstr "يعتمد بحث الوصول على تاريخ الوصول الفعلي المسجل. لا تثبت الحالة أو الحدث دون ذلك التاريخ الوصول ضمن الفترة. الأسبوع الحالي من الاثنين إلى الأحد."
+
+msgid "Quality issues across the whole selected scope"
+msgstr "ملاحظات الجودة في كامل النطاق المحدد"
+
+msgid "A shipment can have several issues. Flags are suggestions for staff review; no data is corrected automatically."
+msgstr "قد تتضمن الشحنة عدة ملاحظات. هي اقتراحات لمراجعة الموظفين ولا تصحح البيانات تلقائياً."
+
+msgid "Showing the first 25 matches in shipment ID order. Narrow the date/status scope to inspect more records; the count covers every match."
+msgstr "تُعرض أول 25 نتيجة حسب رقم الشحنة. ضيّق نطاق التاريخ أو الحالة لفحص المزيد؛ يشمل العدد جميع النتائج المطابقة."
+
+msgid "Quality flags"
+msgstr "ملاحظات الجودة"
+
+msgid "No matching shipment records. This does not imply a delivery or a delay."
+msgstr "لا توجد شحنات مطابقة. لا يعني ذلك تسليم الشحنات أو تأخرها."
+
+msgid "Send only the displayed query scope, counts, shipment IDs, statuses, timestamps and quality codes to Groq for a private explanation."
+msgstr "أرسل فقط نطاق الاستعلام والأعداد وأرقام سجلات الشحنات وحالاتها وتواريخها ورموز ملاحظات الجودة المعروضة إلى Groq للحصول على توضيح خاص."
+
+msgid "No customer contacts, tracking references, documents, notes or carrier messages are sent. The model cannot query or change the database."
+msgstr "لا تُرسل بيانات تواصل العملاء أو مراجع التتبع أو المستندات أو الملاحظات أو رسائل الناقل. لا يستطيع النموذج الاستعلام عن قاعدة البيانات أو تعديلها."
+
+msgid "Request optional AI explanation"
+msgstr "اطلب توضيحاً اختيارياً بالذكاء الاصطناعي"
+
+msgid "AI explanation · verify against the exact results above"
+msgstr "توضيح الذكاء الاصطناعي · تحقق منه بمقارنة النتائج الدقيقة أعلاه"
+
+msgid "Query scope and counts"
+msgstr "نطاق الاستعلام والأعداد"
+
+msgid "Private suggestion only. No updates, publication or customer messages are applied."
+msgstr "اقتراح خاص فقط. لا تُطبق تحديثات أو نشر أو رسائل للعملاء."
+
+msgid "Business timezone"
+msgstr "المنطقة الزمنية للعمل"
+
+msgid "Sources"
+msgstr "المصادر"

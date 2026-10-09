@@ -15,6 +15,9 @@ class Command(BaseCommand):
         ai = Permission.objects.filter(content_type__app_label="ai")
         operations += list(ai.filter(codename__in=["view_aidraft", "request_ai", "review_ai", "apply_extraction", "retry_ai"]))
         readonly += list(ai.filter(codename="view_aidraft"))
+        assistant = list(ai.filter(codename__in=['view_assistantrun','query_shipments','check_quality']))
+        operations += assistant
+        readonly += assistant
         for name, selected in [("Shipping Operations", operations), ("Shipping Read Only", readonly)]:
             group, _ = Group.objects.get_or_create(name=name)
             group.permissions.set(selected)

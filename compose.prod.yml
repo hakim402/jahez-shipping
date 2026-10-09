@@ -1,7 +1,7 @@
 # Phase 1 production skeleton. VPS deployment awaits Phases 8 and 9.
 name: jahez-shipping-prod
 x-app: &app
-  image: jahez-shipping:0.5.0
+  image: jahez-shipping:0.6.0
   build:
     context: .
     target: production

@@ -17,3 +17,21 @@ def recover_drafts():
         recover()
     except Exception:
         return None
+
+
+@shared_task(name='jahez_shipping.ai.explain',ignore_result=True)
+def explain_run(pk):
+    from .assistant import process
+    try:
+        process(pk)
+    except Exception:
+        return None
+
+
+@shared_task(name='jahez_shipping.ai.recover_assistant',ignore_result=True)
+def recover_assistant():
+    from .assistant import recover
+    try:
+        recover()
+    except Exception:
+        return None

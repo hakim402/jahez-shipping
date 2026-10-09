@@ -64,7 +64,10 @@ class DraftAdmin(ModelAdmin):
         return HttpResponseRedirect(reverse('admin:ai_review', args=[object_id]))
 
     def get_urls(self):
+        from . import operational_views
         return [path('workspace/', self.admin_site.admin_view(self.workspace), name='ai_workspace'),
+            path('assistant/', self.admin_site.admin_view(operational_views.workspace), name='ai_assistant'),
+            path('assistant/<int:pk>/', self.admin_site.admin_view(operational_views.detail), name='ai_assistant_result'),
             path('request/', self.admin_site.admin_view(self.request_draft), name='ai_request'),
             path('<int:pk>/review/', self.admin_site.admin_view(self.review), name='ai_review'),
             path('<int:pk>/retry/', self.admin_site.admin_view(self.retry), name='ai_retry')] + super().get_urls()

@@ -106,8 +106,9 @@ def readiness(request):
         Shipment.objects.exists()  # Schema readiness, no provider/customer data returned.
         from apps.tracking.models import IntegrationJob
         IntegrationJob.objects.exists()
-        from apps.ai.models import AIDraft
+        from apps.ai.models import AIDraft, AssistantRun
         AIDraft.objects.exists()
+        AssistantRun.objects.exists()
         Redis.from_url(settings.REDIS_URL, socket_connect_timeout=2, socket_timeout=2).ping()
     except Exception:
         return JsonResponse({"status": "unavailable"}, status=503)

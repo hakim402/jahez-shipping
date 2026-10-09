@@ -60,4 +60,12 @@ with override_settings(CACHES={'default':{'BACKEND':'django.core.cache.backends.
     from django.templatetags.static import static
     assert '/static/' in static('css/admin.css')
     assert not ship.items.exists() and ship.bill_number==''
-print('PASS: offline production migrations/manifest, actual digital/scan conversion, real SDK on local mock transport, private draft/public EN-AR separation and production DEMO guard. No accounts, provider/network requests or live service/volume created.')
+    from types import SimpleNamespace
+    from apps.ai.operations import execute
+    staff=SimpleNamespace(is_staff=True,is_active=True,has_perm=lambda permission:True)
+    matches=execute(staff,{'tool':'status','status':'created'})
+    assert matches['count']==1 and len(matches['rows'])==1
+    assert 'SYNTHETIC PRIVATE CUSTOMER' not in str(matches) and 'DEMO-BILL-001' not in str(matches)
+    from apps.ai.models import AssistantRun
+    assert AssistantRun.objects.count()==0
+print('PASS: offline production migrations/manifest, actual digital/scan conversion, SDK mock transport, private/public EN-AR separation, DEMO guard and bounded operational query projection. No accounts, live provider requests or live service/volume created.')

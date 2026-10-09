@@ -57,7 +57,7 @@ class Writing(Strict):
     warnings: Annotated[list[Short], Field(max_length=20)]
 
 
-SCHEMAS = {'extraction': Extraction, 'summary': Writing, 'message': Writing}
+SCHEMAS = {'extraction': Extraction, 'summary': Writing, 'message': Writing, 'operational': Writing}
 NUMBERS = re.compile(r'(?<!\w)\d+(?:[.,:/-]\d+)*(?!\w)')
 
 
