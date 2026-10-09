@@ -753,3 +753,396 @@ msgstr "إشعارات الويب"
 
 msgid "Work accepted durably. See integration health for progress."
 msgstr "حُفظت المهمة المقبولة بشكل دائم. راجع حالة التكامل لمتابعة التنفيذ."
+
+msgid "AI Workspace"
+msgstr "مساحة عمل الذكاء الاصطناعي"
+
+msgid "AI draft"
+msgstr "مسودة الذكاء الاصطناعي"
+
+msgid "AI drafts"
+msgstr "مسودات الذكاء الاصطناعي"
+
+msgid "Document extraction"
+msgstr "استخراج بيانات المستند"
+
+msgid "Shipment summary"
+msgstr "ملخص الشحنة"
+
+msgid "Customer message / carrier translation"
+msgstr "رسالة العميل / ترجمة رسالة الناقل"
+
+msgid "Awaiting review"
+msgstr "بانتظار المراجعة"
+
+msgid "Applied privately"
+msgstr "تم التطبيق بشكل خاص"
+
+msgid "Approved private text"
+msgstr "نص خاص معتمد"
+
+msgid "Rejected"
+msgstr "مرفوضة"
+
+msgid "Expired"
+msgstr "منتهية الصلاحية"
+
+msgid "Retry scheduled"
+msgstr "إعادة المحاولة مجدولة"
+
+msgid "Task"
+msgstr "المهمة"
+
+msgid "Draft"
+msgstr "المسودة"
+
+msgid "Model"
+msgstr "النموذج"
+
+msgid "Usage"
+msgstr "الاستخدام"
+
+msgid "Accepted changes"
+msgstr "التغييرات المعتمدة"
+
+msgid "Retention ends"
+msgstr "نهاية مدة الاحتفاظ"
+
+msgid "Review state"
+msgstr "حالة المراجعة"
+
+msgid "Review decision"
+msgstr "قرار المراجعة"
+
+msgid "Reviewed at"
+msgstr "وقت المراجعة"
+
+msgid "Reviewed value"
+msgstr "القيمة بعد المراجعة"
+
+msgid "Latency (ms)"
+msgstr "زمن المعالجة (مللي ثانية)"
+
+msgid "Approve selected changes / private text"
+msgstr "اعتماد التغييرات المختارة / النص الخاص"
+
+msgid "Reject draft"
+msgstr "رفض المسودة"
+
+msgid "Add private item: "
+msgstr "إضافة منتج خاص: "
+
+msgid "Apply field: "
+msgstr "تطبيق الحقل: "
+
+msgid "Request an AI draft"
+msgstr "طلب مسودة بالذكاء الاصطناعي"
+
+msgid "Review AI draft"
+msgstr "مراجعة مسودة الذكاء الاصطناعي"
+
+msgid "Retry AI processing"
+msgstr "إعادة المعالجة بالذكاء الاصطناعي"
+
+msgid "Reviewed English statement"
+msgstr "النص الإنجليزي بعد المراجعة"
+
+msgid "Reviewed Arabic statement"
+msgstr "النص العربي بعد المراجعة"
+
+msgid "Private document for extraction"
+msgstr "المستند الخاص للاستخراج"
+
+msgid "Carrier event to translate (optional)"
+msgstr "حدث الناقل للترجمة (اختياري)"
+
+msgid "I authorize sending the selected document or minimal shipment history to Groq for this task."
+msgstr "أوافق على إرسال المستند المختار أو الحد الأدنى من سجل الشحنة إلى Groq لهذه المهمة."
+
+msgid "I checked the cited sources and reviewed these changes."
+msgstr "تحققت من المصادر المشار إليها وراجعت هذه التغييرات."
+
+msgid "Confirm external AI processing before requesting a draft."
+msgstr "أكد الموافقة على المعالجة الخارجية قبل طلب المسودة."
+
+msgid "Restore the archived shipment before requesting AI work."
+msgstr "استعد الشحنة المؤرشفة قبل طلب المعالجة بالذكاء الاصطناعي."
+
+msgid "Synthetic DEMO records are never sent to Groq. Use the local AI demonstration."
+msgstr "لا تُرسل السجلات التجريبية إلى Groq. استخدم العرض التجريبي المحلي."
+
+msgid "Select a matching document or carrier event for this task."
+msgstr "اختر مستنداً أو حدث ناقل مناسباً لهذه المهمة."
+
+msgid "Groq is disabled or its private key/text model is missing. Manual operations remain available."
+msgstr "Groq معطل أو مفتاحه الخاص / نموذج النص غير موجود. تظل العمليات اليدوية متاحة."
+
+msgid "Shipment changed while preparing the request. Reload and retry."
+msgstr "تغيرت الشحنة أثناء إعداد الطلب. أعد تحميل الصفحة وحاول مجدداً."
+
+msgid "This draft is no longer awaiting review."
+msgstr "هذه المسودة لم تعد بانتظار المراجعة."
+
+msgid "DEMO drafts cannot be applied in production."
+msgstr "لا يمكن تطبيق المسودات التجريبية في بيئة الإنتاج."
+
+msgid "This draft is stale. Request a new draft from the current records."
+msgstr "هذه المسودة قديمة. اطلب مسودة جديدة من السجلات الحالية."
+
+msgid "Only an extraction draft can apply operational fields."
+msgstr "مسودة الاستخراج وحدها يمكنها تطبيق حقول العمليات."
+
+msgid "An extraction from this document was already applied. Review the existing records."
+msgstr "تم تطبيق استخراج من هذا المستند بالفعل. راجع السجلات الموجودة."
+
+msgid "Invalid reviewed data or source citations."
+msgstr "البيانات المراجعة أو الإشارات إلى المصادر غير صالحة."
+
+msgid "Invalid field or item selection."
+msgstr "اختيار الحقل أو المنتج غير صالح."
+
+msgid "Select at least one field or item to apply."
+msgstr "اختر حقلاً أو منتجاً واحداً على الأقل للتطبيق."
+
+msgid "Existing shipment fields are retained. Make intentional corrections through the shipment editor."
+msgstr "تُحفظ قيم الشحنة الموجودة. أجرِ التصحيحات المقصودة من محرر الشحنة."
+
+msgid "This identifier already belongs to another shipment. Review the likely duplicate."
+msgstr "هذا المعرف مرتبط بشحنة أخرى. راجع التكرار المحتمل."
+
+msgid "A matching item already exists. Review the likely duplicate."
+msgstr "يوجد منتج مطابق بالفعل. راجع التكرار المحتمل."
+
+msgid "Use the extraction review form for operational fields."
+msgstr "استخدم نموذج مراجعة الاستخراج لحقول العمليات."
+
+msgid "Invalid reviewed text or source citations."
+msgstr "النص المراجع أو الإشارات إلى المصادر غير صالحة."
+
+msgid "Only a draft awaiting review can be rejected."
+msgstr "يمكن رفض المسودة المنتظرة للمراجعة فقط."
+
+msgid "Only a current failed draft can be retried."
+msgstr "يمكن إعادة محاولة المسودة الحالية الفاشلة فقط."
+
+msgid "DEMO processing stays local."
+msgstr "تبقى المعالجة التجريبية محلية."
+
+msgid "Configure Groq before retrying."
+msgstr "اضبط Groq قبل إعادة المحاولة."
+
+msgid "Groq is disabled."
+msgstr "Groq معطل."
+
+msgid "Groq private key is missing."
+msgstr "مفتاح Groq الخاص غير موجود."
+
+msgid "The required text or vision model is missing."
+msgstr "نموذج النص أو الرؤية المطلوب غير موجود."
+
+msgid "Document integrity changed. Review its private file."
+msgstr "تغيرت سلامة المستند. راجع ملفه الخاص."
+
+msgid "Document conversion failed. AI accepts plain documents up to five pages within its resource limits."
+msgstr "فشل تحويل المستند. تقبل المعالجة مستندات بسيطة حتى خمس صفحات ضمن حدود الموارد."
+
+msgid "Document exceeds AI processing limits."
+msgstr "يتجاوز المستند حدود المعالجة بالذكاء الاصطناعي."
+
+msgid "Source exceeds AI processing limits."
+msgstr "يتجاوز المصدر حدود المعالجة بالذكاء الاصطناعي."
+
+msgid "Source changed. Request a new draft."
+msgstr "تغير المصدر. اطلب مسودة جديدة."
+
+msgid "Staff permission is no longer available."
+msgstr "صلاحية الموظف لم تعد متاحة."
+
+msgid "Model returned invalid data or unsupported source citations."
+msgstr "أعاد النموذج بيانات غير صالحة أو إشارات غير مدعومة للمصادر."
+
+msgid "Model did not return a complete draft."
+msgstr "لم يُعد النموذج مسودة مكتملة."
+
+msgid "Groq is temporarily unavailable."
+msgstr "Groq غير متاح مؤقتاً."
+
+msgid "Groq account rate limit reached."
+msgstr "تم بلوغ حد معدل طلبات حساب Groq."
+
+msgid "Check the private Groq key, model access and output mode."
+msgstr "تحقق من مفتاح Groq الخاص وصلاحية النموذج ووضع المخرجات."
+
+msgid "Groq request failed safely."
+msgstr "فشل طلب Groq بشكل آمن."
+
+msgid "Groq response exceeded safe limits."
+msgstr "تجاوزت استجابة Groq الحدود الآمنة."
+
+msgid "Waiting for the local AI rate limit."
+msgstr "بانتظار حد معدل المعالجة المحلي."
+
+msgid "Shared AI rate control is unavailable."
+msgstr "التحكم المشترك في معدل المعالجة غير متاح."
+
+msgid "Interrupted worker; durable recovery handles eligible work."
+msgstr "توقفت مهمة العامل؛ يستعيد النظام العمل المؤهل المحفوظ."
+
+msgid "Synthetic DEMO records are never sent to Groq."
+msgstr "لا تُرسل السجلات التجريبية إلى Groq."
+
+msgid "AI processing failed safely. Review before retrying."
+msgstr "فشلت المعالجة بشكل آمن. راجع قبل إعادة المحاولة."
+
+msgid "AI request saved durably. Review its progress and sources here."
+msgstr "حُفظ طلب المعالجة. راجع تقدمه ومصادره هنا."
+
+msgid "Review saved. Approved text stays private; no customer message was sent."
+msgstr "حُفظت المراجعة. يبقى النص المعتمد خاصاً؛ لم تُرسل رسالة للعميل."
+
+msgid "PRIVATE STAFF WORKSPACE"
+msgstr "مساحة عمل خاصة للموظفين"
+
+msgid "AI drafts, reviewed by your team"
+msgstr "مسودات بالذكاء الاصطناعي يراجعها فريقك"
+
+msgid "Extract document fields, summarize shipment history and prepare bilingual messages. Staff decisions remain the source of truth."
+msgstr "استخرج حقول المستندات ولخص سجل الشحنة وجهز رسائل باللغتين. تظل قرارات الموظفين مصدر الحقيقة."
+
+msgid "Text configuration"
+msgstr "إعدادات النص"
+
+msgid "Vision configuration"
+msgstr "إعدادات الرؤية"
+
+msgid "Configured models still require a live account test. Manual operations work independently."
+msgstr "تحتاج النماذج المضبوطة إلى اختبار فعلي للحساب. تعمل العمليات اليدوية بشكل مستقل."
+
+msgid "Recent private drafts"
+msgstr "المسودات الخاصة الأخيرة"
+
+msgid "No AI drafts yet. Choose a shipment to begin."
+msgstr "لا توجد مسودات بعد. اختر شحنة للبدء."
+
+msgid "Private document pages or minimal selected history are sent to Groq only after staff confirms the action. Drafts are never automatically published or sent to customers."
+msgstr "تُرسل صفحات المستند الخاص أو الحد الأدنى من السجل المختار إلى Groq بعد تأكيد الموظف فقط. لا تُنشر المسودات ولا تُرسل للعملاء تلقائياً."
+
+msgid "External processing: this action sends the selected private document or minimal shipment history to Groq. Uploading a document alone never sends it. No contact details or private JAHEZ access reference are included in history tasks."
+msgstr "معالجة خارجية: يرسل هذا الإجراء المستند الخاص المختار أو الحد الأدنى من سجل الشحنة إلى Groq. رفع المستند وحده لا يرسله. لا تشمل مهام السجل بيانات الاتصال أو مرجع الدخول الخاص بجهز."
+
+msgid "Extraction accepts up to five plain PDF pages, PNG or JPEG, up to 5 MiB. Scanned pages are rendered privately to bounded JPEG images for the configured vision model. Unreadable fields remain uncertain."
+msgstr "يقبل الاستخراج حتى خمس صفحات PDF بسيطة أو PNG أو JPEG وبحجم أقصى 5 ميبيبايت. تُحوّل الصفحات الممسوحة بشكل خاص إلى صور JPEG محدودة لنموذج الرؤية. تبقى الحقول غير المقروءة غير مؤكدة."
+
+msgid "Choose the shipment and task, then load its source choices before confirming. For extraction select its private document; for translation optionally select a carrier event."
+msgstr "اختر الشحنة والمهمة ثم حمّل خيارات مصادرها قبل التأكيد. للاستخراج اختر المستند الخاص؛ وللترجمة يمكنك اختيار حدث ناقل."
+
+msgid "Load sources for shipment ID"
+msgstr "تحميل مصادر رقم الشحنة"
+
+msgid "Load source choices"
+msgstr "تحميل خيارات المصادر"
+
+msgid "Confirm and request draft"
+msgstr "تأكيد وطلب المسودة"
+
+msgid "Synthetic local demonstration. No Groq request was made; these proposals are invented review fixtures."
+msgstr "عرض تجريبي محلي. لم يُرسل طلب إلى Groq؛ هذه المقترحات بيانات مخترعة للمراجعة."
+
+msgid "Cited private sources"
+msgstr "المصادر الخاصة المشار إليها"
+
+msgid "Open source"
+msgstr "فتح المصدر"
+
+msgid "Source will appear after background processing. Refresh this page for progress."
+msgstr "سيظهر المصدر بعد المعالجة الخلفية. حدّث الصفحة لمعرفة التقدم."
+
+msgid "Proposed output — verify before approval"
+msgstr "المخرجات المقترحة — تحقق قبل الاعتماد"
+
+msgid "Selected extraction fields fill empty values; selected items are added privately. Status, dates, tracking registration, publication and customer records are never changed by this action. Approving writing saves private text only."
+msgstr "تملأ حقول الاستخراج المختارة القيم الفارغة؛ وتُضاف المنتجات المختارة بشكل خاص. لا يغيّر هذا الإجراء الحالة أو التواريخ أو تسجيل التتبع أو النشر أو سجلات العملاء. اعتماد الكتابة يحفظ نصاً خاصاً فقط."
+
+msgid "Save reviewed decision"
+msgstr "حفظ قرار المراجعة"
+
+msgid "Processing and review"
+msgstr "المعالجة والمراجعة"
+
+msgid "Retry sends the same authorized private source to Groq again and may consume account quota. Only current failed work can be retried."
+msgstr "ترسل إعادة المحاولة المصدر الخاص المصرح به إلى Groq مجدداً وقد تستهلك حصة الحساب. يمكن إعادة العمل الحالي الفاشل فقط."
+
+msgid "Configured — live verification pending"
+msgstr "مضبوط — التحقق الفعلي معلق"
+
+msgid "Missing key"
+msgstr "المفتاح غير موجود"
+
+msgid "Missing model"
+msgstr "النموذج غير موجود"
+
+msgid "Scanned page: open the private source to verify visually."
+msgstr "صفحة ممسوحة: افتح المصدر الخاص للتحقق بصرياً."
+
+msgid "Approved route"
+msgstr "المسار المعتمد"
+
+msgid "Received at"
+msgstr "وقت الاستلام"
+
+msgid "Updated at"
+msgstr "وقت التحديث"
+
+msgid "Invalid output mode"
+msgstr "وضع المخرجات غير صالح"
+
+msgid "Unknown"
+msgstr "غير معروف"
+
+msgid "Disabled"
+msgstr "معطل"
+
+msgid "Scanned pages need visual source verification."
+msgstr "تحتاج الصفحات الممسوحة إلى تحقق بصري من المصدر."
+
+msgid "Private AI suggestion. Verify every claim against its source before approving."
+msgstr "اقتراح خاص بالذكاء الاصطناعي. تحقق من كل معلومة ومصدرها قبل الاعتماد."
+
+msgid "No new ETA, delay cause or delivery confirmation may be inferred."
+msgstr "لا يجوز استنتاج موعد وصول جديد أو سبب تأخير أو تأكيد تسليم."
+
+msgid "History is incomplete: only the latest 20 received events are included."
+msgstr "السجل غير مكتمل: يتضمن آخر 20 حدثاً مستلماً فقط."
+
+msgid "Carrier synchronization is missing or stale; it does not prove a business delay."
+msgstr "مزامنة الناقل غير موجودة أو قديمة؛ وهذا لا يثبت تأخراً في الشحنة."
+
+msgid "No event history is available."
+msgstr "لا يتوفر سجل أحداث."
+
+msgid "Arrival estimate is unknown."
+msgstr "موعد الوصول غير معروف."
+
+msgid "Products are incomplete: only the first 25 are included."
+msgstr "قائمة المنتجات غير مكتملة: تتضمن أول 25 منتجاً فقط."
+
+msgid "SYNTHETIC local conversion and proposal review only."
+msgstr "تحويل محلي ومراجعة مقترحات تجريبية مخترعة فقط."
+
+msgid "SYNTHETIC local fixture, not an AI-generated extraction."
+msgstr "بيانات تجريبية محلية مخترعة، وليست استخراجاً مولداً بالذكاء الاصطناعي."
+
+msgid "Carrier-issued tracking number is not provided."
+msgstr "لم يتم تقديم رقم تتبع صادر عن الناقل."
+
+msgid "Bill, carrier reference and arrival estimate are unknown."
+msgstr "الفاتورة ومرجع الناقل وموعد الوصول غير معروفة."
+
+msgid "SYNTHETIC manually supplied scan proposal. Verify visually; no OCR/model call was made."
+msgstr "اقتراح تجريبي لصفحة ممسوحة أُدخل يدوياً. تحقق بصرياً؛ لم يتم التعرف الآلي على النص أو استدعاء النموذج."
+
+msgid "SYNTHETIC local writing fixture; staff must verify its cited sources."
+msgstr "نص تجريبي محلي مخترع؛ يجب على الموظف التحقق من مصادره المشار إليها."
+
+msgid "SYNTHETIC real-worker conversion/validation; no Groq request."
+msgstr "تحويل وتحقق تجريبيان عبر العامل الفعلي؛ لم يُرسل طلب إلى Groq."

@@ -57,14 +57,14 @@ class ShipmentAdmin(RetainedAdmin):
     list_filter = ("status", "mode", "tracking_mode", "published", "is_demo", "archived_at")
     search_fields = ("internal_order", "bill_number", "customer__name", "customer__company")
     list_select_related = ("customer",)
-    readonly_fields = ("status_badge", "created_at", "updated_at", "archived_at", "operational_links", "reference_display")
+    readonly_fields = ("status_badge", "created_at", "updated_at", "archived_at", "operational_links", "reference_display", "ai_links")
     inlines = (ItemInline, LegInline, EventInline)
     change_form_template = "admin/shipments/shipment_change.html"
     fieldsets = (
         (_("Shipment overview"), {"fields": ("customer", "internal_order", "bill_number", "mode", "tracking_mode", "carrier_coverage_complete", "status", "status_badge")}),
         (_("Approved public route and dates"), {"fields": (("origin_en", "origin_ar"), ("destination_en", "destination_ar"), "eta", "actual_arrival", "delivered_at", "published")}),
         (_("Status control"), {"fields": ("confirmed_delay", "delay_reason", "status_locked", "override_reason", "correction_reason", "confirm_complete_shipment")}),
-        (_("Private access and records"), {"fields": ("reference_display", "internal_notes", "operational_links", "archived_at", "created_at", "updated_at", "revision_token")}),
+        (_("Private access and records"), {"fields": ("reference_display", "internal_notes", "operational_links", "ai_links", "archived_at", "created_at", "updated_at", "revision_token")}),
     )
 
     def get_form(self, request, obj=None, **kwargs):
@@ -102,6 +102,12 @@ class ShipmentAdmin(RetainedAdmin):
             reverse("admin:shipments_document_changelist"), obj.pk, _("Private documents"),
             reverse("admin:shipments_auditentry_changelist"), obj.pk, _("Audit history"))
     operational_links.short_description = _("Related records")
+
+    def ai_links(self, obj):
+        if not obj.pk:
+            return _("Save the shipment first.")
+        return format_html('<a href="{}?shipment={}">{}</a> · <a href="{}?shipment__id__exact={}">{}</a>', reverse("admin:ai_request"), obj.pk, _("Request an AI draft"), reverse("admin:ai_aidraft_changelist"), obj.pk, _("AI drafts"))
+    ai_links.short_description = _("AI Workspace")
 
     def has_change_permission(self, request, obj=None):
         return super().has_change_permission(request, obj) and not (obj and obj.archived_at)
@@ -241,7 +247,7 @@ class DocumentAdmin(RetainedAdmin):
     list_display = ("shipment", "category", "original_filename", "size", "uploaded_at")
     list_filter = ("category", "shipment__archived_at")
     search_fields = ("shipment__internal_order", "original_filename")
-    fields = ("shipment", "category", "original_filename", "mime_type", "size", "page_count", "checksum", "uploaded_by", "uploaded_at", "authorized_download")
+    fields = ("shipment", "category", "original_filename", "mime_type", "size", "page_count", "checksum", "uploaded_by", "uploaded_at", "authorized_download", "ai_request_link")
     readonly_fields = fields
 
     def has_change_permission(self, request, obj=None):
@@ -250,6 +256,10 @@ class DocumentAdmin(RetainedAdmin):
     def authorized_download(self, obj):
         return format_html('<a href="{}">{}</a>', reverse("admin:shipments_document_download", args=[obj.pk]), _("Authorized download"))
     authorized_download.short_description = _("Private file")
+
+    def ai_request_link(self, obj):
+        return format_html('<a href="{}?shipment={}&kind=extraction&document={}">{}</a>', reverse('admin:ai_request'), obj.shipment_id, obj.pk, _('Request an AI draft'))
+    ai_request_link.short_description = _('AI Workspace')
 
     def get_urls(self):
         return [path("upload/", self.admin_site.admin_view(self.upload), name="shipments_document_upload"), path("<int:pk>/download/", self.admin_site.admin_view(self.download), name="shipments_document_download")] + super().get_urls()

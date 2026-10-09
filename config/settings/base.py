@@ -6,13 +6,13 @@ from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 
 BASE_DIR = Path(__file__).resolve().parents[2]
-APP_VERSION = "0.4.0"
+APP_VERSION = "0.5.0"
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "")
 if len(SECRET_KEY) < 50 or SECRET_KEY.startswith(("REPLACE_", "GENERATE_")):
     raise ImproperlyConfigured("DJANGO_SECRET_KEY must contain at least 50 characters. Generate a private environment file with scripts/init_dev_env.py.")
 DEBUG = False
 ALLOWED_HOSTS = [s.strip() for s in os.environ.get("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1,[::1]").split(",") if s.strip()]
-INSTALLED_APPS = ["unfold", "django.contrib.admin", "django.contrib.auth", "django.contrib.contenttypes", "django.contrib.sessions", "django.contrib.messages", "django.contrib.staticfiles", "apps.core.apps.CoreConfig", "apps.shipments.apps.ShipmentsConfig", "apps.tracking.apps.TrackingConfig"]
+INSTALLED_APPS = ["unfold", "django.contrib.admin", "django.contrib.auth", "django.contrib.contenttypes", "django.contrib.sessions", "django.contrib.messages", "django.contrib.staticfiles", "apps.core.apps.CoreConfig", "apps.shipments.apps.ShipmentsConfig", "apps.tracking.apps.TrackingConfig", "apps.ai.apps.AIConfig"]
 MIDDLEWARE = ["django.middleware.security.SecurityMiddleware", "whitenoise.middleware.WhiteNoiseMiddleware", "django.contrib.sessions.middleware.SessionMiddleware", "django.middleware.locale.LocaleMiddleware", "apps.core.middleware.BusinessTimezoneMiddleware", "django.middleware.common.CommonMiddleware", "django.middleware.csrf.CsrfViewMiddleware", "django.contrib.auth.middleware.AuthenticationMiddleware", "apps.core.middleware.AdminLoginThrottleMiddleware", "django.contrib.messages.middleware.MessageMiddleware", "django.middleware.clickjacking.XFrameOptionsMiddleware"]
 ROOT_URLCONF = "config.urls"
 TEMPLATES = [{"BACKEND": "django.template.backends.django.DjangoTemplates", "DIRS": [BASE_DIR / "templates"], "APP_DIRS": True, "OPTIONS": {"context_processors": ["django.template.context_processors.request", "django.template.context_processors.i18n", "django.contrib.auth.context_processors.auth", "django.contrib.messages.context_processors.messages"]}}]
@@ -52,7 +52,16 @@ TRACK17_API_KEY = os.environ.get("TRACK17_API_KEY", "")
 TRACK17_RECONCILE_SECONDS = max(3600, min(int(os.environ.get("TRACK17_RECONCILE_SECONDS", "21600")), 86400))
 TRACK17_ENABLED = os.environ.get("TRACK17_ENABLED", "false").lower() == "true"
 GROQ_ENABLED = os.environ.get("GROQ_ENABLED", "false").lower() == "true"
-# Provider implementations await Phase 4/5.
+GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "")
+GROQ_TEXT_MODEL = os.environ.get("GROQ_TEXT_MODEL", "")
+GROQ_VISION_MODEL = os.environ.get("GROQ_VISION_MODEL", "")
+GROQ_TEXT_OUTPUT_MODE = os.environ.get("GROQ_TEXT_OUTPUT_MODE", "schema")
+GROQ_VISION_OUTPUT_MODE = os.environ.get("GROQ_VISION_OUTPUT_MODE", "json")
+GROQ_MAX_TOKENS = max(512, min(int(os.environ.get("GROQ_MAX_TOKENS", "4096")), 8192))
+GROQ_RETENTION_DAYS = max(1, min(int(os.environ.get("GROQ_RETENTION_DAYS", "30")), 90))
+CELERY_BEAT_SCHEDULE["recover-ai-work"] = {"task": "jahez_shipping.ai.recover", "schedule": 60.0}
+# Prevent SDK HTTP/request debug logging from revealing confidential sources/keys.
+LOGGING = {"version": 1, "disable_existing_loggers": False, "handlers": {"ai_silent": {"class": "logging.NullHandler"}}, "loggers": {name: {"handlers": ["ai_silent"], "propagate": False} for name in ("groq", "httpx", "httpcore")}}
 FOUNDATION_PREVIEW = False
 PUBLIC_UI_PREVIEW_ENABLED = False
 CSRF_TRUSTED_ORIGINS = [s.strip() for s in os.environ.get("DJANGO_CSRF_TRUSTED_ORIGINS", "http://localhost:18744,http://127.0.0.1:18744").split(",") if s.strip()]
@@ -94,5 +103,12 @@ UNFOLD['SIDEBAR']['navigation'].insert(2, {
         {'title': _('Integration health'), 'icon': 'monitor_heart', 'link': reverse_lazy('admin:integration_health'), 'permission': lambda request: request.user.has_perm('tracking.view_integrationjob')},
         {'title': _('Integration jobs'), 'icon': 'work_history', 'link': reverse_lazy('admin:tracking_integrationjob_changelist'), 'permission': lambda request: request.user.has_perm('tracking.view_integrationjob')},
         {'title': _('Webhook receipts'), 'icon': 'inbox', 'link': reverse_lazy('admin:tracking_webhookreceipt_changelist'), 'permission': lambda request: request.user.has_perm('tracking.view_webhookreceipt')},
+    ],
+})
+
+UNFOLD['SIDEBAR']['navigation'].insert(3, {
+    'title': _('AI Workspace'), 'items': [
+        {'title': _('AI Workspace'), 'icon': 'auto_awesome', 'link': reverse_lazy('admin:ai_workspace'), 'permission': lambda request: request.user.has_perm('ai.view_aidraft')},
+        {'title': _('AI drafts'), 'icon': 'rate_review', 'link': reverse_lazy('admin:ai_aidraft_changelist'), 'permission': lambda request: request.user.has_perm('ai.view_aidraft')},
     ],
 })

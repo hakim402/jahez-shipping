@@ -2,7 +2,7 @@
 
 An independent English/Arabic Django shipping platform for JAHEZ TRADE CO.
 
-**Current scope: Phase 4 carrier integration. Phases 1–3 approved; Phase 4 approval pending.** Manual operations remain available. The 17TRACK v2.4 adapter, signed durable webhook receipts/jobs, bounded reconciliation, manual-override/all-package status safeguards and bilingual integration health are implemented. Live provider verification awaits privately configured credentials and a suitable reference. AI remains a later phase. Existing JAHEZ website sources/services remain read-only.
+**Current scope: Phase 5 private AI drafts. Phases 1–4 approved; Phase 5 is ready for review.** Manual operations and 17TRACK integration remain independent. The owner's privately enabled carrier configuration is loaded, but live carrier/reference/webhook verification remains pending. Groq extraction, summaries, bilingual message drafts and explicit permission/version-checked review are implemented. Groq is currently disabled without a key; clearly labeled local fixtures support review. Existing JAHEZ website/brand sources and services remain read-only.
 
 ## Local quick start
 
@@ -32,7 +32,9 @@ For labeled local fixtures, run `docker compose --env-file .env.dev -p jahez-shi
 
 For explicit carrier fixtures, run `docker compose --env-file .env.dev -p jahez-shipping-dev -f compose.dev.yml exec -T web python manage.py seed_tracking_demo`. Review **DEMO-CARRIER** and its private carrier event, then approve bilingual display text/publication. This command performs no live provider request and cannot run in production.
 
-[Phase 4 review](docs/phases/PHASE_04_17TRACK.md) · [17TRACK setup and contracts](docs/17TRACK_INTEGRATION.md) · [Data model](docs/DATA_MODEL.md) · [Status rules](docs/STATUS_RULES.md) · [Bill mapping](docs/DOCUMENT_FIELD_MAPPING.md) · [Company/CEO copy](docs/PUBLIC_COPY_REVIEW.md) · [Local development](docs/LOCAL_DEVELOPMENT.md) · [Phase progress](docs/PROGRESS.md) · [Technical decisions](docs/TECHNICAL_DECISIONS.md) · [Project boundaries](docs/PROJECT_BOUNDARIES.md) · [Asset manifest](docs/ASSET_MANIFEST.md) · [Complete project specification](PROJECT_PROMPT.md)
+[Phase 5 review](docs/phases/PHASE_05_AI_DRAFTS.md) · [AI behavior/model setup](docs/AI_BEHAVIOR.md) · [Phase 4 report](docs/phases/PHASE_04_17TRACK.md) · [17TRACK setup and contracts](docs/17TRACK_INTEGRATION.md) · [Data model](docs/DATA_MODEL.md) · [Status rules](docs/STATUS_RULES.md) · [Bill mapping](docs/DOCUMENT_FIELD_MAPPING.md) · [Company/CEO copy](docs/PUBLIC_COPY_REVIEW.md) · [Local development](docs/LOCAL_DEVELOPMENT.md) · [Phase progress](docs/PROGRESS.md) · [Technical decisions](docs/TECHNICAL_DECISIONS.md) · [Project boundaries](docs/PROJECT_BOUNDARIES.md) · [Asset manifest](docs/ASSET_MANIFEST.md) · [Complete project specification](PROJECT_PROMPT.md)
+
+For local AI review, run `docker compose --env-file .env.dev -p jahez-shipping-dev -f compose.dev.yml exec -T web python manage.py seed_ai_demo`, then open [English AI Workspace](http://localhost:18744/en/admin/ai/aidraft/workspace/) or [Arabic AI Workspace](http://localhost:18744/ar/admin/ai/aidraft/workspace/). No Groq request, account creation or customer message is sent by the seed.
 
 ## Focused verification
 
