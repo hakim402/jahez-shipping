@@ -6,14 +6,14 @@ from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 
 BASE_DIR = Path(__file__).resolve().parents[2]
-APP_VERSION = "0.2.0"
+APP_VERSION = "0.3.0"
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "")
 if len(SECRET_KEY) < 50 or SECRET_KEY.startswith(("REPLACE_", "GENERATE_")):
     raise ImproperlyConfigured("DJANGO_SECRET_KEY must contain at least 50 characters. Generate a private environment file with scripts/init_dev_env.py.")
 DEBUG = False
 ALLOWED_HOSTS = [s.strip() for s in os.environ.get("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1,[::1]").split(",") if s.strip()]
-INSTALLED_APPS = ["unfold", "django.contrib.admin", "django.contrib.auth", "django.contrib.contenttypes", "django.contrib.sessions", "django.contrib.messages", "django.contrib.staticfiles", "apps.core.apps.CoreConfig"]
-MIDDLEWARE = ["django.middleware.security.SecurityMiddleware", "whitenoise.middleware.WhiteNoiseMiddleware", "django.contrib.sessions.middleware.SessionMiddleware", "django.middleware.locale.LocaleMiddleware", "django.middleware.common.CommonMiddleware", "django.middleware.csrf.CsrfViewMiddleware", "django.contrib.auth.middleware.AuthenticationMiddleware", "apps.core.middleware.AdminLoginThrottleMiddleware", "django.contrib.messages.middleware.MessageMiddleware", "django.middleware.clickjacking.XFrameOptionsMiddleware"]
+INSTALLED_APPS = ["unfold", "django.contrib.admin", "django.contrib.auth", "django.contrib.contenttypes", "django.contrib.sessions", "django.contrib.messages", "django.contrib.staticfiles", "apps.core.apps.CoreConfig", "apps.shipments.apps.ShipmentsConfig"]
+MIDDLEWARE = ["django.middleware.security.SecurityMiddleware", "whitenoise.middleware.WhiteNoiseMiddleware", "django.contrib.sessions.middleware.SessionMiddleware", "django.middleware.locale.LocaleMiddleware", "apps.core.middleware.BusinessTimezoneMiddleware", "django.middleware.common.CommonMiddleware", "django.middleware.csrf.CsrfViewMiddleware", "django.contrib.auth.middleware.AuthenticationMiddleware", "apps.core.middleware.AdminLoginThrottleMiddleware", "django.contrib.messages.middleware.MessageMiddleware", "django.middleware.clickjacking.XFrameOptionsMiddleware"]
 ROOT_URLCONF = "config.urls"
 TEMPLATES = [{"BACKEND": "django.template.backends.django.DjangoTemplates", "DIRS": [BASE_DIR / "templates"], "APP_DIRS": True, "OPTIONS": {"context_processors": ["django.template.context_processors.request", "django.template.context_processors.i18n", "django.contrib.auth.context_processors.auth", "django.contrib.messages.context_processors.messages"]}}]
 WSGI_APPLICATION = "config.wsgi.application"
@@ -31,7 +31,7 @@ LOCALE_PATHS = [BASE_DIR / "locale"]
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_DIRS = [BASE_DIR / "static"]
-STORAGES = {"default": {"BACKEND": "django.core.files.storage.FileSystemStorage", "OPTIONS": {"location": PRIVATE_ROOT}}, "staticfiles": {"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"}}
+STORAGES = {"default": {"BACKEND": "apps.shipments.storage.PrivateStorage", "OPTIONS": {"location": PRIVATE_ROOT}}, "staticfiles": {"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"}}
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 REDIS_URL = os.environ.get("REDIS_URL", "redis://redis:6379/0")
 CACHES = {"default": {"BACKEND": "django.core.cache.backends.redis.RedisCache", "LOCATION": os.environ.get("CACHE_REDIS_URL", "redis://redis:6379/1"), "KEY_PREFIX": "jahez_shipping", "OPTIONS": {"socket_connect_timeout": 2, "socket_timeout": 2}}}
@@ -48,8 +48,8 @@ CELERY_TIMEZONE = "UTC"
 CELERY_BEAT_SCHEDULE = {}
 TRACK17_ENABLED = os.environ.get("TRACK17_ENABLED", "false").lower() == "true"
 GROQ_ENABLED = os.environ.get("GROQ_ENABLED", "false").lower() == "true"
-# Provider implementations are intentionally outside Phase 1.
-FOUNDATION_PREVIEW = True
+# Provider implementations await Phase 4/5.
+FOUNDATION_PREVIEW = False
 PUBLIC_UI_PREVIEW_ENABLED = False
 CSRF_TRUSTED_ORIGINS = [s.strip() for s in os.environ.get("DJANGO_CSRF_TRUSTED_ORIGINS", "http://localhost:18744,http://127.0.0.1:18744").split(",") if s.strip()]
 SECURE_CONTENT_TYPE_NOSNIFF = True
@@ -71,3 +71,16 @@ UNFOLD = {
     "COLORS": {"primary": {"50": "#F4F1FF", "100": "#EDE6FF", "200": "#D9CBFF", "300": "#BBA3FF", "400": "#9979FF", "500": "#7B57FC", "600": "#6842E5", "700": "#5734C9", "800": "#4527A8", "900": "#351E80", "950": "#21114D"}},
     "SIDEBAR": {"show_all_applications": False, "navigation": [{"title": _("Workspace"), "items": [{"title": _("Dashboard"), "icon": "dashboard", "link": reverse_lazy("admin:index")}, {"title": _("View tracking preview"), "icon": "travel_explore", "link": "/en/"}]}, {"title": _("Access management"), "items": [{"title": _("Users"), "icon": "group", "link": reverse_lazy("admin:auth_user_changelist"), "permission": lambda request: request.user.has_perm("auth.view_user")}, {"title": _("Groups"), "icon": "shield", "link": reverse_lazy("admin:auth_group_changelist"), "permission": lambda request: request.user.has_perm("auth.view_group")}]}]},
 }
+
+# Explicit staff navigation; every linked model view also enforces permissions.
+UNFOLD['SIDEBAR']['navigation'].insert(1, {
+    'title': _('Shipping operations'),
+    'items': [
+        {'title': _(title), 'icon': icon, 'link': reverse_lazy('admin:shipments_' + model + '_changelist'),
+         'permission': (lambda model: lambda request: request.user.has_perm('shipments.view_' + model))(model)}
+        for title, icon, model in [('Shipments', 'package_2', 'shipment'), ('Customers', 'group', 'customer'),
+            ('Shipment items', 'inventory_2', 'shipmentitem'), ('Tracking events', 'timeline', 'trackingevent'),
+            ('Tracking references', 'route', 'trackingleg'), ('Private documents', 'description', 'document'),
+            ('Audit entries', 'history', 'auditentry')]
+    ],
+})

@@ -1,12 +1,16 @@
 """Phase 2: synthetic-fixture isolation, validation, and public-page semantics."""
 from unittest.mock import patch
-from django.test import Client, SimpleTestCase, override_settings
+from django.test import Client, SimpleTestCase, TestCase, override_settings
 from django.contrib.staticfiles import finders
 from apps.core.preview import PREVIEW_STATES
 
 
 @override_settings(DEBUG=True, PUBLIC_UI_PREVIEW_ENABLED=True)
-class PublicDesignTests(SimpleTestCase):
+class PublicDesignTests(TestCase):
+    def setUp(self):
+        from django.core.cache import cache
+        cache.clear()
+
     def test_all_synthetic_states_in_both_languages(self):
         for lang in ('en', 'ar'):
             for state in PREVIEW_STATES:
@@ -21,7 +25,7 @@ class PublicDesignTests(SimpleTestCase):
     def test_example_reference_alone_never_looks_up_a_fixture(self):
         with patch('apps.core.views.synthetic_result') as fixture:
             response = self.client.post('/en/', {'reference': 'JHZ-DEMO-7K4P8Q2'})
-            self.assertEqual(response.context['state'], 'unavailable')
+            self.assertEqual(response.context['state'], 'not_found')
             self.assertFalse(response.context['is_demo'])
             fixture.assert_not_called()
             self.assertNotContains(response, 'Reusable drinkware')

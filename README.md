@@ -2,7 +2,7 @@
 
 An independent English/Arabic Django shipping platform for JAHEZ TRADE CO.
 
-**Current scope: Phase 2 public UI, ready for owner review. Phase 1 approved.** The complete bilingual homepage and company page are available, with eight development-only tracking states and an explicitly synthetic result. Real tracking lookup, shipment operations, carrier integration, and AI await later phases. No shipment/customer records are created by the preview. Existing JAHEZ website sources and services are read-only.
+**Current scope: Phase 3 manual shipping operations. Phases 1/2 approved; Phase 3 approval pending.** Staff can manage customers, shipments, products, manual events and private documents, then publish a restricted English/Arabic tracking summary. Dashboard counts use the database. Carrier and AI integrations remain disabled until their approved phases. Existing JAHEZ website sources/services remain read-only.
 
 ## Local quick start
 
@@ -12,6 +12,7 @@ Requires running Docker Desktop (macOS) or Docker Engine with Compose (Linux), p
 python3 scripts/init_dev_env.py
 docker compose --env-file .env.dev -p jahez-shipping-dev -f compose.dev.yml build
 docker compose --env-file .env.dev -p jahez-shipping-dev -f compose.dev.yml run --rm web python manage.py migrate
+docker compose --env-file .env.dev -p jahez-shipping-dev -f compose.dev.yml run --rm web python manage.py setup_roles
 docker compose --env-file .env.dev -p jahez-shipping-dev -f compose.dev.yml up -d
 docker compose --env-file .env.dev -p jahez-shipping-dev -f compose.dev.yml run --rm web python manage.py createsuperuser
 ```
@@ -24,9 +25,11 @@ The helper creates a private `.env.dev` with an independent random secret; it ne
 - Liveness: http://localhost:18744/health/live/
 - Readiness: http://localhost:18744/health/ready/
 
-Create your own admin interactively with a strong unique password (minimum 12 characters). No default admin account/password is shipped.
+Create your own admin interactively with a strong unique password (minimum 12 characters). No default admin account/password is shipped. Assign intended staff to Shipping Operations or Shipping Read Only through Users.
 
-[Phase 2 review](docs/phases/PHASE_02_PUBLIC_UI.md) · [Company/CEO copy](docs/PUBLIC_COPY_REVIEW.md) · [Local development](docs/LOCAL_DEVELOPMENT.md) · [Phase progress](docs/PROGRESS.md) · [Technical decisions](docs/TECHNICAL_DECISIONS.md) · [Project boundaries](docs/PROJECT_BOUNDARIES.md) · [Asset manifest](docs/ASSET_MANIFEST.md) · [Complete project specification](PROJECT_PROMPT.md)
+For labeled local fixtures, run `docker compose --env-file .env.dev -p jahez-shipping-dev -f compose.dev.yml exec -T web python manage.py seed_demo`. Copy the generated reference from the authorized shipment detail and submit it on the public homepage. The seed creates four synthetic shipments and one private sample bill, without creating users. The original shipping bill is still needed for its real field mapping.
+
+[Phase 3 review](docs/phases/PHASE_03_MANUAL_TRACKING_ADMIN.md) · [Data model](docs/DATA_MODEL.md) · [Status rules](docs/STATUS_RULES.md) · [Bill mapping](docs/DOCUMENT_FIELD_MAPPING.md) · [Company/CEO copy](docs/PUBLIC_COPY_REVIEW.md) · [Local development](docs/LOCAL_DEVELOPMENT.md) · [Phase progress](docs/PROGRESS.md) · [Technical decisions](docs/TECHNICAL_DECISIONS.md) · [Project boundaries](docs/PROJECT_BOUNDARIES.md) · [Asset manifest](docs/ASSET_MANIFEST.md) · [Complete project specification](PROJECT_PROMPT.md)
 
 ## Focused verification
 

@@ -432,3 +432,28 @@ COPY = {'en': {'brand': 'JAHEZ Shipping',
                      'عاين التفاصيل',
                      'رتب جلسة مباشرة لمعاينة المنتج أو السوق أو المصنع عندما تفيد قرارك.'),
                     ('04', 'نسق وتابع', 'أكد ترتيبات الشحن المتفق عليها وتابع المراحل المنشورة.')]}}
+
+# Stored tracking messages do not imply provider connectivity.
+COPY['en'].update({
+    'stored_result_title': 'Published shipment updates', 'cartons_label': 'cartons',
+    'manual_tracking_note': 'Manual tracking · updates published by the JAHEZ team. No carrier synchronization is used for this shipment.',
+    'provider_not_connected': 'Carrier synchronization is not connected yet. Published manual updates remain available.',
+    'no_public_products': 'Product details have not been approved for public display.',
+    'actual_arrival_label': 'Actual arrival', 'actual_delivery_label': 'Actual delivery',
+    'service_unavailable_title': 'Tracking is temporarily unavailable.',
+    'service_unavailable_body': 'Please try again shortly or contact the JAHEZ team. An unavailable service does not change your shipment status.',
+    'placeholder': 'JHZ-… private reference',
+})
+COPY['ar'].update({
+    'stored_result_title': 'تحديثات الشحنة المنشورة', 'cartons_label': 'كرتون',
+    'manual_tracking_note': 'تتبع يدوي · ينشر فريق جاهز التحديثات. لا تُستخدم مزامنة شركة النقل لهذه الشحنة.',
+    'provider_not_connected': 'مزامنة شركة النقل غير متصلة بعد. تظل التحديثات اليدوية المنشورة متاحة.',
+    'no_public_products': 'لم تُعتمد تفاصيل المنتجات للعرض العام.',
+    'actual_arrival_label': 'الوصول الفعلي', 'actual_delivery_label': 'التسليم الفعلي',
+    'service_unavailable_title': 'خدمة التتبع غير متاحة مؤقتًا.',
+    'service_unavailable_body': 'حاول مجددًا بعد قليل أو تواصل مع فريق جاهز. عدم توفر الخدمة لا يغيّر حالة شحنتك.',
+    'placeholder': 'JHZ-… الرقم الخاص',
+})
+
+COPY['en'].update({'preview_note': 'Manual tracking reads published records. The design controls below show template-only examples.', 'stored_no_updates_body': 'There are no published milestones yet. Contact the JAHEZ team if you need help with your shipment.'})
+COPY['ar'].update({'preview_note': 'يعرض التتبع اليدوي السجلات المنشورة. تعرض أدوات التصميم أدناه أمثلة توضيحية فقط.', 'stored_no_updates_body': 'لا توجد مراحل منشورة بعد. تواصل مع فريق جاهز إذا احتجت إلى مساعدة بخصوص شحنتك.'})

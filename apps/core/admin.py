@@ -17,9 +17,27 @@ class GroupAdmin(BaseGroupAdmin, ModelAdmin):
     pass
 
 def environment(request):
-    return ["Foundation preview", "warning"]
+    from django.conf import settings
+    return ["Local operations" if settings.DEBUG else "Operations", "warning" if settings.DEBUG else "success"]
 
 def dashboard(request, context):
+    from django.conf import settings
+    from django.db.models import Q
+    from apps.shipments.models import Status
+    from apps.shipments.services import active_shipments, delayed_q, TERMINAL
     context["preview_url"] = reverse("home")
-    context["foundation_preview"] = True
+    context["business_timezone"] = settings.BUSINESS_TIME_ZONE
+    context["can_view_shipments"] = request.user.has_perm("shipments.view_shipment")
+    context["can_add_shipment"] = request.user.has_perm("shipments.add_shipment")
+    if context["can_view_shipments"]:
+        shipments = active_shipments()
+        attention = shipments.exclude(status__in=TERMINAL).filter(delayed_q() | Q(status=Status.HOLD))
+        context["metrics"] = {
+            "pending": shipments.filter(status__in=[Status.CREATED, Status.WAREHOUSE, Status.PREPARING]).count(),
+            "transit": shipments.filter(status__in=[Status.DEPARTED, Status.TRANSIT, Status.CUSTOMS, Status.ARRIVED, Status.OUT]).count(),
+            "delivered": shipments.filter(status=Status.DELIVERED).count(),
+            "attention": attention.count(),
+        }
+        context["recent_shipments"] = shipments.select_related("customer").order_by("-updated_at")[:6]
+        context["attention_shipments"] = attention[:5]
     return context

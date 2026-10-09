@@ -42,3 +42,477 @@ msgstr "النظام"
 
 msgid "Welcome back to"
 msgstr "مرحبًا بك في"
+
+msgid "Shipping operations"
+msgstr "عمليات الشحن"
+
+msgid "Shipment"
+msgstr "الشحنة"
+
+msgid "Shipments"
+msgstr "الشحنات"
+
+msgid "Customer"
+msgstr "العميل"
+
+msgid "Customers"
+msgstr "العملاء"
+
+msgid "Shipment item"
+msgstr "منتج الشحنة"
+
+msgid "Shipment items"
+msgstr "منتجات الشحنة"
+
+msgid "Tracking reference"
+msgstr "مرجع التتبع"
+
+msgid "Tracking references"
+msgstr "مراجع التتبع"
+
+msgid "Tracking event"
+msgstr "حدث التتبع"
+
+msgid "Tracking events"
+msgstr "أحداث التتبع"
+
+msgid "Private document"
+msgstr "مستند خاص"
+
+msgid "Private documents"
+msgstr "المستندات الخاصة"
+
+msgid "Audit entry"
+msgstr "سجل تدقيق"
+
+msgid "Audit entries"
+msgstr "سجلات التدقيق"
+
+msgid "Created"
+msgstr "تم الإنشاء"
+
+msgid "Received at China warehouse"
+msgstr "وصلت إلى مستودع الصين"
+
+msgid "Preparing shipment"
+msgstr "تجهيز الشحنة"
+
+msgid "Departed"
+msgstr "غادرت الشحنة"
+
+msgid "In transit"
+msgstr "قيد النقل"
+
+msgid "Customs clearance"
+msgstr "التخليص الجمركي"
+
+msgid "Arrived at destination"
+msgstr "وصلت إلى الوجهة"
+
+msgid "Out for delivery"
+msgstr "خرجت للتسليم"
+
+msgid "Delivered"
+msgstr "تم التسليم"
+
+msgid "On hold / exception"
+msgstr "معلقة / حالة استثنائية"
+
+msgid "Returned"
+msgstr "مرتجعة"
+
+msgid "Cancelled"
+msgstr "ملغاة"
+
+msgid "Private name"
+msgstr "الاسم الخاص"
+
+msgid "Company"
+msgstr "الشركة"
+
+msgid "Email"
+msgstr "البريد الإلكتروني"
+
+msgid "Phone"
+msgstr "الهاتف"
+
+msgid "Private address"
+msgstr "العنوان الخاص"
+
+msgid "Internal notes"
+msgstr "ملاحظات داخلية"
+
+msgid "Private customer reference"
+msgstr "رقم العميل الخاص"
+
+msgid "Internal order reference"
+msgstr "مرجع الطلب الداخلي"
+
+msgid "Private bill number"
+msgstr "رقم بوليصة الشحن الخاص"
+
+msgid "Transport mode"
+msgstr "طريقة الشحن"
+
+msgid "Sea freight"
+msgstr "شحن بحري"
+
+msgid "Air freight"
+msgstr "شحن جوي"
+
+msgid "Road freight"
+msgstr "شحن بري"
+
+msgid "Multimodal freight"
+msgstr "شحن متعدد الوسائط"
+
+msgid "Tracking mode"
+msgstr "نمط التتبع"
+
+msgid "Manual"
+msgstr "يدوي"
+
+msgid "Carrier API (not connected)"
+msgstr "شركة النقل (غير متصلة)"
+
+msgid "Hybrid (manual now)"
+msgstr "مختلط (يدوي حاليًا)"
+
+msgid "Status"
+msgstr "الحالة"
+
+msgid "Approved origin (English)"
+msgstr "المصدر المعتمد (الإنجليزية)"
+
+msgid "Approved origin (Arabic)"
+msgstr "المصدر المعتمد (العربية)"
+
+msgid "Approved destination (English)"
+msgstr "الوجهة المعتمدة (الإنجليزية)"
+
+msgid "Approved destination (Arabic)"
+msgstr "الوجهة المعتمدة (العربية)"
+
+msgid "Confirmed arrival estimate"
+msgstr "موعد الوصول التقديري المؤكد"
+
+msgid "Actual arrival"
+msgstr "الوصول الفعلي"
+
+msgid "Actual delivery"
+msgstr "التسليم الفعلي"
+
+msgid "Confirmed delay"
+msgstr "تأخير مؤكد"
+
+msgid "Private delay reason"
+msgstr "سبب التأخير الخاص"
+
+msgid "Lock customer-facing status"
+msgstr "قفل الحالة المعروضة للعميل"
+
+msgid "Private override reason"
+msgstr "سبب القفل الخاص"
+
+msgid "Publish safe tracking summary"
+msgstr "نشر ملخص التتبع المعتمد"
+
+msgid "Archived at"
+msgstr "تاريخ الأرشفة"
+
+msgid "Product (English)"
+msgstr "المنتج (الإنجليزية)"
+
+msgid "Product (Arabic)"
+msgstr "المنتج (العربية)"
+
+msgid "Quantity"
+msgstr "الكمية"
+
+msgid "Unit (English)"
+msgstr "الوحدة (الإنجليزية)"
+
+msgid "Unit (Arabic)"
+msgstr "الوحدة (العربية)"
+
+msgid "Private SKU"
+msgstr "رمز المنتج الخاص"
+
+msgid "Cartons"
+msgstr "الكراتين"
+
+msgid "Weight (kg)"
+msgstr "الوزن (كغ)"
+
+msgid "Volume (m³)"
+msgstr "الحجم (م³)"
+
+msgid "Approve for public summary"
+msgstr "اعتماد العرض في الملخص العام"
+
+msgid "Sequence"
+msgstr "الترتيب"
+
+msgid "Private leg label"
+msgstr "وصف مسار النقل الخاص"
+
+msgid "Carrier identifier"
+msgstr "معرّف شركة النقل"
+
+msgid "Private carrier tracking number"
+msgstr "رقم شركة النقل الخاص"
+
+msgid "Occurrence time"
+msgstr "وقت الحدث"
+
+msgid "Private location"
+msgstr "الموقع الخاص"
+
+msgid "Private source text"
+msgstr "نص المصدر الخاص"
+
+msgid "Approved title (English)"
+msgstr "العنوان المعتمد (الإنجليزية)"
+
+msgid "Approved title (Arabic)"
+msgstr "العنوان المعتمد (العربية)"
+
+msgid "Approved detail (English)"
+msgstr "التفاصيل المعتمدة (الإنجليزية)"
+
+msgid "Approved detail (Arabic)"
+msgstr "التفاصيل المعتمدة (العربية)"
+
+msgid "Milestone status"
+msgstr "حالة المرحلة"
+
+msgid "Publish this event"
+msgstr "نشر هذا الحدث"
+
+msgid "JAHEZ manual update"
+msgstr "تحديث يدوي من جاهز"
+
+msgid "Carrier-provided update"
+msgstr "تحديث من شركة النقل"
+
+msgid "Category"
+msgstr "الفئة"
+
+msgid "Shipping bill"
+msgstr "بوليصة الشحن"
+
+msgid "Invoice"
+msgstr "الفاتورة"
+
+msgid "Packing list"
+msgstr "قائمة التعبئة"
+
+msgid "Other"
+msgstr "أخرى"
+
+msgid "Shipment overview"
+msgstr "نظرة عامة على الشحنة"
+
+msgid "Approved public route and dates"
+msgstr "المسار والتواريخ المعتمدة للعرض العام"
+
+msgid "Status control"
+msgstr "التحكم في الحالة"
+
+msgid "Private access and records"
+msgstr "الوصول الخاص والسجلات"
+
+msgid "Private JAHEZ reference"
+msgstr "رقم جاهز الخاص"
+
+msgid "Publication"
+msgstr "النشر"
+
+msgid "Archived"
+msgstr "مؤرشفة"
+
+msgid "Published"
+msgstr "منشورة"
+
+msgid "Private draft"
+msgstr "مسودة خاصة"
+
+msgid "Related records"
+msgstr "السجلات المرتبطة"
+
+msgid "Audit history"
+msgstr "سجل التدقيق"
+
+msgid "Authorized download"
+msgstr "تحميل بصلاحية"
+
+msgid "Private file"
+msgstr "الملف الخاص"
+
+msgid "Upload private document"
+msgstr "رفع مستند خاص"
+
+msgid "Restore shipment"
+msgstr "استعادة الشحنة"
+
+msgid "Archive shipment"
+msgstr "أرشفة الشحنة"
+
+msgid "Revoke reference"
+msgstr "إلغاء رقم التتبع"
+
+msgid "Confirm shipment action"
+msgstr "تأكيد إجراء الشحنة"
+
+msgid "Confirm action"
+msgstr "تأكيد الإجراء"
+
+msgid "Cancel"
+msgstr "إلغاء"
+
+msgid "Create shipment"
+msgstr "إنشاء شحنة"
+
+msgid "Pending"
+msgstr "قيد التجهيز"
+
+msgid "Created, warehouse or preparing"
+msgstr "إنشاء أو مستودع أو تجهيز"
+
+msgid "Departed through delivery route"
+msgstr "من المغادرة إلى مسار التسليم"
+
+msgid "Manually confirmed completion"
+msgstr "اكتمال مؤكد يدويًا"
+
+msgid "Delayed / exception"
+msgstr "تأخير / حالة استثنائية"
+
+msgid "Known overdue ETA, confirmed delay or hold"
+msgstr "موعد معروف متجاوز أو تأخير مؤكد أو تعليق"
+
+msgid "Recent shipments"
+msgstr "أحدث الشحنات"
+
+msgid "View all shipments"
+msgstr "عرض جميع الشحنات"
+
+msgid "Updated"
+msgstr "آخر تحديث"
+
+msgid "Needs attention"
+msgstr "تحتاج إلى متابعة"
+
+msgid "No active shipment meets the attention rules."
+msgstr "لا توجد شحنة نشطة تستوفي قواعد المتابعة."
+
+msgid "Open public tracking"
+msgstr "افتح التتبع العام"
+
+msgid "Manual operations are ready. Publish approved tracking details, coordinate your next milestone, and keep private records protected."
+msgstr "العمليات اليدوية جاهزة. انشر تفاصيل التتبع المعتمدة، ونسق المرحلة التالية، وحافظ على خصوصية السجلات."
+
+msgid "No shipments yet. Create a customer, save a private shipment, add items and milestones, then publish only the safe summary."
+msgstr "لا توجد شحنات بعد. أنشئ عميلًا واحفظ شحنة خاصة، ثم أضف المنتجات والمراحل وانشر الملخص المعتمد فقط."
+
+msgid "Ask the owner to assign an operations or read-only role. Shipment metrics require view permission."
+msgstr "اطلب من صاحب المشروع تعيين دور عمليات أو قراءة فقط. تحتاج إحصاءات الشحنات إلى صلاحية العرض."
+
+msgid "Manual tracking works without API keys. Carrier registration, background ingestion and AI drafts await their approved phases."
+msgstr "يعمل التتبع اليدوي دون مفاتيح API. تنتظر مزامنة شركات النقل ومسودات الذكاء الاصطناعي مراحلها المعتمدة."
+
+msgid "Private by default. Publish only approved country/region labels, items and events. Customer contacts, bills, carrier references and files never appear publicly."
+msgstr "السجلات خاصة افتراضيًا. انشر البلدان والمناطق والمنتجات والأحداث المعتمدة فقط. لا تُعرض بيانات التواصل والبوالص ومراجع شركات النقل والملفات للعامة."
+
+msgid "Timeline milestones do not silently change the shipment status. Set the overview status explicitly; terminal/backward corrections and lock release require a recorded reason."
+msgstr "لا تغيّر أحداث الخط الزمني حالة الشحنة تلقائيًا. حدد الحالة صراحةً؛ يتطلب تصحيح حالة نهائية أو سابقة أو إلغاء القفل سببًا مسجلًا."
+
+msgid "Carrier registration and AI tools are not connected in this phase."
+msgstr "تسجيل شركات النقل وأدوات الذكاء الاصطناعي غير متصلة في هذه المرحلة."
+
+msgid "Archiving hides public tracking and retains records. Restoring keeps publication off. Revoking a reference permanently invalidates the previous reference."
+msgstr "تخفي الأرشفة التتبع العام وتحفظ السجلات. لا تنشر الاستعادة الملخص تلقائيًا. يؤدي إلغاء الرقم إلى إبطال الرقم السابق نهائيًا."
+
+msgid "PDF, PNG or JPEG only. Maximum 5 MiB, 40 PDF pages, 20 million image pixels. Active/encrypted PDFs and mismatched file types are rejected. Files are private and downloaded only by authorized staff."
+msgstr "ملفات PDF وPNG وJPEG فقط. الحد 5 ميبيبايت و40 صفحة PDF و20 مليون بكسل. تُرفض ملفات PDF النشطة أو المشفرة والأنواع غير المتطابقة. الملفات خاصة ويحمّلها الموظفون المصرح لهم فقط."
+
+msgid "Private document uploaded. It is never included in public tracking."
+msgstr "تم رفع المستند الخاص. لا يُدرج في التتبع العام."
+
+msgid "Save the shipment first, then add products, timeline and private documents."
+msgstr "احفظ الشحنة أولًا ثم أضف المنتجات والخط الزمني والمستندات الخاصة."
+
+msgid "A confirmed delay requires a reason."
+msgstr "التأخير المؤكد يحتاج إلى سبب."
+
+msgid "A status lock requires a reason."
+msgstr "قفل الحالة يحتاج إلى سبب."
+
+msgid "Provide approved bilingual country/region route labels before publication."
+msgstr "أدخل أسماء البلدان أو المناطق المعتمدة باللغتين قبل النشر."
+
+msgid "Use a timezone-aware timestamp."
+msgstr "استخدم وقتًا محدد المنطقة الزمنية."
+
+msgid "Public items require bilingual product and unit labels."
+msgstr "تتطلب المنتجات العامة أسماء المنتجات والوحدات باللغتين."
+
+msgid "The tracking reference must belong to this shipment."
+msgstr "يجب أن ينتمي مرجع التتبع إلى هذه الشحنة."
+
+msgid "Published events require bilingual titles and matching detail translations."
+msgstr "تتطلب الأحداث المنشورة عناوين باللغتين وترجمة متطابقة للتفاصيل."
+
+msgid "Use an aware occurrence time, not a future milestone."
+msgstr "استخدم وقت حدث محدد المنطقة الزمنية وليس مرحلة مستقبلية."
+
+msgid "Correction / lock release reason"
+msgstr "سبب التصحيح أو إلغاء القفل"
+
+msgid "I confirm every package / leg is delivered"
+msgstr "أؤكد تسليم جميع الطرود ومسارات الشحنة"
+
+msgid "Private PDF / PNG / JPEG (up to 5 MiB)"
+msgstr "ملف PDF أو PNG أو JPEG خاص (حتى 5 ميبيبايت)"
+
+msgid "This shipment changed in another session. Reload before saving."
+msgstr "تغيرت الشحنة في جلسة أخرى. أعد تحميل الصفحة قبل الحفظ."
+
+msgid "Confirm delivery of every package/leg before marking the entire shipment delivered."
+msgstr "أكد تسليم جميع الطرود ومسارات النقل قبل اعتبار الشحنة كاملة التسليم."
+
+msgid "Restore the shipment before editing its timeline."
+msgstr "استعد الشحنة قبل تعديل خطها الزمني."
+
+msgid "Restore the archived shipment before editing it."
+msgstr "استعد الشحنة المؤرشفة قبل تعديلها."
+
+msgid "Carrier-only tracking is not connected yet. Choose manual or hybrid."
+msgstr "التتبع عبر شركة النقل وحدها غير متصل بعد. اختر النمط اليدوي أو المختلط."
+
+msgid "Concurrent change detected. Reload before saving."
+msgstr "اكتُشف تعديل متزامن. أعد التحميل قبل الحفظ."
+
+msgid "Archived shipments cannot be edited."
+msgstr "لا يمكن تعديل الشحنات المؤرشفة."
+
+msgid "Provider history cannot be edited as a manual event."
+msgstr "لا يمكن تعديل سجل شركة النقل كحدث يدوي."
+
+msgid "Documents must be nonempty and at most 5 MiB."
+msgstr "يجب أن تكون المستندات غير فارغة وألا تتجاوز 5 ميبيبايت."
+
+msgid "Invalid, encrypted, active, oversized, or unsupported document. Use a plain PDF (up to 40 pages), PNG, or JPEG."
+msgstr "المستند غير صالح أو مشفر أو نشط أو كبير أو غير مدعوم. استخدم PDF عاديًا حتى 40 صفحة أو PNG أو JPEG."
+
+msgid "File extension, declared MIME type and detected content must agree."
+msgstr "يجب أن تتطابق امتدادات الملفات وأنواع MIME المعلنة والمحتوى المكتشف."
+
+msgid "Archived shipments cannot receive documents."
+msgstr "لا يمكن إضافة مستندات إلى الشحنات المؤرشفة."
+
+msgid "Shipment was archived during upload."
+msgstr "أُرشفت الشحنة أثناء الرفع."
+
+msgid "Integrations disabled"
+msgstr "التكاملات غير متصلة"

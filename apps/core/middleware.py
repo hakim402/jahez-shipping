@@ -3,6 +3,22 @@ import secrets
 from django.core.cache import cache
 from django.http import HttpResponse
 from django.utils.translation import get_language
+from django.utils import timezone
+from django.conf import settings
+from zoneinfo import ZoneInfo
+
+
+class BusinessTimezoneMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+        self.zone = ZoneInfo(settings.BUSINESS_TIME_ZONE)
+
+    def __call__(self, request):
+        timezone.activate(self.zone)
+        try:
+            return self.get_response(request)
+        finally:
+            timezone.deactivate()
 
 class AdminLoginThrottleMiddleware:
     """Shared per-IP bound on login POSTs; fail closed when Redis is unavailable.

@@ -27,7 +27,7 @@ class PublicPreviewTests(TestCase):
         r = self.client.post("/en/", {"reference": reference})
         self.assertEqual(r.status_code, 200)
         self.assertNotContains(r, reference)
-        self.assertContains(r, "does not search live records")
+        self.assertContains(r, "We could not find that reference.")
         self.assertEqual(r["Cache-Control"], "no-store")
         self.assertEqual(r["X-Robots-Tag"], "noindex, nofollow")
     def test_preview_post_requires_csrf(self):
@@ -91,7 +91,7 @@ class AdminFoundationTests(TestCase):
         r = c.post("/en/admin/login/", {"username": user.username, "password": password, "csrfmiddlewaretoken": token, "next": "/en/admin/"}, HTTP_ORIGIN="http://testserver")
         self.assertEqual(r.status_code, 302)
         self.assertEqual(c.session["_auth_user_id"], str(user.pk))
-        self.assertContains(c.get("/en/admin/"), "no live shipments or invented metrics")
+        self.assertContains(c.get("/en/admin/"), "Shipment metrics require view permission.")
     def test_dashboard_requires_staff(self):
         self.assertEqual(self.client.get("/en/admin/").status_code, 302)
         user = User.objects.create_user("viewer", password="temporary-test-password")
@@ -102,11 +102,11 @@ class AdminFoundationTests(TestCase):
         self.client.force_login(user)
         r = self.client.get("/en/admin/")
         self.assertEqual(r.status_code, 200)
-        self.assertContains(r, "no live shipments or invented metrics")
+        self.assertContains(r, "Shipment metrics require view permission.")
         self.assertContains(r, "Integrations disabled")
         self.assertNotContains(r, "Manage Users")
         r = self.client.get("/ar/admin/")
-        self.assertContains(r, "هذه معاينة")
+        self.assertContains(r, "التكاملات غير متصلة")
     def test_account_management_requires_permissions(self):
         user = User.objects.create_user("staff", is_staff=True)
         self.client.force_login(user)

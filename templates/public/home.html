@@ -36,7 +36,7 @@
   <form method="post" action="/{{ lang }}/#tracking-result" class="state-controls">{% csrf_token %}{% for value,label in preview_states %}<button type="submit" name="preview_state" value="{{ value }}" {% if is_demo and state == value %}aria-current="true"{% endif %}>{{ label }}</button>{% endfor %}</form>
 </details>
 {% endif %}
-{% if state %}{% include "public/partials/tracking_result.html" %}{% endif %}
+{% if state %}{% if stored_result %}{% include "public/partials/stored_result.html" %}{% else %}{% include "public/partials/tracking_result.html" %}{% endif %}{% endif %}
 <section class="steps wrap" aria-labelledby="steps-heading">
   <div class="section-heading"><span class="eyebrow">{{ c.steps_eyebrow }}</span><h2 id="steps-heading">{{ c.steps_title }}</h2></div>
   <div class="steps-grid"><article><span class="step-number">01</span><h3>{{ c.step1_title }}</h3><p>{{ c.step1_body }}</p></article><article><span class="step-number">02</span><h3>{{ c.step2_title }}</h3><p>{{ c.step2_body }}</p></article><article><span class="step-number">03</span><h3>{{ c.step3_title }}</h3><p>{{ c.step3_body }}</p></article></div>

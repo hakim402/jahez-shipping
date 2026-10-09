@@ -8,6 +8,10 @@ from redis import Redis
 from .copy import COPY
 from .forms import TrackingReferenceForm
 from .preview import PREVIEW_STATES, synthetic_result
+from .limits import lookup_limit
+from apps.shipments.public import find_public
+from apps.shipments.models import Shipment
+from django.db import DatabaseError
 
 
 def public_context(page):
@@ -33,6 +37,8 @@ def home(request):
     context = public_context("home")
     state = None
     demo = False
+    stored = None
+    response_status = 200
     if request.method == "POST":
         selected = request.POST.get("preview_state")
         if selected is not None and context["preview_enabled"] and selected in PREVIEW_STATES:
@@ -43,7 +49,18 @@ def home(request):
             state = "unavailable"
         else:
             form = TrackingReferenceForm(request.POST)
-            state = "unavailable" if form.is_valid() else "invalid"
+            state = lookup_limit(request)
+            if state:
+                response_status = 429 if state == "rate_limited" else 503
+            elif not form.is_valid():
+                state = "invalid"
+            else:
+                try:
+                    stored = find_public(form.cleaned_data["reference"], context["lang"])
+                    state = ("no_updates" if stored["no_updates"] else "found") if stored else "not_found"
+                except DatabaseError:
+                    state = "unavailable"
+                    response_status = 503
     context.update({
         "state": state, "is_demo": demo, "submitted": request.method == "POST",
         "invalid": state == "invalid",
@@ -51,14 +68,22 @@ def home(request):
     })
     if demo and state in ("found", "no_updates"):
         context["result"] = synthetic_result(context["lang"], no_updates=state == "no_updates")
+    if stored:
+        context["result"] = stored
+        context["stored_result"] = True
     if state and state not in ("found", "no_updates"):
         prefix = {"initial": "initial", "submitting": "loading", "invalid": "invalid", "not_found": "not_found", "rate_limited": "limited", "unavailable": "unavailable"}[state]
         context["state_title"] = context["c"][prefix + "_title"]
         context["state_body"] = context["c"]["invalid_message" if state == "invalid" else prefix + "_body"]
     # Never echo/store the requested capability or send an external provider call.
-    response = render(request, "public/home.html", context)
+    if not demo and state == "unavailable":
+        context["state_title"] = context["c"]["service_unavailable_title"]
+        context["state_body"] = context["c"]["service_unavailable_body"]
+    response = render(request, "public/home.html", context, status=response_status)
     response["Cache-Control"] = "no-store"
     response["X-Robots-Tag"] = "noindex, nofollow"
+    if response_status == 429:
+        response["Retry-After"] = "300"
     return response
 
 
@@ -78,10 +103,11 @@ def readiness(request):
         with connection.cursor() as cursor:
             cursor.execute("SELECT 1")
             cursor.fetchone()
+        Shipment.objects.exists()  # Schema readiness, no provider/customer data returned.
         Redis.from_url(settings.REDIS_URL, socket_connect_timeout=2, socket_timeout=2).ping()
     except Exception:
         return JsonResponse({"status": "unavailable"}, status=503)
-    return JsonResponse({"status": "ready", "integrations": "disabled_in_public_preview"})
+    return JsonResponse({"status": "ready", "integrations": "disabled", "tracking": "stored_manual"})
 
 
 @require_GET
