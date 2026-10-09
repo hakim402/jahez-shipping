@@ -2,7 +2,7 @@
 
 An independent English/Arabic Django shipping platform for JAHEZ TRADE CO.
 
-**Current scope: Phase 7 quality, privacy and recovery. Phases 1–6 approved; Phase 7 is ready for review.** Bilingual tracking/manual operations, carrier and private AI workflows now have consistent error/correlation/privacy controls, tested durable restart recovery and matching database/private-file backup/isolated restore. See [Phase 7 evidence](docs/phases/PHASE_07_QUALITY_RECOVERY.md), [backup/restore](docs/BACKUP_RESTORE.md), [operating guidance](docs/OPERATIONS_RUNBOOK.md) and [SQLite migration plan](docs/POSTGRES_MIGRATION.md). Both keys remain privately configured; earlier limited live setup checks passed. Real carrier/webhook, complex original bill, off-server backups and production launch remain pending. Existing JAHEZ website/brand sources and services remain read-only. Phase 8 requires owner approval.
+**Current scope: Phase 8 production packaging and complete server guides, ready for review. Phases 1–7 approved; Phase 9 remains gated.** Version 0.8.0 includes the hardened production image/Compose, private preflight/startup validation, paused upgrade/rollback controls and complete deployment configuration. See [Phase 8 evidence/review](docs/phases/PHASE_08_PRODUCTION_GUIDES.md), [VPS guide](docs/DEPLOYMENT_VPS.md), [Nginx/SSL](docs/NGINX_SSL.md), [upgrade/rollback](docs/UPGRADE_ROLLBACK.md), [backup/restore](docs/BACKUP_RESTORE.md) and [operating guidance](docs/OPERATIONS_RUNBOOK.md). Isolated production-mode health/migrations/static/persistence/recovery and offline Nginx syntax checks passed; no actual VPS/DNS/TLS/production environment or off-server backup was activated. Existing JAHEZ website/brand sources remain read-only. Earlier limited provider setup evidence remains separate from real-shipment/webhook/original-bill validation.
 
 ## Local quick start
 
@@ -43,4 +43,4 @@ docker compose --env-file .env.dev -p jahez-shipping-dev -f compose.dev.yml run 
 python3 scripts/check_boundaries.py
 ```
 
-Production Compose is an initial skeleton, not approval to deploy. No VPS, Nginx, DNS or SSL changes have been made. Implement one phase at a time; read AGENTS.md and progress before continuing.
+Production Compose is complete and locally verified; real activation requires Phase 9 approval. No VPS, Nginx, DNS or SSL changes have been made. Implement one phase at a time; read AGENTS.md and progress before continuing.

@@ -1,11 +1,17 @@
-# Phase 1 production skeleton. VPS deployment awaits Phases 8 and 9.
+# Complete production package. Live activation requires Phase 9 approval.
 name: jahez-shipping-prod
 x-app: &app
-  image: jahez-shipping:0.7.0
+  image: ${SHIPPING_IMAGE:-jahez-shipping:0.8.0}
   build:
     context: .
     target: production
-  env_file: .env.prod
+  env_file: ${SHIPPING_ENV_FILE:-.env.prod}
+  environment:
+    DJANGO_SETTINGS_MODULE: config.settings.production
+  read_only: true
+  tmpfs: ["/tmp:rw,noexec,nosuid,size=256m,mode=1777"]
+  cap_drop: [ALL]
+  security_opt: [no-new-privileges:true]
   volumes:
     - shipping_data:/data
     - beat_state:/beat
@@ -14,7 +20,7 @@ x-app: &app
       condition: service_healthy
   networks: [shipping]
   restart: unless-stopped
-  stop_grace_period: 30s
+  stop_grace_period: 95s
   logging:
     driver: json-file
     options:
@@ -23,15 +29,17 @@ x-app: &app
 services:
   web:
     <<: *app
+    mem_limit: ${SHIPPING_WEB_MEMORY:-768m}
     ports: ["127.0.0.1:${SHIPPING_BIND_PORT:-18743}:8000"]
     healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health/ready/', timeout=5)"]
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen(urllib.request.Request('http://127.0.0.1:8000/health/ready/', headers={'Host':'shipping.jahez.online'}), timeout=5)"]
       interval: 15s
       timeout: 6s
       retries: 5
       start_period: 20s
   worker:
     <<: *app
+    mem_limit: ${SHIPPING_WORKER_MEMORY:-1536m}
     command: celery -A config worker --concurrency=1 --loglevel=INFO --hostname=shipping@%h
     healthcheck:
       test: ["CMD-SHELL", "celery -A config inspect ping --timeout 5 --destination shipping@$$HOSTNAME | grep -q pong"]
@@ -41,6 +49,7 @@ services:
       start_period: 30s
   beat:
     <<: *app
+    mem_limit: ${SHIPPING_BEAT_MEMORY:-256m}
     command: celery -A config beat --loglevel=INFO --schedule=/beat/celerybeat-schedule --pidfile=/beat/beat.pid
     healthcheck:
       test: ["CMD", "python", "-c", "import os; from pathlib import Path; os.kill(int(Path('/beat/beat.pid').read_text()), 0)"]
@@ -49,8 +58,10 @@ services:
       retries: 3
       start_period: 30s
   redis:
-    image: redis:7.4.11-alpine
-    command: redis-server --appendonly yes --appendfsync everysec --maxmemory-policy noeviction
+    image: redis:7.4.11-alpine@sha256:858f009f9709ce576febc734aa78b8f6d624b82571f9ddb6bda4377c833b3499
+    command: redis-server --appendonly yes --appendfsync everysec --maxmemory 128mb --maxmemory-policy noeviction
+    mem_limit: ${SHIPPING_REDIS_MEMORY:-256m}
+    stop_grace_period: 30s
     volumes: [redis_data:/data]
     networks: [shipping]
     restart: unless-stopped

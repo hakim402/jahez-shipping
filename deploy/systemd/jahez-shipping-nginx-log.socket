@@ -1,0 +1,8 @@
+[Unit]
+Description=JAHEZ Shipping private Nginx error socket
+[Socket]
+ListenDatagram=/run/jahez-shipping-nginx-log.sock
+SocketMode=0622
+RemoveOnStop=true
+[Install]
+WantedBy=sockets.target

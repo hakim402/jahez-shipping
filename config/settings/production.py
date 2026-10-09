@@ -1,5 +1,8 @@
 import os
 from django.core.exceptions import ImproperlyConfigured
+from deploy.production_env import validate,EnvironmentError
+try:validate(os.environ)
+except EnvironmentError as error:raise ImproperlyConfigured(str(error)) from None
 from .base import *  # noqa: F403
 
 if SECRET_KEY.startswith("dev-"):
@@ -15,7 +18,7 @@ SECURE_SSL_REDIRECT = True
 SECURE_REDIRECT_EXEMPT = [r"^health/live/$", r"^health/ready/$"]
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
-SECURE_HSTS_SECONDS = 0  # Activate only after Phase 9 verifies TLS.
+SECURE_HSTS_SECONDS = int(os.environ.get('SHIPPING_HSTS_SECONDS','0'))  # Enable only after Phase 9 TLS verification.
 SECURE_HSTS_INCLUDE_SUBDOMAINS = False
 SECURE_HSTS_PRELOAD = False
 

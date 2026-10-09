@@ -1,0 +1,6 @@
+#!/bin/sh
+set -eu
+# Reload only for this certificate lineage. Never reconfigure unrelated sites.
+[ "${RENEWED_LINEAGE:-}" = /etc/letsencrypt/live/shipping.jahez.online ] || exit 0
+/usr/sbin/nginx -t
+/usr/bin/systemctl reload nginx
