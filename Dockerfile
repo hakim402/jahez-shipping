@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:1
+# Standard syntax uses Docker's built-in frontend; no extra registry frontend required.
 FROM node:22.23.3-bookworm-slim AS frontend
 WORKDIR /assets
 COPY package.json package-lock.json ./

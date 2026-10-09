@@ -1347,3 +1347,203 @@ msgstr "المنطقة الزمنية للعمل"
 
 msgid "Sources"
 msgstr "المصادر"
+
+msgid "accepted changes"
+msgstr "التغييرات المقبولة"
+
+msgid "action"
+msgstr "الإجراء"
+
+msgid "actor"
+msgstr "المستخدم"
+
+msgid "attempts"
+msgstr "المحاولات"
+
+msgid "available at"
+msgstr "متاح في"
+
+msgid "changes"
+msgstr "التغييرات"
+
+msgid "checksum"
+msgstr "بصمة الملف"
+
+msgid "created at"
+msgstr "تاريخ الإنشاء"
+
+msgid "creator"
+msgstr "المنشئ"
+
+msgid "dedupe key"
+msgstr "مفتاح منع التكرار"
+
+msgid "digest"
+msgstr "البصمة"
+
+msgid "document"
+msgstr "المستند"
+
+msgid "event"
+msgstr "الحدث"
+
+msgid "event type"
+msgstr "نوع الحدث"
+
+msgid "expires at"
+msgstr "تاريخ الانتهاء"
+
+msgid "file"
+msgstr "الملف"
+
+msgid "finished at"
+msgstr "وقت الاكتمال"
+
+msgid "identity"
+msgstr "المصدر"
+
+msgid "is demo"
+msgstr "تجريبي"
+
+msgid "kind"
+msgstr "النوع"
+
+msgid "last enqueued at"
+msgstr "آخر إدراج في قائمة الانتظار"
+
+msgid "last error"
+msgstr "آخر خطأ"
+
+msgid "last provider event at"
+msgstr "وقت آخر حدث من الناقل"
+
+msgid "last received at"
+msgstr "وقت آخر استلام"
+
+msgid "last success"
+msgstr "آخر نجاح"
+
+msgid "latency ms"
+msgstr "مدة المعالجة بالمللي ثانية"
+
+msgid "lease token"
+msgstr "رمز حجز المهمة"
+
+msgid "lease until"
+msgstr "الحجز حتى"
+
+msgid "leg"
+msgstr "مرحلة الشحن"
+
+msgid "mapped status"
+msgstr "الحالة المقابلة"
+
+msgid "mime type"
+msgstr "نوع الملف"
+
+msgid "model"
+msgstr "النموذج"
+
+msgid "next reconcile at"
+msgstr "المزامنة التالية"
+
+msgid "object id"
+msgstr "رقم السجل"
+
+msgid "object type"
+msgstr "نوع السجل"
+
+msgid "original filename"
+msgstr "اسم الملف الأصلي"
+
+msgid "output"
+msgstr "المخرجات"
+
+msgid "page count"
+msgstr "عدد الصفحات"
+
+msgid "payload"
+msgstr "البيانات المستلمة"
+
+msgid "processed at"
+msgstr "وقت المعالجة"
+
+msgid "provider event key"
+msgstr "مفتاح حدث الناقل"
+
+msgid "provider identity"
+msgstr "هوية الناقل"
+
+msgid "provider status"
+msgstr "حالة الناقل"
+
+msgid "provider time raw"
+msgstr "الوقت الأصلي للناقل"
+
+msgid "receipt"
+msgstr "البيانات المستلمة"
+
+msgid "received at"
+msgstr "وقت الاستلام"
+
+msgid "registration state"
+msgstr "حالة التسجيل"
+
+msgid "requested by"
+msgstr "مقدم الطلب"
+
+msgid "result"
+msgstr "النتيجة"
+
+msgid "reviewed at"
+msgstr "وقت المراجعة"
+
+msgid "reviewed by"
+msgstr "المراجع"
+
+msgid "revision"
+msgstr "الإصدار"
+
+msgid "safe error"
+msgstr "رمز الخطأ"
+
+msgid "scope"
+msgstr "نطاق البحث"
+
+msgid "shipment"
+msgstr "الشحنة"
+
+msgid "size"
+msgstr "الحجم"
+
+msgid "source"
+msgstr "المصدر"
+
+msgid "source version"
+msgstr "إصدار المصدر"
+
+msgid "state"
+msgstr "الحالة"
+
+msgid "status observed at"
+msgstr "وقت رصد الحالة"
+
+msgid "updated at"
+msgstr "آخر تحديث"
+
+msgid "uploaded at"
+msgstr "وقت الرفع"
+
+msgid "uploaded by"
+msgstr "رافع الملف"
+
+msgid "usage"
+msgstr "الاستخدام"
+
+msgid "Too many scanned images for this model. Split the document into at most three images per request."
+msgstr "عدد الصور الممسوحة يتجاوز حد النموذج. قسّم المستند إلى ثلاث صور كحد أقصى لكل طلب."
+msgid "Local operations"
+msgstr "العمليات المحلية"
+
+msgid "Operations"
+msgstr "العمليات"

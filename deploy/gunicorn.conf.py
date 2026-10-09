@@ -6,3 +6,4 @@ graceful_timeout = 30
 accesslog = None  # Avoid recording future tracking capabilities in normal URL logs.
 errorlog = "-"
 capture_output = True
+logger_class = 'apps.core.safe_logging.SafeGunicornLogger'

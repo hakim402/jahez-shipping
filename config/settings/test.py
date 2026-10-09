@@ -7,6 +7,9 @@ PASSWORD_HASHERS = ["django.contrib.auth.hashers.MD5PasswordHasher"]
 
 # Test uploads never share the running app's private volume.
 import tempfile
+from pathlib import Path
+_test_data = tempfile.TemporaryDirectory(prefix='jahez-test-data-')
+DATA_DIR = Path(_test_data.name)
 _test_private = tempfile.TemporaryDirectory(prefix='jahez-test-private-')
 STORAGES = dict(STORAGES)
 STORAGES['default'] = {'BACKEND': 'apps.shipments.storage.PrivateStorage', 'OPTIONS': {'location': _test_private.name}}
@@ -18,3 +21,4 @@ GROQ_ENABLED = False
 GROQ_API_KEY = ''
 GROQ_TEXT_MODEL = ''
 GROQ_VISION_MODEL = ''
+LOGGING['loggers']['jahez.request']['handlers'] = ['silent']

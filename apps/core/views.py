@@ -99,6 +99,9 @@ def liveness(request):
 
 @require_GET
 def readiness(request):
+    from .maintenance import active
+    if active():
+        return JsonResponse({'status':'maintenance'},status=503)
     try:
         with connection.cursor() as cursor:
             cursor.execute("SELECT 1")

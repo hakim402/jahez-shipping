@@ -250,3 +250,7 @@ class AuditEntry(models.Model):
 
     def __str__(self):
         return f"{self.action} · {self.object_type} {self.object_id}"
+
+
+from apps.core.model_labels import localize_generated_labels
+localize_generated_labels([Customer,Shipment,ShipmentItem,TrackingLeg,TrackingEvent,Document,AuditEntry])

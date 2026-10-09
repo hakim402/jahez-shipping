@@ -39,5 +39,7 @@ def process_job(job_id):
 
 @shared_task(name="jahez_shipping.tracking.reconcile", ignore_result=True)
 def reconcile():
+    from apps.core.maintenance import active
+    if active():return
     recover_pending()
     schedule_reconciliation()

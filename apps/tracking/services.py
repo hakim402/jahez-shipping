@@ -89,8 +89,13 @@ def accept_receipt(digest, payload, is_demo=False):
     return receipt, created
 
 
+from apps.core.maintenance import pause_claim
+
+@pause_claim
 @transaction.atomic
 def claim_job(job_id):
+    from apps.core.maintenance import active
+    if active():return None
     now = timezone.now()
     job = IntegrationJob.objects.select_related("leg", "receipt").filter(pk=job_id).first()
     if not job or job.state not in ("pending", "retry") or job.available_at > now:

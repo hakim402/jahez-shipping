@@ -53,8 +53,13 @@ def request_explanation(user, scope, expected, consent=False):
     return run
 
 
+from apps.core.maintenance import pause_claim
+
+@pause_claim
 @transaction.atomic
 def claim(pk):
+    from apps.core.maintenance import active
+    if active():return None
     now = timezone.now()
     run = AssistantRun.objects.filter(pk=pk,state__in=['pending','retry'],available_at__lte=now,expires_at__gt=now).first()
     if not run:
@@ -108,6 +113,8 @@ def process(pk):
 
 
 def recover():
+    from apps.core.maintenance import active
+    if active():return
     now=timezone.now()
     with transaction.atomic():
         expired=list(AssistantRun.objects.filter(expires_at__lte=now).exclude(state='expired').values_list('pk',flat=True)[:100])

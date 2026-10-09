@@ -39,6 +39,8 @@ def strict_schema(schema):
 
 def generate(kind, source):
     images = source.get('images', [])
+    if len(images)>settings.GROQ_MAX_IMAGES:
+        raise AIError('image_limit')
     cfg = configuration(bool(images))
     if cfg != 'ready':
         raise AIError(cfg)

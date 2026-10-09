@@ -13,6 +13,7 @@ from .provider import configuration
 from . import services
 
 ERRORS = {
+    'image_limit': _('Too many scanned images for this model. Split the document into at most three images per request.'),
     'disabled': _('Groq is disabled.'), 'missing_key': _('Groq private key is missing.'), 'missing_model': _('The required text or vision model is missing.'), 'invalid_mode': _('Invalid output mode'),
     'document_changed': _('Document integrity changed. Review its private file.'), 'document_invalid': _('Document conversion failed. AI accepts plain documents up to five pages within its resource limits.'),
     'document_limit': _('Document exceeds AI processing limits.'), 'source_limit': _('Source exceeds AI processing limits.'),

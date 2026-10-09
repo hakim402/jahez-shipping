@@ -92,3 +92,7 @@ class AssistantRun(models.Model):
 
     def __str__(self):
         return f'Assistant {self.pk}'
+
+
+from apps.core.model_labels import localize_generated_labels
+localize_generated_labels([AIDraft,AssistantRun])

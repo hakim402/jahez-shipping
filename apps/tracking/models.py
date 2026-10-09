@@ -61,3 +61,7 @@ class IntegrationJob(models.Model):
 
     def __str__(self):
         return f"Job {self.pk} · {self.kind} · {self.state}"
+
+
+from apps.core.model_labels import localize_generated_labels
+localize_generated_labels([WebhookReceipt,IntegrationJob])

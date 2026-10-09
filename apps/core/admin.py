@@ -18,7 +18,8 @@ class GroupAdmin(BaseGroupAdmin, ModelAdmin):
 
 def environment(request):
     from django.conf import settings
-    return ["Local operations" if settings.DEBUG else "Operations", "warning" if settings.DEBUG else "success"]
+    from django.utils.translation import gettext
+    return [gettext("Local operations") if settings.DEBUG else gettext("Operations"), "warning" if settings.DEBUG else "success"]
 
 def dashboard(request, context):
     from django.conf import settings

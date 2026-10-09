@@ -89,8 +89,13 @@ def request_draft(shipment_id, kind, actor, document_id=None, event_id=None, con
     return draft
 
 
+from apps.core.maintenance import pause_claim
+
+@pause_claim
 @transaction.atomic
 def claim(pk):
+    from apps.core.maintenance import active
+    if active():return None
     draft = AIDraft.objects.filter(pk=pk, state__in=('pending', 'retry'), available_at__lte=timezone.now()).first()
     if not draft or draft.expires_at <= timezone.now():
         return None
@@ -259,6 +264,8 @@ def retry(pk, actor):
 
 
 def recover():
+    from apps.core.maintenance import active
+    if active():return
     now = timezone.now()
     with transaction.atomic():
         # Retain audit/decision metadata; erase private contents when retention ends.
