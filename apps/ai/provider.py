@@ -50,6 +50,7 @@ def generate(kind, source):
     except Exception:
         raise AIError('rate_control_unavailable', True) from None
     model = settings.GROQ_VISION_MODEL if images else settings.GROQ_TEXT_MODEL
+    max_tokens = settings.GROQ_VISION_MAX_TOKENS if images else settings.GROQ_MAX_TOKENS
     mode = settings.GROQ_VISION_OUTPUT_MODE if images else settings.GROQ_TEXT_OUTPUT_MODE
     schema = SCHEMAS[kind].model_json_schema()
     rules = (
@@ -75,7 +76,7 @@ def generate(kind, source):
     try:
         with httpx.Client(timeout=httpx.Timeout(30, connect=3, read=30, write=10, pool=3), follow_redirects=False, trust_env=False) as transport:
             with Groq(api_key=settings.GROQ_API_KEY, base_url='https://api.groq.com', http_client=transport, max_retries=0) as client:
-                with client.chat.completions.with_streaming_response.create(model=model, messages=[{'role': 'system', 'content': rules}, {'role': 'user', 'content': content if images else serialized}], response_format=fmt, temperature=0, max_completion_tokens=settings.GROQ_MAX_TOKENS) as response:
+                with client.chat.completions.with_streaming_response.create(model=model, messages=[{'role': 'system', 'content': rules}, {'role': 'user', 'content': content if images else serialized}], response_format=fmt, temperature=0, max_completion_tokens=max_tokens) as response:
                     data = bytearray()
                     for chunk in response.iter_bytes():
                         data.extend(chunk)

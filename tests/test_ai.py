@@ -339,7 +339,7 @@ class SchemaTests(SimpleTestCase):
         with self.assertRaises(ValueError):validate_output('message',valid,source)
 
 
-@override_settings(GROQ_ENABLED=True,GROQ_API_KEY='SYNTHETIC-KEY',GROQ_TEXT_MODEL='SYNTHETIC-text',GROQ_VISION_MODEL='SYNTHETIC-vision',GROQ_TEXT_OUTPUT_MODE='schema',GROQ_VISION_OUTPUT_MODE='json')
+@override_settings(GROQ_ENABLED=True,GROQ_API_KEY='SYNTHETIC-KEY',GROQ_TEXT_MODEL='SYNTHETIC-text',GROQ_VISION_MODEL='SYNTHETIC-vision',GROQ_TEXT_OUTPUT_MODE='schema',GROQ_VISION_OUTPUT_MODE='json',GROQ_MAX_TOKENS=4096,GROQ_VISION_MAX_TOKENS=512)
 class ProviderTests(TestCase):
     def setUp(self):cache.clear()
 
@@ -363,6 +363,7 @@ class ProviderTests(TestCase):
         with patch('apps.ai.provider.Groq',sdk):generate('extraction',source)
         create=sdk.return_value.__enter__.return_value.chat.completions.with_streaming_response.create.call_args.kwargs
         self.assertEqual(create['model'],'SYNTHETIC-vision');self.assertEqual(create['response_format'],{'type':'json_object'})
+        self.assertEqual(create['max_completion_tokens'],512)
         self.assertTrue(create['messages'][1]['content'][-1]['image_url']['url'].startswith('data:image/jpeg;base64,'))
 
     def test_disabled_missing_configuration_and_rate_control(self):
@@ -399,9 +400,18 @@ class ProviderTests(TestCase):
         self.assertEqual(request.url.path,'/openai/v1/chat/completions')
         body=json.loads(request.content)
         self.assertEqual(body['model'],'SYNTHETIC-text')
+        self.assertEqual(body['max_completion_tokens'],4096)
         self.assertNotIn('tools',body)
         self.assertTrue(body['response_format']['json_schema']['strict'])
         self.assertEqual(output['items'][0]['quantity'],'120')
+        cache.clear()
+        source=copy.deepcopy(SOURCE);source['images']=[{'id':'page:1','jpeg':'SYNTHETIC-BASE64'}]
+        with patch('httpx.Client.__init__',new=transport_factory):
+            generate('extraction',source)
+        vision_body=json.loads(requests[1].content)
+        self.assertEqual(vision_body['model'],'SYNTHETIC-vision')
+        self.assertEqual(vision_body['max_completion_tokens'],512)
+        self.assertEqual(vision_body['response_format'],{'type':'json_object'})
 
     def test_real_sdk_safe_account_rate_outage_errors(self):
         import httpx

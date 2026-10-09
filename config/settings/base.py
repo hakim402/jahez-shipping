@@ -58,6 +58,7 @@ GROQ_VISION_MODEL = os.environ.get("GROQ_VISION_MODEL", "")
 GROQ_TEXT_OUTPUT_MODE = os.environ.get("GROQ_TEXT_OUTPUT_MODE", "schema")
 GROQ_VISION_OUTPUT_MODE = os.environ.get("GROQ_VISION_OUTPUT_MODE", "json")
 GROQ_MAX_TOKENS = max(512, min(int(os.environ.get("GROQ_MAX_TOKENS", "4096")), 8192))
+GROQ_VISION_MAX_TOKENS = max(512, min(int(os.environ.get("GROQ_VISION_MAX_TOKENS", str(GROQ_MAX_TOKENS))), 8192))
 GROQ_RETENTION_DAYS = max(1, min(int(os.environ.get("GROQ_RETENTION_DAYS", "30")), 90))
 CELERY_BEAT_SCHEDULE["recover-ai-work"] = {"task": "jahez_shipping.ai.recover", "schedule": 60.0}
 # Prevent SDK HTTP/request debug logging from revealing confidential sources/keys.
