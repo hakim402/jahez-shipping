@@ -2,7 +2,7 @@
 
 An independent English/Arabic Django shipping platform for JAHEZ TRADE CO.
 
-**Current scope: Phase 3 manual shipping operations. Phases 1/2 approved; Phase 3 approval pending.** Staff can manage customers, shipments, products, manual events and private documents, then publish a restricted English/Arabic tracking summary. Dashboard counts use the database. Carrier and AI integrations remain disabled until their approved phases. Existing JAHEZ website sources/services remain read-only.
+**Current scope: Phase 4 carrier integration. Phases 1–3 approved; Phase 4 approval pending.** Manual operations remain available. The 17TRACK v2.4 adapter, signed durable webhook receipts/jobs, bounded reconciliation, manual-override/all-package status safeguards and bilingual integration health are implemented. Live provider verification awaits privately configured credentials and a suitable reference. AI remains a later phase. Existing JAHEZ website sources/services remain read-only.
 
 ## Local quick start
 
@@ -22,6 +22,7 @@ The helper creates a private `.env.dev` with an independent random secret; it ne
 - English: http://localhost:18744/en/
 - Arabic: http://localhost:18744/ar/
 - Admin: http://localhost:18744/en/admin/ (Arabic: `/ar/admin/`)
+- Integration health: http://localhost:18744/en/admin/integration-health/ (Arabic: `/ar/admin/integration-health/`)
 - Liveness: http://localhost:18744/health/live/
 - Readiness: http://localhost:18744/health/ready/
 
@@ -29,7 +30,9 @@ Create your own admin interactively with a strong unique password (minimum 12 ch
 
 For labeled local fixtures, run `docker compose --env-file .env.dev -p jahez-shipping-dev -f compose.dev.yml exec -T web python manage.py seed_demo`. Copy the generated reference from the authorized shipment detail and submit it on the public homepage. The seed creates four synthetic shipments and one private sample bill, without creating users. The original shipping bill is still needed for its real field mapping.
 
-[Phase 3 review](docs/phases/PHASE_03_MANUAL_TRACKING_ADMIN.md) · [Data model](docs/DATA_MODEL.md) · [Status rules](docs/STATUS_RULES.md) · [Bill mapping](docs/DOCUMENT_FIELD_MAPPING.md) · [Company/CEO copy](docs/PUBLIC_COPY_REVIEW.md) · [Local development](docs/LOCAL_DEVELOPMENT.md) · [Phase progress](docs/PROGRESS.md) · [Technical decisions](docs/TECHNICAL_DECISIONS.md) · [Project boundaries](docs/PROJECT_BOUNDARIES.md) · [Asset manifest](docs/ASSET_MANIFEST.md) · [Complete project specification](PROJECT_PROMPT.md)
+For explicit carrier fixtures, run `docker compose --env-file .env.dev -p jahez-shipping-dev -f compose.dev.yml exec -T web python manage.py seed_tracking_demo`. Review **DEMO-CARRIER** and its private carrier event, then approve bilingual display text/publication. This command performs no live provider request and cannot run in production.
+
+[Phase 4 review](docs/phases/PHASE_04_17TRACK.md) · [17TRACK setup and contracts](docs/17TRACK_INTEGRATION.md) · [Data model](docs/DATA_MODEL.md) · [Status rules](docs/STATUS_RULES.md) · [Bill mapping](docs/DOCUMENT_FIELD_MAPPING.md) · [Company/CEO copy](docs/PUBLIC_COPY_REVIEW.md) · [Local development](docs/LOCAL_DEVELOPMENT.md) · [Phase progress](docs/PROGRESS.md) · [Technical decisions](docs/TECHNICAL_DECISIONS.md) · [Project boundaries](docs/PROJECT_BOUNDARIES.md) · [Asset manifest](docs/ASSET_MANIFEST.md) · [Complete project specification](PROJECT_PROMPT.md)
 
 ## Focused verification
 

@@ -1,0 +1,1 @@
+All files are invented Phase 4 fixtures shaped to the official v2.4 contract. No real tracking numbers, customer details or API keys. Explicitly development/test-only; no fixture adapter is enabled in production.

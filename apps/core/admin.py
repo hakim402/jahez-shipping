@@ -27,6 +27,9 @@ def dashboard(request, context):
     from apps.shipments.services import active_shipments, delayed_q, TERMINAL
     context["preview_url"] = reverse("home")
     context["business_timezone"] = settings.BUSINESS_TIME_ZONE
+    from apps.tracking.adapter import configuration
+    context["carrier_config"] = configuration()
+    context["can_view_integrations"] = request.user.has_perm("tracking.view_integrationjob")
     context["can_view_shipments"] = request.user.has_perm("shipments.view_shipment")
     context["can_add_shipment"] = request.user.has_perm("shipments.add_shipment")
     if context["can_view_shipments"]:

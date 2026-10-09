@@ -104,10 +104,13 @@ def readiness(request):
             cursor.execute("SELECT 1")
             cursor.fetchone()
         Shipment.objects.exists()  # Schema readiness, no provider/customer data returned.
+        from apps.tracking.models import IntegrationJob
+        IntegrationJob.objects.exists()
         Redis.from_url(settings.REDIS_URL, socket_connect_timeout=2, socket_timeout=2).ping()
     except Exception:
         return JsonResponse({"status": "unavailable"}, status=503)
-    return JsonResponse({"status": "ready", "integrations": "disabled", "tracking": "stored_manual"})
+    from apps.tracking.adapter import configuration
+    return JsonResponse({"status": "ready", "integrations": "disabled" if configuration() != "ready" else "carrier_configured_unverified", "tracking": "stored_manual_and_carrier"})
 
 
 @require_GET

@@ -11,6 +11,7 @@ from .forms import ShipmentForm, EventForm, DocumentUploadForm
 from .models import Customer, Shipment, ShipmentItem, TrackingLeg, TrackingEvent, Document, AuditEntry
 from .services import audit, snapshot, save_shipment, save_child, require, archive_shipment, rotate_shipment_reference
 from .uploads import store_document
+from apps.tracking.services import request_leg, require as require_tracking
 
 
 class RetainedAdmin(ModelAdmin):
@@ -45,6 +46,9 @@ class EventInline(TabularInline):
     can_delete = False
     fields = ("occurred_at", "title_en", "title_ar", "body_en", "body_ar", "mapped_status", "public")
 
+    def get_queryset(self, request):
+        return super().get_queryset(request).filter(source="manual")
+
 
 @admin.register(Shipment)
 class ShipmentAdmin(RetainedAdmin):
@@ -57,7 +61,7 @@ class ShipmentAdmin(RetainedAdmin):
     inlines = (ItemInline, LegInline, EventInline)
     change_form_template = "admin/shipments/shipment_change.html"
     fieldsets = (
-        (_("Shipment overview"), {"fields": ("customer", "internal_order", "bill_number", "mode", "tracking_mode", "status", "status_badge")}),
+        (_("Shipment overview"), {"fields": ("customer", "internal_order", "bill_number", "mode", "tracking_mode", "carrier_coverage_complete", "status", "status_badge")}),
         (_("Approved public route and dates"), {"fields": (("origin_en", "origin_ar"), ("destination_en", "destination_ar"), "eta", "actual_arrival", "delivered_at", "published")}),
         (_("Status control"), {"fields": ("confirmed_delay", "delay_reason", "status_locked", "override_reason", "correction_reason", "confirm_complete_shipment")}),
         (_("Private access and records"), {"fields": ("reference_display", "internal_notes", "operational_links", "archived_at", "created_at", "updated_at", "revision_token")}),
@@ -76,7 +80,7 @@ class ShipmentAdmin(RetainedAdmin):
         if not request.user.has_perm("shipments.publish_shipment"):
             fields += ["published"]
         if not request.user.has_perm("shipments.correct_status"):
-            fields += ["status_locked", "override_reason"]
+            fields += ["status_locked", "override_reason", "carrier_coverage_complete"]
         return fields
 
     def reference_display(self, obj):
@@ -180,7 +184,39 @@ class ItemAdmin(ChildAdmin):
 class LegAdmin(ChildAdmin):
     list_display = ("shipment", "sequence", "label", "carrier_identifier", "registration_state", "last_success")
     search_fields = ("label", "tracking_number", "shipment__internal_order")
-    readonly_fields = ("registration_state", "last_success", "last_error", "provider_status")
+    readonly_fields = ("registration_state", "last_success", "last_received_at", "last_provider_event_at", "mapped_status", "next_reconcile_at", "last_error", "provider_status", "provider_actions")
+
+    def get_readonly_fields(self, request, obj=None):
+        fields = list(super().get_readonly_fields(request, obj))
+        if obj and obj.registration_state in ("pending", "registered", "stopped"):
+            fields += ["shipment", "carrier_identifier", "tracking_number"]
+        return fields
+
+    def provider_actions(self, obj):
+        if not obj.pk:
+            return _("Save the reference before requesting carrier work.")
+        return format_html('<a href="{}">{}</a> · <a href="{}">{}</a>', reverse("admin:tracking_leg_action", args=[obj.pk, "register"]), _("Review registration"), reverse("admin:tracking_leg_action", args=[obj.pk, "refresh"]), _("Review detail retrieval"))
+    provider_actions.short_description = _("Carrier actions")
+
+    def get_urls(self):
+        return [path("<int:pk>/provider/<str:operation>/", self.admin_site.admin_view(self.provider_action), name="tracking_leg_action")] + super().get_urls()
+
+    def provider_action(self, request, pk, operation):
+        if operation not in ("register", "refresh"):
+            raise Http404
+        require_tracking(request.user, "register_reference" if operation == "register" else "refresh_reference")
+        require(request.user, "view_shipment")
+        obj = get_object_or_404(TrackingLeg, pk=pk)
+        if request.method == "POST" and request.POST.get("confirm") == "yes":
+            try:
+                request_leg(pk, operation, request.user)
+            except ValidationError as exc:
+                messages.error(request, " ".join(exc.messages))
+            else:
+                messages.success(request, _("Work accepted durably. See integration health for progress."))
+            return HttpResponseRedirect(reverse("admin:integration_health"))
+        return TemplateResponse(request, "admin/tracking/confirm.html", {**self.admin_site.each_context(request), "title": _("Confirm carrier action"), "operation": operation, "object": obj})
+
 
 
 @admin.register(TrackingEvent)
@@ -189,7 +225,14 @@ class EventAdmin(ChildAdmin):
     list_display = ("shipment", "occurred_at", "title_en", "mapped_status", "source", "public")
     list_filter = ChildAdmin.list_filter + ("source", "mapped_status", "public")
     search_fields = ("title_en", "shipment__internal_order")
-    readonly_fields = ("source", "received_at", "creator", "provider_identity")
+    readonly_fields = ("source", "received_at", "creator", "provider_identity", "provider_event_key", "provider_time_raw")
+
+    def get_readonly_fields(self, request, obj=None):
+        fields = list(super().get_readonly_fields(request, obj))
+        if obj and obj.source == "carrier":
+            fields += ["shipment", "leg", "occurred_at", "location", "raw_text", "mapped_status"]
+        return fields
+
     ordering = ("-occurred_at",)
 
 

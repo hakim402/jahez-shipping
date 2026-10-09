@@ -1,0 +1,52 @@
+{
+  "event": "TRACKING_UPDATED",
+  "data": {
+    "number": "DEMO-CARRIER-0001",
+    "carrier": 3011,
+    "track_info": {
+      "latest_status": {
+        "status": "InTransit",
+        "sub_status": "InTransit_Other"
+      },
+      "latest_event": {
+        "time_utc": "2026-10-08T09:00:00Z",
+        "time_iso": "2026-10-08T17:00:00+08:00",
+        "time_raw": {
+          "date": "2026-10-08",
+          "time": "17:00:00",
+          "timezone": "+08:00"
+        },
+        "stage": "InTransit",
+        "sub_status": "InTransit_Other",
+        "description": "SYNTHETIC carrier milestone — review only; not live data.",
+        "location": "DEMO regional hub"
+      },
+      "tracking": {
+        "providers": [
+          {
+            "provider": {
+              "key": 3011
+            },
+            "latest_sync_status": "Success",
+            "latest_sync_time": "2026-10-08T09:05:00Z",
+            "events": [
+              {
+                "time_utc": "2026-10-08T09:00:00Z",
+                "time_iso": "2026-10-08T17:00:00+08:00",
+                "time_raw": {
+                  "date": "2026-10-08",
+                  "time": "17:00:00",
+                  "timezone": "+08:00"
+                },
+                "stage": "InTransit",
+                "sub_status": "InTransit_Other",
+                "description": "SYNTHETIC carrier milestone — review only; not live data.",
+                "location": "DEMO regional hub"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

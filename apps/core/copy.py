@@ -457,3 +457,6 @@ COPY['ar'].update({
 
 COPY['en'].update({'preview_note': 'Manual tracking reads published records. The design controls below show template-only examples.', 'stored_no_updates_body': 'There are no published milestones yet. Contact the JAHEZ team if you need help with your shipment.'})
 COPY['ar'].update({'preview_note': 'يعرض التتبع اليدوي السجلات المنشورة. تعرض أدوات التصميم أدناه أمثلة توضيحية فقط.', 'stored_no_updates_body': 'لا توجد مراحل منشورة بعد. تواصل مع فريق جاهز إذا احتجت إلى مساعدة بخصوص شحنتك.'})
+
+COPY['en'].update({'unknown_event_time': 'Exact event time not confirmed', 'last_carrier_sync': 'Last verified carrier synchronization', 'stale_tracking_note': 'Carrier information is older than 24 hours. This does not itself mean the shipment is delayed.', 'no_verified_carrier_sync': 'No successful carrier synchronization is recorded. JAHEZ manual updates remain available.'})
+COPY['ar'].update({'unknown_event_time': 'وقت الحدث الدقيق غير مؤكد', 'last_carrier_sync': 'آخر مزامنة مؤكدة مع الناقل', 'stale_tracking_note': 'بيانات الناقل أقدم من ٢٤ ساعة. هذا وحده لا يعني تأخر الشحنة.', 'no_verified_carrier_sync': 'لا توجد مزامنة ناجحة مسجلة مع الناقل. تبقى تحديثات جاهز اليدوية متاحة.'})

@@ -6,13 +6,13 @@ from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 
 BASE_DIR = Path(__file__).resolve().parents[2]
-APP_VERSION = "0.3.0"
+APP_VERSION = "0.4.0"
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "")
 if len(SECRET_KEY) < 50 or SECRET_KEY.startswith(("REPLACE_", "GENERATE_")):
     raise ImproperlyConfigured("DJANGO_SECRET_KEY must contain at least 50 characters. Generate a private environment file with scripts/init_dev_env.py.")
 DEBUG = False
 ALLOWED_HOSTS = [s.strip() for s in os.environ.get("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1,[::1]").split(",") if s.strip()]
-INSTALLED_APPS = ["unfold", "django.contrib.admin", "django.contrib.auth", "django.contrib.contenttypes", "django.contrib.sessions", "django.contrib.messages", "django.contrib.staticfiles", "apps.core.apps.CoreConfig", "apps.shipments.apps.ShipmentsConfig"]
+INSTALLED_APPS = ["unfold", "django.contrib.admin", "django.contrib.auth", "django.contrib.contenttypes", "django.contrib.sessions", "django.contrib.messages", "django.contrib.staticfiles", "apps.core.apps.CoreConfig", "apps.shipments.apps.ShipmentsConfig", "apps.tracking.apps.TrackingConfig"]
 MIDDLEWARE = ["django.middleware.security.SecurityMiddleware", "whitenoise.middleware.WhiteNoiseMiddleware", "django.contrib.sessions.middleware.SessionMiddleware", "django.middleware.locale.LocaleMiddleware", "apps.core.middleware.BusinessTimezoneMiddleware", "django.middleware.common.CommonMiddleware", "django.middleware.csrf.CsrfViewMiddleware", "django.contrib.auth.middleware.AuthenticationMiddleware", "apps.core.middleware.AdminLoginThrottleMiddleware", "django.contrib.messages.middleware.MessageMiddleware", "django.middleware.clickjacking.XFrameOptionsMiddleware"]
 ROOT_URLCONF = "config.urls"
 TEMPLATES = [{"BACKEND": "django.template.backends.django.DjangoTemplates", "DIRS": [BASE_DIR / "templates"], "APP_DIRS": True, "OPTIONS": {"context_processors": ["django.template.context_processors.request", "django.template.context_processors.i18n", "django.contrib.auth.context_processors.auth", "django.contrib.messages.context_processors.messages"]}}]
@@ -45,7 +45,11 @@ CELERY_WORKER_PREFETCH_MULTIPLIER = 1
 CELERY_TASK_SOFT_TIME_LIMIT = 60
 CELERY_TASK_TIME_LIMIT = 90
 CELERY_TIMEZONE = "UTC"
-CELERY_BEAT_SCHEDULE = {}
+CELERY_BEAT_SCHEDULE = {"recover-tracking-work": {"task": "jahez_shipping.tracking.reconcile", "schedule": 60.0}}
+CELERY_BROKER_CONNECTION_TIMEOUT = 3
+CELERY_TASK_PUBLISH_RETRY = False
+TRACK17_API_KEY = os.environ.get("TRACK17_API_KEY", "")
+TRACK17_RECONCILE_SECONDS = max(3600, min(int(os.environ.get("TRACK17_RECONCILE_SECONDS", "21600")), 86400))
 TRACK17_ENABLED = os.environ.get("TRACK17_ENABLED", "false").lower() == "true"
 GROQ_ENABLED = os.environ.get("GROQ_ENABLED", "false").lower() == "true"
 # Provider implementations await Phase 4/5.
@@ -69,7 +73,7 @@ UNFOLD = {
     "LOGIN": {"image": lambda request: static("illustrations/shipping-scene.svg")},
     "SHOW_LANGUAGES": True, "STYLES": [lambda request: static("css/admin.css")],
     "COLORS": {"primary": {"50": "#F4F1FF", "100": "#EDE6FF", "200": "#D9CBFF", "300": "#BBA3FF", "400": "#9979FF", "500": "#7B57FC", "600": "#6842E5", "700": "#5734C9", "800": "#4527A8", "900": "#351E80", "950": "#21114D"}},
-    "SIDEBAR": {"show_all_applications": False, "navigation": [{"title": _("Workspace"), "items": [{"title": _("Dashboard"), "icon": "dashboard", "link": reverse_lazy("admin:index")}, {"title": _("View tracking preview"), "icon": "travel_explore", "link": "/en/"}]}, {"title": _("Access management"), "items": [{"title": _("Users"), "icon": "group", "link": reverse_lazy("admin:auth_user_changelist"), "permission": lambda request: request.user.has_perm("auth.view_user")}, {"title": _("Groups"), "icon": "shield", "link": reverse_lazy("admin:auth_group_changelist"), "permission": lambda request: request.user.has_perm("auth.view_group")}]}]},
+    "SIDEBAR": {"show_all_applications": False, "navigation": [{"title": _("Workspace"), "items": [{"title": _("Dashboard"), "icon": "dashboard", "link": reverse_lazy("admin:index")}, {"title": _("Open public tracking"), "icon": "travel_explore", "link": reverse_lazy("home")}]}, {"title": _("Access management"), "items": [{"title": _("Users"), "icon": "group", "link": reverse_lazy("admin:auth_user_changelist"), "permission": lambda request: request.user.has_perm("auth.view_user")}, {"title": _("Groups"), "icon": "shield", "link": reverse_lazy("admin:auth_group_changelist"), "permission": lambda request: request.user.has_perm("auth.view_group")}]}]},
 }
 
 # Explicit staff navigation; every linked model view also enforces permissions.
@@ -82,5 +86,13 @@ UNFOLD['SIDEBAR']['navigation'].insert(1, {
             ('Shipment items', 'inventory_2', 'shipmentitem'), ('Tracking events', 'timeline', 'trackingevent'),
             ('Tracking references', 'route', 'trackingleg'), ('Private documents', 'description', 'document'),
             ('Audit entries', 'history', 'auditentry')]
+    ],
+})
+
+UNFOLD['SIDEBAR']['navigation'].insert(2, {
+    'title': _('Carrier integration'), 'items': [
+        {'title': _('Integration health'), 'icon': 'monitor_heart', 'link': reverse_lazy('admin:integration_health'), 'permission': lambda request: request.user.has_perm('tracking.view_integrationjob')},
+        {'title': _('Integration jobs'), 'icon': 'work_history', 'link': reverse_lazy('admin:tracking_integrationjob_changelist'), 'permission': lambda request: request.user.has_perm('tracking.view_integrationjob')},
+        {'title': _('Webhook receipts'), 'icon': 'inbox', 'link': reverse_lazy('admin:tracking_webhookreceipt_changelist'), 'permission': lambda request: request.user.has_perm('tracking.view_webhookreceipt')},
     ],
 })

@@ -69,6 +69,8 @@ class Shipment(models.Model):
     destination_en = models.CharField(_("Approved destination (English)"), max_length=120, blank=True)
     destination_ar = models.CharField(_("Approved destination (Arabic)"), max_length=120, blank=True)
     status = models.CharField(_("Status"), max_length=24, choices=Status, default=Status.CREATED, db_index=True)
+    status_observed_at = models.DateTimeField(null=True, blank=True, editable=False)
+    carrier_coverage_complete = models.BooleanField(_("All packages are covered by these carrier references"), default=False)
     eta = models.DateTimeField(_("Confirmed arrival estimate"), null=True, blank=True)
     actual_arrival = models.DateTimeField(_("Actual arrival"), null=True, blank=True)
     delivered_at = models.DateTimeField(_("Actual delivery"), null=True, blank=True)
@@ -151,11 +153,23 @@ class TrackingLeg(models.Model):
     last_error = models.CharField(max_length=240, blank=True, editable=False)
     provider_status = models.CharField(max_length=80, blank=True, editable=False)
 
+    last_received_at = models.DateTimeField(null=True, editable=False)
+    last_provider_event_at = models.DateTimeField(null=True, editable=False)
+    mapped_status = models.CharField(max_length=24, choices=Status, blank=True, editable=False)
+    next_reconcile_at = models.DateTimeField(null=True, editable=False)
+
     class Meta:
         verbose_name = _("Tracking reference")
         verbose_name_plural = _("Tracking references")
         ordering = ["sequence", "pk"]
-        constraints = [models.UniqueConstraint(fields=["shipment", "sequence"], name="unique_shipment_leg_sequence")]
+        constraints = [models.UniqueConstraint(fields=["shipment", "sequence"], name="unique_shipment_leg_sequence"), models.UniqueConstraint(fields=["carrier_identifier", "tracking_number"], condition=~models.Q(carrier_identifier="") & ~models.Q(tracking_number=""), name="unique_carrier_tracking_reference")]
+
+    def clean(self):
+        if self.carrier_identifier.isascii() and self.carrier_identifier.isdigit():
+            value = int(self.carrier_identifier)
+            if not 0 < value < 100000000:
+                raise ValidationError({"carrier_identifier": _("Use a positive numeric carrier code from the provider directory.")})
+            self.carrier_identifier = str(value)
 
     def __str__(self):
         return f"Leg {self.sequence} · {self.label}"
@@ -164,7 +178,7 @@ class TrackingLeg(models.Model):
 class TrackingEvent(models.Model):
     shipment = models.ForeignKey(Shipment, on_delete=models.PROTECT, related_name="events", verbose_name=_("Shipment"))
     leg = models.ForeignKey(TrackingLeg, on_delete=models.PROTECT, null=True, blank=True, verbose_name=_("Tracking reference"))
-    occurred_at = models.DateTimeField(_("Occurrence time"), default=timezone.now)
+    occurred_at = models.DateTimeField(_("Occurrence time"), default=timezone.now, null=True, blank=True)
     received_at = models.DateTimeField(auto_now_add=True)
     location = models.CharField(_("Private location"), max_length=160, blank=True)
     raw_text = models.TextField(_("Private source text"), blank=True)
@@ -173,10 +187,12 @@ class TrackingEvent(models.Model):
     body_en = models.TextField(_("Approved detail (English)"), blank=True)
     body_ar = models.TextField(_("Approved detail (Arabic)"), blank=True)
     source = models.CharField(max_length=12, choices=[("manual", _("JAHEZ manual update")), ("carrier", _("Carrier-provided update"))], default="manual", editable=False)
-    mapped_status = models.CharField(_("Milestone status"), max_length=24, choices=Status, default=Status.CREATED)
+    mapped_status = models.CharField(_("Milestone status"), max_length=24, choices=Status, default=Status.CREATED, blank=True)
     public = models.BooleanField(_("Publish this event"), default=False)
     creator = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, editable=False)
     provider_identity = models.CharField(max_length=80, blank=True, editable=False)
+    provider_event_key = models.CharField(max_length=64, null=True, unique=True, editable=False)
+    provider_time_raw = models.JSONField(default=dict, editable=False)
 
     class Meta:
         verbose_name = _("Tracking event")
@@ -189,7 +205,7 @@ class TrackingEvent(models.Model):
             raise ValidationError({"leg": _("The tracking reference must belong to this shipment.")})
         if self.public and not (self.title_ar.strip() and bool(self.body_en.strip()) == bool(self.body_ar.strip())):
             raise ValidationError(_("Published events require bilingual titles and matching detail translations."))
-        if timezone.is_naive(self.occurred_at) or self.occurred_at > timezone.now() + timezone.timedelta(minutes=5):
+        if (self.source == "manual" and self.occurred_at is None) or (self.occurred_at and (timezone.is_naive(self.occurred_at) or self.occurred_at > timezone.now() + timezone.timedelta(minutes=5))):
             raise ValidationError({"occurred_at": _("Use an aware occurrence time, not a future milestone.")})
 
     def __str__(self):

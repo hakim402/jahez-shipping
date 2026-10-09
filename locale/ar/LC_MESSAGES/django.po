@@ -516,3 +516,240 @@ msgstr "أُرشفت الشحنة أثناء الرفع."
 
 msgid "Integrations disabled"
 msgstr "التكاملات غير متصلة"
+
+msgid "17TRACK disabled"
+msgstr "17TRACK غير متصل"
+
+msgid "17TRACK is disabled or its server-side key is missing. Manual tracking still works."
+msgstr "تكامل 17TRACK معطّل أو مفتاح الخادم مفقود. يظل التتبع اليدوي متاحًا."
+
+msgid "Accepted work is stored before queue submission. Pending receipts survive broker interruptions; scheduled recovery resumes them."
+msgstr "تُحفظ المهام المقبولة قبل إرسالها إلى الطابور. تبقى الإشعارات المعلقة محفوظة عند انقطاع الوسيط، وتستأنفها الاستعادة المجدولة."
+
+msgid "All packages are covered by these carrier references"
+msgstr "تغطي مراجع الناقل هذه جميع الطرود"
+
+msgid "Attempts"
+msgstr "المحاولات"
+
+msgid "Carrier actions"
+msgstr "إجراءات الناقل"
+
+msgid "Carrier configured · live verification pending"
+msgstr "الناقل مُعدّ · التحقق الفعلي معلق"
+
+msgid "Carrier events remain private until reviewed. Manual status locks prevent provider overwrites; AI tools await their approved phase."
+msgstr "تبقى أحداث الناقل خاصة حتى مراجعتها. يمنع قفل الحالة اليدوي تجاوز تحديثات المزود؛ وتنتظر أدوات الذكاء الاصطناعي مرحلتها المعتمدة."
+
+msgid "Carrier integration"
+msgstr "تكامل الناقل"
+
+msgid "Choose an active API/hybrid shipment before requesting carrier work."
+msgstr "اختر شحنة نشطة بنمط API أو مختلط قبل طلب مهام الناقل."
+
+msgid "Completed"
+msgstr "مكتمل"
+
+msgid "Configured · live provider verification pending"
+msgstr "مُعدّ · التحقق الفعلي من المزود معلق"
+
+msgid "Confirm and queue work"
+msgstr "تأكيد وإرسال المهمة للطابور"
+
+msgid "Confirm carrier action"
+msgstr "تأكيد إجراء الناقل"
+
+msgid "Confirm retry"
+msgstr "تأكيد إعادة المحاولة"
+
+msgid "Confirmed completion"
+msgstr "اكتمال مؤكد"
+
+msgid "Coverage is carrier-dependent. Never treat a shipping bill as a supported carrier number automatically."
+msgstr "تعتمد التغطية على الناقل. لا تعتبر بوليصة الشحن رقم تتبع مدعومًا تلقائيًا."
+
+msgid "Failed"
+msgstr "فشل"
+
+msgid "Failed work"
+msgstr "المهام الفاشلة"
+
+msgid "Groq remains disabled until its approved phase."
+msgstr "يبقى Groq معطّلًا حتى مرحلته المعتمدة."
+
+msgid "Identifier or carrier is unsupported. Verify a carrier-issued number; use manual tracking for bills."
+msgstr "المعرّف أو الناقل غير مدعوم. تحقق من رقم صادر عن الناقل؛ واستخدم التتبع اليدوي للبوالص."
+
+msgid "Integration health"
+msgstr "حالة التكامل"
+
+msgid "Integration job"
+msgstr "مهمة تكامل"
+
+msgid "Integration jobs"
+msgstr "مهام التكامل"
+
+msgid "Invalid carrier action."
+msgstr "إجراء الناقل غير صالح."
+
+msgid "Job"
+msgstr "المهمة"
+
+msgid "Last verified carrier synchronization"
+msgstr "آخر مزامنة مؤكدة مع الناقل"
+
+msgid "Manual shipments work independently. Carrier coverage depends on the identifier; bills and container numbers may require manual milestones."
+msgstr "تعمل الشحنات اليدوية بشكل مستقل. تعتمد تغطية الناقل على المعرّف؛ وقد تتطلب أرقام البوالص والحاويات مراحل يدوية."
+
+msgid "Manual tracking works without API keys. Carrier work requires a configured server-side key; AI awaits its approved phase."
+msgstr "يعمل التتبع اليدوي دون مفاتيح API. تتطلب مهام الناقل مفتاحًا مُعدًّا على الخادم؛ وينتظر الذكاء الاصطناعي مرحلته المعتمدة."
+
+msgid "Next attempt"
+msgstr "المحاولة التالية"
+
+msgid "No integration work yet. Add a carrier reference to an API/hybrid shipment and request registration when configured."
+msgstr "لا توجد مهام تكامل بعد. أضف مرجع ناقل إلى شحنة بنمط API أو مختلط، واطلب التسجيل عند إعداد التكامل."
+
+msgid "No successful carrier synchronization recorded"
+msgstr "لا توجد مزامنة ناجحة مسجلة مع الناقل"
+
+msgid "Only failed work can be retried here."
+msgstr "يمكن إعادة محاولة المهام الفاشلة فقط هنا."
+
+msgid "Operation"
+msgstr "الإجراء"
+
+msgid "Pending work"
+msgstr "المهام المعلقة"
+
+msgid "Process webhook receipt"
+msgstr "معالجة إشعار الويب"
+
+msgid "Processed"
+msgstr "تمت المعالجة"
+
+msgid "Provide a supported carrier's numeric code and carrier-issued tracking identifier. Bills are not automatically supported."
+msgstr "أدخل الرمز الرقمي لناقل مدعوم ورقم تتبع صادر عنه. لا تُدعم البوالص تلقائيًا."
+
+msgid "Provider quota exhausted. Review the account allocation before retrying."
+msgstr "استُنفدت حصة المزود. راجع الحصة المخصصة للحساب قبل إعادة المحاولة."
+
+msgid "Provider rate limit reached. A bounded retry is scheduled."
+msgstr "تم بلوغ حد طلبات المزود. جُدولت إعادة محاولة محدودة."
+
+msgid "Provider rejected authentication. Check the server-side key privately."
+msgstr "رفض المزود المصادقة. تحقق من مفتاح الخادم بشكل خاص."
+
+msgid "Provider timed out. A bounded retry is scheduled."
+msgstr "انتهت مهلة المزود. جُدولت إعادة محاولة محدودة."
+
+msgid "Provider tracking stopped. Use manual updates; re-tracking requires a separate reviewed integration."
+msgstr "توقف تتبع المزود. استخدم التحديثات اليدوية؛ وتتطلب إعادة التتبع تكاملًا منفصلًا تتم مراجعته."
+
+msgid "Quarantined"
+msgstr "معزول"
+
+msgid "Quarantined receipts"
+msgstr "الإشعارات المعزولة"
+
+msgid "Rate-limit storage is unavailable. No provider request was sent."
+msgstr "مخزن حد الطلبات غير متاح. لم يُرسل أي طلب إلى المزود."
+
+msgid "Receipt quarantined: no eligible registered reference matches. No shipment was created."
+msgstr "عُزل الإشعار لعدم تطابقه مع مرجع مسجل مؤهل. لم تُنشأ أي شحنة."
+
+msgid "Recent integration work"
+msgstr "مهام التكامل الأخيرة"
+
+msgid "Register reference"
+msgstr "تسجيل المرجع"
+
+msgid "Register this carrier reference before retrieving its stored details."
+msgstr "سجّل مرجع الناقل هذا قبل جلب تفاصيله المخزنة."
+
+msgid "Registered carrier identifiers are retained. Add a new tracking reference instead."
+msgstr "تُحفظ معرّفات الناقل المسجلة. أضف مرجع تتبع جديدًا."
+
+msgid "Retrieve stored carrier details"
+msgstr "جلب تفاصيل الناقل المخزنة"
+
+msgid "Review carrier and manual events"
+msgstr "مراجعة أحداث الناقل والأحداث اليدوية"
+
+msgid "Review detail retrieval"
+msgstr "مراجعة جلب التفاصيل"
+
+msgid "Review registration"
+msgstr "مراجعة التسجيل"
+
+msgid "Review retry"
+msgstr "مراجعة إعادة المحاولة"
+
+msgid "Review the safe diagnostic and retry only when the cause is resolved."
+msgstr "راجع التشخيص الآمن وأعد المحاولة بعد معالجة السبب فقط."
+
+msgid "Running"
+msgstr "قيد التنفيذ"
+
+msgid "Running work"
+msgstr "المهام قيد التنفيذ"
+
+msgid "Safe diagnostic"
+msgstr "التشخيص الآمن"
+
+msgid "Save the reference before requesting carrier work."
+msgstr "احفظ المرجع قبل طلب مهام الناقل."
+
+msgid "Scheduled retries"
+msgstr "إعادات المحاولة المجدولة"
+
+msgid "Scheduled retry"
+msgstr "إعادة محاولة مجدولة"
+
+msgid "Server-side key missing"
+msgstr "مفتاح الخادم مفقود"
+
+msgid "Shipment control saved. Previous public access may be revoked."
+msgstr "حُفظ إجراء الشحنة. قد يُلغى الوصول العام السابق."
+
+msgid "State"
+msgstr "الحالة"
+
+msgid "Synthetic DEMO references cannot be sent to the live provider."
+msgstr "لا يمكن إرسال مراجع DEMO التجريبية إلى المزود الفعلي."
+
+msgid "This action queues server-side work. Registration sends the carrier identifier and number to 17TRACK and may consume account quota. Public lookup only reads stored data."
+msgstr "يضع هذا الإجراء مهمة على الخادم في الطابور. يرسل التسجيل معرّف الناقل ورقمه إلى 17TRACK وقد يستهلك حصة الحساب. يقرأ البحث العام البيانات المخزنة فقط."
+
+msgid "This reference is not eligible for live work."
+msgstr "هذا المرجع غير مؤهل للمهام الفعلية."
+
+msgid "Unknown or ineligible references never create shipments. Inspect safe receipt metadata; provider payloads remain private."
+msgstr "لا تُنشئ المراجع المجهولة أو غير المؤهلة شحنات. راجع بيانات الإشعار الآمنة؛ وتبقى محتويات المزود خاصة."
+
+msgid "Use a positive numeric carrier code from the provider directory."
+msgstr "استخدم رمز ناقل رقميًا موجبًا من دليل المزود."
+
+msgid "Verify the numeric carrier code against the provider's carrier directory."
+msgstr "تحقق من رمز الناقل الرقمي بمقارنته مع دليل ناقلي المزود."
+
+msgid "View all jobs"
+msgstr "عرض جميع المهام"
+
+msgid "View receipt metadata"
+msgstr "عرض بيانات الإشعارات"
+
+msgid "Wait 15 minutes between requested detail retrievals. Webhooks update stored tracking independently."
+msgstr "انتظر ١٥ دقيقة بين طلبات جلب التفاصيل. تحدّث إشعارات الويب بيانات التتبع المخزنة بشكل مستقل."
+
+msgid "Webhook endpoint"
+msgstr "مسار إشعارات الويب"
+
+msgid "Webhook receipt"
+msgstr "إشعار ويب"
+
+msgid "Webhook receipts"
+msgstr "إشعارات الويب"
+
+msgid "Work accepted durably. See integration health for progress."
+msgstr "حُفظت المهمة المقبولة بشكل دائم. راجع حالة التكامل لمتابعة التنفيذ."

@@ -1,0 +1,7 @@
+{
+  "event": "TRACKING_STOPPED",
+  "data": {
+    "number": "DEMO-CARRIER-0001",
+    "carrier": 3011
+  }
+}

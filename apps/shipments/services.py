@@ -4,7 +4,7 @@ from django.core.exceptions import PermissionDenied, ValidationError
 from django.db import transaction
 from django.db.models import F, Q
 from django.utils import timezone
-from .models import AuditEntry, Shipment, Status, public_reference
+from .models import AuditEntry, Shipment, TrackingLeg, Status, public_reference
 
 TERMINAL = {Status.DELIVERED, Status.RETURNED, Status.CANCELLED}
 RANK = {s: i for i, s in enumerate([Status.CREATED, Status.WAREHOUSE, Status.PREPARING, Status.DEPARTED, Status.TRANSIT, Status.CUSTOMS, Status.ARRIVED, Status.OUT, Status.DELIVERED])}
@@ -55,8 +55,8 @@ def validate_change(obj, old, user, correction_reason=""):
             raise ValidationError(problem or "Changing or releasing a locked status requires a correction reason.")
     if old and old.status_locked != obj.status_locked:
         require(user, "correct_status")
-    if obj.tracking_mode == Shipment.TrackingMode.API and (not old or old.tracking_mode != obj.tracking_mode):
-        raise ValidationError(_("Carrier-only tracking is not connected yet. Choose manual or hybrid."))
+    if obj.carrier_coverage_complete != (old.carrier_coverage_complete if old else False):
+        require(user, "correct_status")
 
 
 @transaction.atomic
@@ -74,6 +74,8 @@ def save_shipment(obj, actor, expected_revision=None, fields=None, correction_re
         if updated != 1:
             raise ValidationError(_("Concurrent change detected. Reload before saving."))
         obj.revision = old.revision + 1
+    if (old and old.status != obj.status) or (not old and obj.status != Status.CREATED):
+        obj.status_observed_at = timezone.now()
     obj.save()
     entry = audit(obj, actor, "shipment.updated" if old else "shipment.created", snapshot(old) if old else {}, fields)
     if correction_reason.strip():
@@ -94,9 +96,16 @@ def save_child(obj, actor, fields=None):
         require(actor, "publish_shipment")
     if hasattr(obj, "source"):
         if old and old.source != "manual":
-            raise ValidationError(_("Provider history cannot be edited as a manual event."))
-        obj.source = "manual"
-        obj.creator = old.creator if old else actor
+            immutable = ("shipment_id", "leg_id", "occurred_at", "location", "raw_text", "source", "mapped_status", "provider_identity", "provider_event_key", "provider_time_raw")
+            if any(getattr(obj, f) != getattr(old, f) for f in immutable):
+                raise ValidationError(_("Provider history cannot be edited as a manual event."))
+            obj.source, obj.creator = old.source, old.creator
+        else:
+            obj.source = "manual"
+            obj.creator = old.creator if old else actor
+    if isinstance(obj, TrackingLeg) and old and old.registration_state in ("pending", "registered", "stopped"):
+        if any(getattr(obj, f) != getattr(old, f) for f in ("shipment_id", "carrier_identifier", "tracking_number")):
+            raise ValidationError(_("Registered carrier identifiers are retained. Add a new tracking reference instead."))
     obj.full_clean()
     obj.save()
     audit(obj, actor, obj._meta.model_name + (".updated" if old else ".created"), snapshot(old) if old else {}, fields)
