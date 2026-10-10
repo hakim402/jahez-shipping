@@ -14,18 +14,18 @@
   <meta property="og:description" content="{{ page_description }}">
   <meta property="og:type" content="website">
   <link rel="icon" href="{% static 'brand/jahez-icon-brand.png' %}">
-  <link rel="stylesheet" href="{% static 'css/site.css' %}">
+  <link rel="stylesheet" href="{% static 'css/site.css' %}?v=20261010-company-v4">
   <link rel="alternate" hreflang="en" href="https://shipping.jahez.online/en/{% if page == 'about' %}who-we-are/{% endif %}">
   <link rel="alternate" hreflang="ar" href="https://shipping.jahez.online/ar/{% if page == 'about' %}who-we-are/{% endif %}">
   <link rel="alternate" hreflang="x-default" href="https://shipping.jahez.online/ar/{% if page == 'about' %}who-we-are/{% endif %}">
   <script defer src="{% static 'js/site.js' %}"></script>
   <script defer src="{% static 'js/alpine.min.js' %}"></script>
 </head>
-<body>
+<body{% if page == 'home' %} class="home-page"{% elif page == 'about' %} class="about-page"{% endif %}>
   <a href="#main" class="skip-link">{% if lang == 'ar' %}انتقل إلى المحتوى{% else %}Skip to content{% endif %}</a>
   <header class="site-header wrap">
     <a class="brand" href="/{{ lang }}/">
-      <img src="{% static 'brand/jahez-icon-brand.png' %}" alt="JAHEZ" width="52" height="52">
+      <img src="{% if page == 'home' %}{% static 'brand/jahez-icon-white.png' %}{% else %}{% static 'brand/jahez-icon-brand.png' %}{% endif %}" alt="JAHEZ" width="52" height="52">
       <span>{{ c.brand }}<small>JAHEZ TRADE CO.</small></span>
     </a>
     <nav aria-label="{% if lang == 'ar' %}التنقل الرئيسي{% else %}Main navigation{% endif %}">
@@ -41,7 +41,7 @@
   <main id="main" tabindex="-1">{% block content %}{% endblock %}</main>
   <footer class="site-footer wrap">
     <div><strong>{{ c.rights }}</strong><p>{{ c.footer }}</p><a href="https://jahez.online/{{ lang }}" rel="noreferrer">{{ c.main_site }} <span aria-hidden="true">↗</span></a></div>
-    <div class="footer-end"><a href="mailto:info@jahez.online"><bdi dir="ltr">info@jahez.online</bdi></a><p>{{ c.privacy_footer }}</p></div>
+    <div class="footer-end">{% if whatsapp_url %}<a href="{{ whatsapp_url }}" rel="noreferrer">{{ c.whatsapp }} · <bdi dir="ltr">+{{ whatsapp_number }}</bdi></a>{% endif %}<p>{{ c.privacy_footer }}</p></div>
   </footer>
 </body>
 </html>

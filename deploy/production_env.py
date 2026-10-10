@@ -45,6 +45,6 @@ def validate(values):
         for ip in values.get('SHIPPING_TRUSTED_PROXY_IPS','').split(','):
             if ip.strip():ipaddress.ip_address(ip.strip())
     except ValueError:bad('SHIPPING_TRUSTED_PROXY_IPS')
-    image=values.get('SHIPPING_IMAGE','jahez-shipping:0.8.0')
+    image=values.get('SHIPPING_IMAGE','jahez-shipping:0.8.1')
     if not (re.fullmatch(r'sha256:[0-9a-f]{64}',image) or re.fullmatch(r'[a-zA-Z0-9./_-]+(?::[0-9]+)?(?:@[s]ha256:[0-9a-f]{64}|:[0-9]+\.[0-9]+\.[0-9]+)',image)):bad('SHIPPING_IMAGE')
     if problems:raise EnvironmentError('Invalid production fields: '+', '.join(sorted(set(problems))))

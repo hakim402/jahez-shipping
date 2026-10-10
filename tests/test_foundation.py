@@ -103,10 +103,11 @@ class AdminFoundationTests(TestCase):
         r = self.client.get("/en/admin/")
         self.assertEqual(r.status_code, 200)
         self.assertContains(r, "Shipment metrics require view permission.")
-        self.assertContains(r, "Integrations disabled")
+        self.assertContains(r, "Manage your shipments")
+        self.assertNotContains(r, "AI awaits its approved phase")
         self.assertNotContains(r, "Manage Users")
         r = self.client.get("/ar/admin/")
-        self.assertContains(r, "التكاملات غير متصلة")
+        self.assertContains(r, "إدارة شحناتك")
     def test_account_management_requires_permissions(self):
         user = User.objects.create_user("staff", is_staff=True)
         self.client.force_login(user)

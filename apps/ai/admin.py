@@ -87,7 +87,7 @@ class DraftAdmin(ModelAdmin):
         rows = self.get_queryset(request)
         counts = [(label, rows.filter(state=state).count()) for state, label in [('pending', _('Pending')), ('running', _('Running')), ('ready', _('Awaiting review')), ('failed', _('Failed'))]]
         return self.response(request, 'admin/ai/workspace.html', self.context(request, _('AI Workspace'),
-            rows=rows[:20], counts=counts, configuration={'ready': _('Configured — live verification pending'), 'disabled': _('Disabled'), 'missing_key': _('Missing key'), 'missing_model': _('Missing model'), 'invalid_mode': _('Invalid output mode')}[configuration()], vision_configuration={'ready': _('Configured — live verification pending'), 'disabled': _('Disabled'), 'missing_key': _('Missing key'), 'missing_model': _('Missing model'), 'invalid_mode': _('Invalid output mode')}[configuration(True)],
+            rows=rows[:20], counts=counts, configuration={'ready': _('Configured'), 'disabled': _('Disabled'), 'missing_key': _('Missing key'), 'missing_model': _('Missing model'), 'invalid_mode': _('Invalid output mode')}[configuration()], vision_configuration={'ready': _('Configured'), 'disabled': _('Disabled'), 'missing_key': _('Missing key'), 'missing_model': _('Missing model'), 'invalid_mode': _('Invalid output mode')}[configuration(True)],
             can_request=request.user.has_perm('ai.request_ai')))
 
     def request_draft(self, request):

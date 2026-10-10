@@ -2,12 +2,19 @@ from django.utils.translation import gettext_lazy as _
 from django import forms
 from django.core.exceptions import ValidationError
 from unfold.widgets import UnfoldAdminTextInputWidget, UnfoldAdminTextareaWidget
-from .models import Shipment, Document, TrackingEvent, Status
+from .models import Customer, Shipment, ShipmentItem, TrackingLeg, Document, TrackingEvent, Status
 from .services import validate_change
 from .uploads import inspect_upload
+from .form_help import apply_help
 
 
-class ShipmentForm(forms.ModelForm):
+class HelpFormMixin:
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        apply_help(self)
+
+
+class ShipmentForm(HelpFormMixin, forms.ModelForm):
     revision_token = forms.IntegerField(widget=forms.HiddenInput, required=False)
     correction_reason = forms.CharField(required=False, widget=UnfoldAdminTextareaWidget, label=_("Correction / lock release reason"))
     confirm_complete_shipment = forms.BooleanField(required=False, label=_("I confirm every package / leg is delivered"))
@@ -38,7 +45,7 @@ class ShipmentForm(forms.ModelForm):
         return cleaned
 
 
-class EventForm(forms.ModelForm):
+class EventForm(HelpFormMixin, forms.ModelForm):
     class Meta:
         model = TrackingEvent
         fields = "__all__"
@@ -56,7 +63,37 @@ class DocumentUploadForm(forms.Form):
     category = forms.ChoiceField(choices=Document._meta.get_field("category").choices, label=_("Category"))
     upload = forms.FileField(label=_("Private PDF / PNG / JPEG (up to 5 MiB)"))
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        apply_help(self)
+
     def clean_upload(self):
         upload = self.cleaned_data["upload"]
         self.inspection = inspect_upload(upload)
         return upload
+
+
+class CustomerForm(HelpFormMixin, forms.ModelForm):
+    class Meta:
+        model = Customer
+        fields = "__all__"
+
+
+class ItemForm(HelpFormMixin, forms.ModelForm):
+    class Meta:
+        model = ShipmentItem
+        fields = "__all__"
+
+
+class LegForm(HelpFormMixin, forms.ModelForm):
+    class Meta:
+        model = TrackingLeg
+        fields = "__all__"
+
+
+class DeleteRecordForm(forms.Form):
+    token = forms.CharField(widget=forms.HiddenInput)
+    reason = forms.CharField(label=_("Reason for deletion"), max_length=1000,
+        widget=UnfoldAdminTextareaWidget(attrs={"rows": 3}),
+        help_text=_("Explain why the record is no longer needed. This reason stays in staff history."))
+    confirm = forms.BooleanField(label=_("I understand that this deletion cannot be undone."))

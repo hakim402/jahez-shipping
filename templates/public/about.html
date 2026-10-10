@@ -1,15 +1,19 @@
 {% extends "public/base.html" %}{% load static %}
 {% block content %}
-<section class="company-hero wrap" aria-labelledby="company-heading">
-  <div><span class="eyebrow">{{ c.about_eyebrow }}</span><h1 id="company-heading">{{ c.about_title }}</h1><p>{{ c.about_intro }}</p><a class="text-link" href="https://jahez.online/{{ lang }}/services" rel="noreferrer">{{ c.company_cta }} <span aria-hidden="true">↗</span></a></div>
-  <div class="company-art"><img src="{% static 'illustrations/warehouse-scene.svg' %}" alt="{{ c.warehouse_alt }}" width="600" height="460"><span>{{ c.footer }}</span></div>
-</section>
+<div class="company-intro-surface">
+  <section class="company-hero wrap" aria-labelledby="company-heading">
+    <span class="eyebrow">{{ c.about_eyebrow }}</span>
+    <h1 id="company-heading">{{ c.about_title }}</h1>
+    <p>{{ c.about_intro }}</p>
+    <div class="company-actions"><a class="company-button" href="#company-services-heading">{{ c.company_cta }} <span aria-hidden="true">↓</span></a>{% if whatsapp_url %}<a class="company-contact" href="{{ whatsapp_url }}" rel="noreferrer">{{ c.support_link }} <span aria-hidden="true">↗</span></a>{% endif %}</div>
+  </section>
+</div>
 <section class="purpose-grid wrap" aria-labelledby="purpose-heading"><article><span class="eyebrow">{{ c.purpose_eyebrow }}</span><h2 id="purpose-heading">{{ c.purpose_title }}</h2><p>{{ c.purpose_body }}</p></article><article class="value-card"><img src="{% static 'brand/jahez-icon-brand.png' %}" width="42" height="42" alt="" loading="lazy"><h2>{{ c.value_title }}</h2><p>{{ c.value_body }}</p></article></section>
-<section class="company-services wrap" aria-labelledby="company-services-heading"><div class="section-heading"><span class="eyebrow">JAHEZ</span><h2 id="company-services-heading">{{ c.company_services_title }}</h2><p>{{ c.company_services_intro }}</p></div><div class="services-grid">{% for icon,title,body in c.services %}<article><span class="service-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="{% static 'illustrations/service-icons.svg' %}#{{ icon }}"/></svg></span><h3>{{ title }}</h3><p>{{ body }}</p></article>{% endfor %}</div></section>
-<section class="company-process wrap" aria-labelledby="process-heading"><div class="section-heading"><span class="eyebrow">{{ c.process_eyebrow }}</span><h2 id="process-heading">{{ c.process_title }}</h2></div><ol class="process-grid">{% for number,title,body in c.process %}<li><span>{{ number }}</span><h3>{{ title }}</h3><p>{{ body }}</p></li>{% endfor %}</ol></section>
 <section class="ceo-section wrap" aria-labelledby="ceo-heading">
-  <div class="ceo-portrait"><img src="{% static 'illustrations/portrait-placeholder.svg' %}" width="400" height="460" alt="{{ c.portrait_alt }}" loading="lazy"><span class="portrait-label">{{ c.portrait_label }}</span><p>{{ c.portrait_note }}</p></div>
-  <div class="ceo-message"><span class="eyebrow">{{ c.ceo_eyebrow }}</span><h2 id="ceo-heading">{{ c.ceo_message_title }}</h2><div class="draft-copy"><strong>{{ c.ceo_draft_badge }}</strong><p>{{ c.ceo_draft_note }}</p></div><blockquote>{{ c.ceo_message }}</blockquote><div class="ceo-signature"><strong><bdi dir="ltr">{{ c.ceo_name }}</bdi></strong><span>{{ c.ceo_role }}</span>{% if lang == 'ar' %}<small>{{ c.name_note }}</small>{% endif %}</div></div>
+  <figure class="ceo-portrait"><img src="{% static 'images/majed-saleem-1200.webp' %}" srcset="{% static 'images/majed-saleem-600.webp' %} 600w, {% static 'images/majed-saleem-1200.webp' %} 1200w" sizes="(max-width: 480px) calc(100vw - 36px), (max-width: 780px) 440px, (max-width: 1050px) 40vw, 500px" width="1200" height="1500" alt="{{ c.portrait_alt }}" loading="lazy" decoding="async"><figcaption><strong class="portrait-label"><bdi dir="ltr">{{ c.ceo_name }}</bdi></strong><span>{{ c.ceo_role }}</span></figcaption></figure>
+  <div class="ceo-message"><span class="eyebrow">{{ c.ceo_eyebrow }}</span><h2 id="ceo-heading">{{ c.ceo_message_title }}</h2><p>{{ c.value_body }}</p><p>{{ c.purpose_body }}</p></div>
 </section>
+<div class="company-services-surface"><section class="company-services wrap" aria-labelledby="company-services-heading"><div class="company-services-intro"><div class="section-heading"><span class="eyebrow">JAHEZ</span><h2 id="company-services-heading">{{ c.company_services_title }}</h2><p>{{ c.company_services_intro }}</p></div><img class="company-services-art" src="{% static 'illustrations/warehouse-scene.svg' %}" width="600" height="460" alt="" aria-hidden="true" loading="lazy" decoding="async"></div><div class="services-grid">{% for icon,title,body in c.company_services %}<article><span class="service-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="{% static 'illustrations/service-icons.svg' %}#{{ icon }}"/></svg></span><h3>{{ title }}</h3><p>{{ body }}</p></article>{% endfor %}</div></section></div>
+<section class="company-process wrap" aria-labelledby="process-heading"><div class="section-heading"><span class="eyebrow">{{ c.process_eyebrow }}</span><h2 id="process-heading">{{ c.process_title }}</h2></div><ol class="process-grid">{% for number,title,body in c.process %}<li><span>{{ number }}</span><h3>{{ title }}</h3><p>{{ body }}</p></li>{% endfor %}</ol></section>
 <section class="support wrap"><div><h2>{{ c.company_cta_title }}</h2><p>{{ c.company_cta_body }}</p></div><a href="https://jahez.online/{{ lang }}/services" rel="noreferrer">{{ c.company_cta }} <span aria-hidden="true">↗</span></a></section>
 {% endblock %}

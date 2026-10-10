@@ -1,40 +1,71 @@
 from django.contrib import admin, messages
 from django.core.exceptions import PermissionDenied, ValidationError
-from django.http import FileResponse, Http404, HttpResponseRedirect
+from django.http import FileResponse, Http404, HttpResponseRedirect, HttpResponseNotAllowed
 from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
 from django.urls import path, reverse
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 from unfold.admin import ModelAdmin, TabularInline
-from .forms import ShipmentForm, EventForm, DocumentUploadForm
+from .forms import ShipmentForm, EventForm, DocumentUploadForm, CustomerForm, ItemForm, LegForm, DeleteRecordForm
 from .models import Customer, Shipment, ShipmentItem, TrackingLeg, TrackingEvent, Document, AuditEntry
-from .services import audit, snapshot, save_shipment, save_child, require, archive_shipment, rotate_shipment_reference
+from .services import audit, snapshot, save_shipment, save_child, require, archive_shipment, rotate_shipment_reference, delayed_q, TERMINAL
+from django.db.models import Q
 from .uploads import store_document
+from .deletion import DELETABLE, confirmation_token, deletion_problem, delete_record
 from apps.tracking.services import request_leg, require as require_tracking
 
 
 class RetainedAdmin(ModelAdmin):
-    """Retain operational records and immutable audit history; archive shipments."""
+    """Confirmed single-record deletion; history models remain immutable."""
     actions = None
     list_per_page = 25
     warn_unsaved_form = True
 
     def has_delete_permission(self, request, obj=None):
-        return False
+        return self.model in DELETABLE and super().has_delete_permission(request, obj)
+
+    def delete_view(self, request, object_id, extra_context=None):
+        obj = get_object_or_404(self.model, pk=object_id)
+        if not self.has_view_permission(request, obj) or not self.has_delete_permission(request, obj):
+            raise PermissionDenied
+        if getattr(obj, "shipment_id", None):
+            require(request.user, "view_shipment")
+        if request.method not in ("GET", "POST"):
+            return HttpResponseNotAllowed(["GET", "POST"])
+        problem = deletion_problem(obj)
+        form = DeleteRecordForm(request.POST or None, initial={"token": confirmation_token(obj, request.user)})
+        if request.method == "POST" and form.is_valid():
+            try:
+                delete_record(self.model, obj.pk, request.user, form.cleaned_data["token"], form.cleaned_data["reason"])
+            except ValidationError as exc:
+                form.add_error(None, exc)
+            else:
+                self.log_deletion(request, obj, str(obj))
+                messages.success(request, _("Record deleted. Staff history has been retained."))
+                return HttpResponseRedirect(reverse("admin:%s_%s_changelist" % (self.model._meta.app_label, self.model._meta.model_name)))
+        return TemplateResponse(request, "admin/shipments/delete_record.html", {
+            **self.admin_site.each_context(request), "title": _("Delete record"), "object": obj,
+            "opts": self.model._meta, "form": form, "problem": problem,
+            "cancel_url": reverse("admin:%s_%s_change" % (self.model._meta.app_label, self.model._meta.model_name), args=[obj.pk]),
+        })
 
 
 class ItemInline(TabularInline):
     model = ShipmentItem
+    form = ItemForm
     extra = 0
     can_delete = False
+    show_change_link = True
     fields = ("description_en", "description_ar", "quantity", "unit", "unit_ar", "cartons", "public")
 
 
 class LegInline(TabularInline):
     model = TrackingLeg
+    form = LegForm
     extra = 0
     can_delete = False
+    show_change_link = True
     fields = ("sequence", "label", "carrier_identifier", "tracking_number", "registration_state")
     readonly_fields = ("registration_state",)
 
@@ -44,28 +75,54 @@ class EventInline(TabularInline):
     form = EventForm
     extra = 0
     can_delete = False
+    show_change_link = True
     fields = ("occurred_at", "title_en", "title_ar", "body_en", "body_ar", "mapped_status", "public")
 
     def get_queryset(self, request):
         return super().get_queryset(request).filter(source="manual")
 
 
+class WorkflowFilter(admin.SimpleListFilter):
+    title = _("Shipment group")
+    parameter_name = "stage"
+
+    def lookups(self, request, model_admin):
+        return [("pending", _("Pending")), ("transit", _("In transit")), ("delivered", _("Delivered")), ("attention", _("Needs attention"))]
+
+    def queryset(self, request, queryset):
+        if self.value() == "pending":
+            return queryset.filter(archived_at__isnull=True, status__in=("created", "warehouse", "preparing"))
+        if self.value() == "transit":
+            return queryset.filter(archived_at__isnull=True, status__in=("departed", "in_transit", "customs", "arrived", "out_for_delivery"))
+        if self.value() == "delivered":
+            return queryset.filter(archived_at__isnull=True, status="delivered")
+        if self.value() == "attention":
+            return queryset.filter(archived_at__isnull=True).exclude(status__in=TERMINAL).filter(delayed_q() | Q(status="on_hold"))
+        return queryset
+
+
 @admin.register(Shipment)
 class ShipmentAdmin(RetainedAdmin):
     form = ShipmentForm
     list_display = ("id", "customer", "internal_order", "status_badge", "mode", "publication", "eta", "updated_at")
-    list_filter = ("status", "mode", "tracking_mode", "published", "is_demo", "archived_at")
+    list_filter = (WorkflowFilter, "status", "mode", "tracking_mode", "published", "is_demo", "archived_at")
     search_fields = ("internal_order", "bill_number", "customer__name", "customer__company")
     list_select_related = ("customer",)
     readonly_fields = ("status_badge", "created_at", "updated_at", "archived_at", "operational_links", "reference_display", "ai_links")
     inlines = (ItemInline, LegInline, EventInline)
     change_form_template = "admin/shipments/shipment_change.html"
     fieldsets = (
-        (_("Shipment overview"), {"fields": ("customer", "internal_order", "bill_number", "mode", "tracking_mode", "carrier_coverage_complete", "status", "status_badge")}),
+        (_("Shipment overview"), {"fields": ("customer", "internal_order", "bill_number", "mode", "tracking_mode", "status")}),
         (_("Approved public route and dates"), {"fields": (("origin_en", "origin_ar"), ("destination_en", "destination_ar"), "eta", "actual_arrival", "delivered_at", "published")}),
-        (_("Status control"), {"fields": ("confirmed_delay", "delay_reason", "status_locked", "override_reason", "correction_reason", "confirm_complete_shipment")}),
-        (_("Private access and records"), {"fields": ("reference_display", "internal_notes", "operational_links", "ai_links", "archived_at", "created_at", "updated_at", "revision_token")}),
+        (_("Status control"), {"classes": ("collapse",), "fields": ("confirmed_delay", "delay_reason", "status_locked", "override_reason", "correction_reason", "confirm_complete_shipment", "carrier_coverage_complete")}),
+        (_("Private access and records"), {"fields": ("reference_display", "internal_notes", "operational_links", "ai_links", "revision_token")}),
+        (_("Record history"), {"classes": ("collapse",), "fields": ("archived_at", "created_at", "updated_at")}),
     )
+
+    def get_fieldsets(self, request, obj=None):
+        if obj:
+            return super().get_fieldsets(request, obj)
+        return [*self.fieldsets[:3], (_("Private notes"), {"fields": ("internal_notes", "revision_token")})]
 
     def get_form(self, request, obj=None, **kwargs):
         base = super().get_form(request, obj, **kwargs)
@@ -152,9 +209,15 @@ class ShipmentAdmin(RetainedAdmin):
 
 @admin.register(Customer)
 class CustomerAdmin(RetainedAdmin):
+    form = CustomerForm
     list_display = ("name", "company", "email", "phone")
     search_fields = ("name", "company", "email", "phone")
     readonly_fields = ("created_at",)
+    fieldsets = (
+        (_("Customer details"), {"fields": ("name", "company", "phone", "email")}),
+        (_("Private notes"), {"fields": ("address", "notes")}),
+        (_("Record history"), {"classes": ("collapse",), "fields": ("created_at",)}),
+    )
 
     def save_model(self, request, obj, form, change):
         obj.save()
@@ -181,16 +244,27 @@ class ChildAdmin(RetainedAdmin):
 
 @admin.register(ShipmentItem)
 class ItemAdmin(ChildAdmin):
+    form = ItemForm
     list_display = ("shipment", "description_en", "quantity", "unit", "cartons", "public")
     search_fields = ("description_en", "sku", "shipment__internal_order")
     list_filter = ChildAdmin.list_filter + ("public",)
+    fieldsets = (
+        (_("Product details"), {"fields": ("shipment", ("description_en", "description_ar"), "quantity", ("unit", "unit_ar"), "public")}),
+        (_("Optional details"), {"classes": ("collapse",), "fields": ("cartons", "sku", "weight_kg", "volume_cbm")}),
+    )
 
 
 @admin.register(TrackingLeg)
 class LegAdmin(ChildAdmin):
+    form = LegForm
     list_display = ("shipment", "sequence", "label", "carrier_identifier", "registration_state", "last_success")
     search_fields = ("label", "tracking_number", "shipment__internal_order")
     readonly_fields = ("registration_state", "last_success", "last_received_at", "last_provider_event_at", "mapped_status", "next_reconcile_at", "last_error", "provider_status", "provider_actions")
+    fieldsets = (
+        (_("Carrier reference"), {"fields": ("shipment", "sequence", "label", "carrier_identifier", "tracking_number", "provider_actions")}),
+        (_("Latest carrier update"), {"fields": ("registration_state", "mapped_status", "last_success", "last_error")}),
+        (_("Technical details"), {"classes": ("collapse",), "fields": ("last_received_at", "last_provider_event_at", "next_reconcile_at", "provider_status")}),
+    )
 
     def get_readonly_fields(self, request, obj=None):
         fields = list(super().get_readonly_fields(request, obj))
@@ -232,6 +306,10 @@ class EventAdmin(ChildAdmin):
     list_filter = ChildAdmin.list_filter + ("source", "mapped_status", "public")
     search_fields = ("title_en", "shipment__internal_order")
     readonly_fields = ("source", "received_at", "creator", "provider_identity", "provider_event_key", "provider_time_raw")
+    fieldsets = (
+        (_("Timeline update"), {"fields": ("shipment", "occurred_at", ("title_en", "title_ar"), ("body_en", "body_ar"), "mapped_status", "public")}),
+        (_("Private source details"), {"classes": ("collapse",), "fields": ("leg", "location", "raw_text", "source", "creator", "received_at", "provider_identity", "provider_event_key", "provider_time_raw")}),
+    )
 
     def get_readonly_fields(self, request, obj=None):
         fields = list(super().get_readonly_fields(request, obj))
@@ -249,6 +327,11 @@ class DocumentAdmin(RetainedAdmin):
     search_fields = ("shipment__internal_order", "original_filename")
     fields = ("shipment", "category", "original_filename", "mime_type", "size", "page_count", "checksum", "uploaded_by", "uploaded_at", "authorized_download", "ai_request_link")
     readonly_fields = fields
+    fields = None
+    fieldsets = (
+        (_("Private document"), {"fields": ("shipment", "category", "original_filename", "authorized_download", "ai_request_link")}),
+        (_("File details"), {"classes": ("collapse",), "fields": ("mime_type", "size", "page_count", "checksum", "uploaded_by", "uploaded_at")}),
+    )
 
     def has_change_permission(self, request, obj=None):
         return False

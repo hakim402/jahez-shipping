@@ -1547,3 +1547,295 @@ msgstr "العمليات المحلية"
 
 msgid "Operations"
 msgstr "العمليات"
+
+# Admin usability and confirmed deletion, October 2026
+msgid "Daily work"
+msgstr "العمل اليومي"
+
+msgid "Tools"
+msgstr "الأدوات"
+
+msgid "Administration"
+msgstr "الإدارة"
+
+msgid "Record history"
+msgstr "سجل التعديلات"
+
+msgid "Customer details"
+msgstr "بيانات العميل"
+
+msgid "Private notes"
+msgstr "ملاحظات خاصة"
+
+msgid "Product details"
+msgstr "بيانات المنتج"
+
+msgid "Optional details"
+msgstr "بيانات اختيارية"
+
+msgid "Carrier reference"
+msgstr "مرجع شركة النقل"
+
+msgid "Latest carrier update"
+msgstr "آخر تحديث من شركة النقل"
+
+msgid "Technical details"
+msgstr "بيانات تقنية"
+
+msgid "Timeline update"
+msgstr "تحديث التتبع"
+
+msgid "Private source details"
+msgstr "بيانات المصدر الخاصة"
+
+msgid "File details"
+msgstr "بيانات الملف"
+
+msgid "Shipment group"
+msgstr "مجموعة الشحنات"
+
+msgid "Carrier tracking"
+msgstr "تتبع شركة النقل"
+
+msgid "Manual and carrier tracking"
+msgstr "تتبع يدوي ومع شركة النقل"
+
+msgid "Manage your shipments"
+msgstr "إدارة شحناتك"
+
+msgid "Create a shipment, add its products and updates, then publish the reviewed details."
+msgstr "أنشئ شحنة، وأضف منتجاتها وتحديثاتها، ثم انشر التفاصيل بعد مراجعتها."
+
+msgid "Save the shipment first. Add products and updates, review both languages, then publish the customer summary."
+msgstr "احفظ الشحنة أولاً. أضف المنتجات والتحديثات، وراجع اللغتين، ثم انشر ملخص العميل."
+
+msgid "Check carrier updates and review failed work before retrying."
+msgstr "تابع تحديثات شركة النقل وراجع المهام المتعثرة قبل إعادة المحاولة."
+
+msgid "Configured"
+msgstr "تم الإعداد"
+
+msgid "Service configuration"
+msgstr "إعداد الخدمة"
+
+msgid "Delete record"
+msgstr "حذف السجل"
+
+msgid "Reason for deletion"
+msgstr "سبب الحذف"
+
+msgid "Explain why the record is no longer needed. This reason stays in staff history."
+msgstr "وضح سبب عدم الحاجة إلى السجل. يُحفظ السبب في سجل تعديلات الفريق."
+
+msgid "I understand that this deletion cannot be undone."
+msgstr "أفهم أن هذا الحذف نهائي ولا يمكن التراجع عنه."
+
+msgid "Only this record will be removed. Linked records and staff history are protected."
+msgstr "سيُحذف هذا السجل فقط. السجلات المرتبطة وسجل التعديلات محفوظة."
+
+msgid "Delete permanently"
+msgstr "حذف نهائي"
+
+msgid "Record deleted. Staff history has been retained."
+msgstr "تم حذف السجل مع الاحتفاظ بسجل التعديلات."
+
+msgid "This history record is retained and cannot be deleted."
+msgstr "هذا السجل محفوظ ولا يمكن حذفه."
+
+msgid "Archive this shipment before deleting it. Archiving hides tracking and can be undone."
+msgstr "أرشف الشحنة قبل حذفها. تُخفي الأرشفة التتبع ويمكن التراجع عنها."
+
+msgid "Carrier history cannot be deleted. Unpublish the update if it should not be shown."
+msgstr "لا يمكن حذف سجل شركة النقل. ألغِ نشر التحديث إذا لم يكن مناسباً للعرض."
+
+msgid "This carrier reference is retained because registration has already started."
+msgstr "هذا المرجع محفوظ لأن تسجيله لدى شركة النقل قد بدأ."
+
+msgid "This record is linked to other records. Keep it, or remove eligible linked records first."
+msgstr "هذا السجل مرتبط بسجلات أخرى. احتفظ به أو احذف السجلات المرتبطة القابلة للحذف أولاً."
+
+msgid "This confirmation expired. Open the delete page again."
+msgstr "انتهت صلاحية التأكيد. افتح صفحة الحذف مجدداً."
+
+msgid "This record changed. Review it again before deleting."
+msgstr "تم تعديل هذا السجل. راجعه مجدداً قبل الحذف."
+
+msgid "Enter a reason for deleting this record."
+msgstr "أدخل سبب حذف هذا السجل."
+
+msgid "Archiving hides public tracking and keeps the records. You can restore it later."
+msgstr "تُخفي الأرشفة التتبع العام وتحتفظ بالسجلات. يمكنك استعادتها لاحقاً."
+
+msgid "Restoring allows editing again. Review the details before publishing."
+msgstr "تتيح الاستعادة التعديل مجدداً. راجع التفاصيل قبل النشر."
+
+msgid "The old customer reference will stop working. Share the new reference with the customer."
+msgstr "سيتوقف مرجع العميل القديم عن العمل. أرسل المرجع الجديد إلى العميل."
+
+msgid "Select the customer, or use + to add one. Contact details stay private."
+msgstr "اختر العميل أو استخدم + لإضافة عميل. تبقى بيانات الاتصال خاصة."
+
+msgid "Select the shipment this record belongs to."
+msgstr "اختر الشحنة التي يتبع لها هذا السجل."
+
+msgid "Enter the customer's full name. It is visible only to staff."
+msgstr "أدخل اسم العميل الكامل. يظهر للفريق فقط."
+
+msgid "Optional: the customer's business name."
+msgstr "اختياري: اسم شركة العميل."
+
+msgid "Include the country code, for example +86. This number stays private."
+msgstr "أضف رمز الدولة، مثل +86. يبقى الرقم خاصاً."
+
+msgid "Optional contact address. It is never shown in public tracking."
+msgstr "بريد للتواصل اختياري. لا يظهر في التتبع العام."
+
+msgid "Private delivery or contact address. Leave blank if not yet known."
+msgstr "عنوان خاص للتسليم أو التواصل. اتركه فارغاً إذا لم يُعرف بعد."
+
+msgid "Notes for your team only."
+msgstr "ملاحظات خاصة بفريقك فقط."
+
+msgid "Your team's order number. Customers track with the separate JAHEZ reference."
+msgstr "رقم الطلب الخاص بفريقك. يستخدم العملاء مرجع جاهز المنفصل للتتبع."
+
+msgid "Optional shipping bill number for your records. It stays private."
+msgstr "رقم بوليصة الشحن اختياري لسجلاتك. يبقى خاصاً."
+
+msgid "Choose how the goods will travel."
+msgstr "اختر طريقة نقل البضائع."
+
+msgid "Choose Manual for team updates, Carrier tracking for a supported carrier, or both."
+msgstr "اختر التتبع اليدوي لتحديثات الفريق، أو تتبع شركة النقل المدعومة، أو كليهما."
+
+msgid "Choose the shipment's current stage. Adding a timeline update does not change this field."
+msgstr "اختر المرحلة الحالية للشحنة. إضافة تحديث للتتبع لا تغيّر هذا الحقل."
+
+msgid "Public starting country or region in English. Avoid private addresses."
+msgstr "دولة أو منطقة الانطلاق العامة بالإنجليزية. لا تُدخل عناوين خاصة."
+
+msgid "The same starting country or region in Arabic."
+msgstr "دولة أو منطقة الانطلاق نفسها بالعربية."
+
+msgid "Public destination country or region in English. Avoid private addresses."
+msgstr "دولة أو منطقة الوجهة العامة بالإنجليزية. لا تُدخل عناوين خاصة."
+
+msgid "The same destination country or region in Arabic."
+msgstr "دولة أو منطقة الوجهة نفسها بالعربية."
+
+msgid "Enter an arrival estimate only when confirmed. Leave blank when unknown."
+msgstr "أدخل موعد الوصول المتوقع بعد تأكيده فقط. اتركه فارغاً إذا كان غير معروف."
+
+msgid "When the shipment actually reached its destination. Leave blank until confirmed."
+msgstr "وقت وصول الشحنة الفعلي إلى وجهتها. اتركه فارغاً حتى التأكيد."
+
+msgid "When the customer actually received the shipment. Leave blank until confirmed."
+msgstr "وقت استلام العميل للشحنة فعلياً. اتركه فارغاً حتى التأكيد."
+
+msgid "Enable only after reviewing both languages. This makes approved tracking details visible to the customer."
+msgstr "فعّل بعد مراجعة اللغتين فقط. ستظهر تفاصيل التتبع المعتمدة للعميل."
+
+msgid "Use only for a confirmed delay; explain it in the reason field."
+msgstr "استخدم للتأخير المؤكد فقط، ووضّحه في حقل السبب."
+
+msgid "Explain the confirmed delay for your team. This text stays private."
+msgstr "وضّح التأخير المؤكد لفريقك. يبقى هذا النص خاصاً."
+
+msgid "Keep carrier updates from changing the status you selected. A reason is required."
+msgstr "امنع تحديثات شركة النقل من تغيير الحالة التي اخترتها. يجب إدخال السبب."
+
+msgid "Explain why your team is keeping this status. This text stays private."
+msgstr "وضّح سبب تثبيت الفريق لهذه الحالة. يبقى هذا النص خاصاً."
+
+msgid "Required when correcting a completed status, moving backward, or releasing a status lock."
+msgstr "مطلوب عند تصحيح حالة مكتملة أو الرجوع لمرحلة سابقة أو إلغاء تثبيت الحالة."
+
+msgid "Confirm only when every package and shipment stage has been delivered."
+msgstr "أكد فقط بعد تسليم جميع الطرود واكتمال جميع مراحل الشحنة."
+
+msgid "Enable only when these carrier references cover every package in this shipment."
+msgstr "فعّل فقط إذا كانت مراجع شركات النقل تشمل جميع طرود الشحنة."
+
+msgid "A clear product name in English. Leave prices and private supplier details out."
+msgstr "اسم منتج واضح بالإنجليزية. لا تُدخل الأسعار أو بيانات المورد الخاصة."
+
+msgid "The same product name in Arabic. Required for a public item."
+msgstr "اسم المنتج نفسه بالعربية. مطلوب للمنتجات المنشورة."
+
+msgid "Enter the total quantity as a positive number."
+msgstr "أدخل الكمية الإجمالية كرقم موجب."
+
+msgid "English unit, for example pieces, boxes or kilograms."
+msgstr "الوحدة بالإنجليزية، مثل قطع أو صناديق أو كيلوغرامات."
+
+msgid "The same unit in Arabic. Required for a public item."
+msgstr "الوحدة نفسها بالعربية. مطلوبة للمنتجات المنشورة."
+
+msgid "Optional number of cartons. Leave blank when unknown."
+msgstr "عدد الكراتين اختياري. اتركه فارغاً إذا لم يُعرف."
+
+msgid "Optional internal product code. It stays private."
+msgstr "رمز منتج داخلي اختياري. يبقى خاصاً."
+
+msgid "Total weight in kilograms, if known."
+msgstr "الوزن الإجمالي بالكيلوغرام، إن كان معروفاً."
+
+msgid "Total volume in cubic metres, if known."
+msgstr "الحجم الإجمالي بالمتر المكعب، إن كان معروفاً."
+
+msgid "Number the shipment stages in order, starting with 1."
+msgstr "رقّم مراحل الشحنة بالترتيب بدءاً من 1."
+
+msgid "Optional label for your team, for example air freight or final delivery."
+msgstr "اسم اختياري لفريقك، مثل الشحن الجوي أو التسليم النهائي."
+
+msgid "The carrier's numeric 17TRACK code. Leave blank for a manual reference."
+msgstr "رمز شركة النقل الرقمي في 17TRACK. اتركه فارغاً للمرجع اليدوي."
+
+msgid "Use the carrier-issued tracking number, not the customer's JAHEZ reference."
+msgstr "استخدم رقم التتبع الصادر عن شركة النقل، وليس مرجع جاهز الخاص بالعميل."
+
+msgid "When this update happened, using the timezone shown by the form. Do not enter a future time."
+msgstr "وقت حدوث التحديث حسب المنطقة الزمنية الموضحة في النموذج. لا تُدخل وقتاً مستقبلياً."
+
+msgid "A short customer-friendly milestone title in English."
+msgstr "عنوان مرحلة مختصر وواضح للعميل بالإنجليزية."
+
+msgid "The same milestone title in Arabic. Required for publication."
+msgstr "عنوان المرحلة نفسه بالعربية. مطلوب للنشر."
+
+msgid "Optional detail in English. Keep contacts, prices and private addresses out."
+msgstr "تفاصيل اختيارية بالإنجليزية. لا تُدخل بيانات الاتصال أو الأسعار أو العناوين الخاصة."
+
+msgid "Translate the English detail into Arabic before publishing."
+msgstr "ترجم التفاصيل الإنجليزية إلى العربية قبل النشر."
+
+msgid "The stage described by this update. Set the overall shipment status separately."
+msgstr "المرحلة التي يصفها التحديث. حدّد حالة الشحنة العامة بشكل منفصل."
+
+msgid "Publish only after reviewing the English and Arabic text."
+msgstr "انشر بعد مراجعة النصين الإنجليزي والعربي فقط."
+
+msgid "Optional carrier reference from this same shipment."
+msgstr "مرجع شركة نقل اختياري يتبع للشحنة نفسها."
+
+msgid "Original source wording for staff review only."
+msgstr "نص المصدر الأصلي لمراجعة الفريق فقط."
+
+msgid "Detailed location for staff only. It is not shown publicly."
+msgstr "الموقع التفصيلي للفريق فقط. لا يظهر للعامة."
+
+msgid "Choose the document type so your team can find it later."
+msgstr "اختر نوع المستند ليسهل على الفريق العثور عليه لاحقاً."
+
+msgid "Choose a PDF, PNG or JPEG up to 5 MiB. The file stays private."
+msgstr "اختر ملف PDF أو PNG أو JPEG بحجم لا يتجاوز 5 ميبيبايت. يبقى الملف خاصاً."
+
+msgid "Select value"
+msgstr "اختر قيمة"
+
+msgid "Save the shipment first."
+msgstr "احفظ الشحنة أولاً."
+
+msgid "Timezone: %(timezone)s."
+msgstr "المنطقة الزمنية: %(timezone)s."

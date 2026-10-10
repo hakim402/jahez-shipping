@@ -1,3 +1,5 @@
+import re
+
 from django.conf import settings
 from django.db import connection
 from django.http import JsonResponse, HttpResponse
@@ -18,12 +20,17 @@ def public_context(page):
     lang = "ar" if get_language() == "ar" else "en"
     c = COPY[lang]
     path = f"/{lang}/" + ("who-we-are/" if page == "about" else "")
+    whatsapp_number = re.sub(r"[\s()-]", "", settings.SHIPPING_WHATSAPP_NUMBER).removeprefix("+")
+    if not re.fullmatch(r"[1-9][0-9]{6,14}", whatsapp_number):
+        whatsapp_number = ""
     return {
         "c": c, "lang": lang, "other_lang": "en" if lang == "ar" else "ar",
         "direction": "rtl" if lang == "ar" else "ltr", "page": page,
         "preview_enabled": settings.DEBUG and settings.PUBLIC_UI_PREVIEW_ENABLED,
         "page_description": c["about_meta"] if page == "about" else c["intro"],
         "canonical_url": "https://shipping.jahez.online" + path,
+        "whatsapp_number": whatsapp_number,
+        "whatsapp_url": f"https://wa.me/{whatsapp_number}" if whatsapp_number else "",
     }
 
 

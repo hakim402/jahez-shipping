@@ -81,7 +81,9 @@ class PublicDesignTests(TestCase):
             self.assertContains(response, 'ceo-section')
             self.assertContains(response, 'Majed Saleem')
             self.assertContains(response, 'class="portrait-label"')
-            self.assertContains(response, 'class="draft-copy"')
+            self.assertContains(response, 'images/majed-saleem-1200.webp')
+            self.assertNotContains(response, '<blockquote>')  # no unauthenticated CEO quotation
+            self.assertNotContains(response, 'Temporary portrait placeholder')
             self.assertContains(response, 'loading="lazy"')
             self.assertContains(response, 'https://jahez.online/' + lang + '/services')
             self.assertNotContains(response, 'Phase 1 company-page shell')

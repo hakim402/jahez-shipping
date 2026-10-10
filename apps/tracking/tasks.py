@@ -41,5 +41,7 @@ def process_job(job_id):
 def reconcile():
     from apps.core.maintenance import active
     if active():return
+    from apps.shipments.deletion import clean_file_removals
+    clean_file_removals()
     recover_pending()
     schedule_reconciliation()

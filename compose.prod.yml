@@ -1,7 +1,7 @@
 # Complete production package. Live activation requires Phase 9 approval.
 name: jahez-shipping-prod
 x-app: &app
-  image: ${SHIPPING_IMAGE:-jahez-shipping:0.8.0}
+  image: ${SHIPPING_IMAGE:-jahez-shipping:0.8.1}
   build:
     context: .
     target: production

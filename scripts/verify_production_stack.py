@@ -55,7 +55,7 @@ jar=http.cookiejar.CookieJar();opener=urllib.request.build_opener(urllib.request
 for lang in ('en','ar'):
  r=opener.open(urllib.request.Request('http://127.0.0.1:8000/'+lang+'/',headers=headers));html=r.read().decode();assert r.status==200 and r.headers['X-Request-ID']
  assert 'SYNTHETIC PHASE08 PRIVATE CUSTOMER' not in html
- css=re.search(r'href="(/static/css/site[^\"]+\\.css)"',html).group(1);assert opener.open(urllib.request.Request('http://127.0.0.1:8000'+css,headers=headers)).status==200
+ css=re.search(r'href="(/static/css/site[^\"]+\\.css(?:\\?[^\"]*)?)"',html).group(1);assert opener.open(urllib.request.Request('http://127.0.0.1:8000'+css,headers=headers)).status==200
 assert hashlib.sha256((Path('/data/private')/b['file']).read_bytes()).hexdigest()==b['checksum']
 import django;django.setup()
 from apps.shipments.models import Shipment,Document

@@ -1,13 +1,15 @@
 {% extends "public/base.html" %}{% load static %}
 {% block content %}
-<section class="hero wrap" aria-labelledby="home-heading">
+<section class="tracking-hero" aria-labelledby="home-heading">
+  <picture class="hero-background" aria-hidden="true">
+    <source media="(max-width: 780px)" srcset="{% static 'images/hero-harbor-1280.webp' %}">
+    <img src="{% static 'images/hero-harbor-2560.webp' %}" srcset="{% static 'images/hero-harbor-2560.webp' %} 2560w, {% static 'images/hero-harbor-4k.webp' %} 3840w" sizes="100vw" width="3840" height="2160" alt="" fetchpriority="high" decoding="async">
+  </picture>
   <div class="hero-copy">
-    <div class="eyebrow"><span class="eyebrow-line"></span>{{ c.eyebrow }}</div>
     <h1 id="home-heading">{{ c.headline_a }}<br><span>{{ c.headline_b }}</span></h1>
-    <p class="hero-intro">{{ c.intro }}</p>
     <form id="tracking-form" class="tracking-form" method="post" action="/{{ lang }}/#tracking-result" novalidate x-data="trackingForm" data-invalid="{{ invalid|yesno:'true,false' }}" x-on:submit="submit($event)" x-bind:aria-busy="busy">
       {% csrf_token %}
-      <label for="reference">{{ c.reference }}</label>
+      <label for="reference" class="sr-only">{{ c.reference }}</label>
       <div class="tracking-controls">
         <span class="search-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg></span>
         <input id="reference" name="reference" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="80" placeholder="{{ c.placeholder }}" aria-describedby="tracking-help tracking-error" aria-invalid="{{ invalid|yesno:'true,false' }}" x-bind:aria-invalid="invalid" x-ref="reference" x-on:input="invalid = false" dir="ltr" required>
@@ -15,39 +17,27 @@
       </div>
       <p id="tracking-error" class="field-error" role="alert" x-show="invalid" {% if not invalid %}style="display:none"{% endif %}>{{ c.invalid_message }}</p>
       <p id="tracking-help" class="tracking-help"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M7 10V7a5 5 0 0 1 10 0v3"/><rect x="5" y="10" width="14" height="11" rx="3"/></svg>{{ c.tracking_help }}</p>
-      <p class="reference-example">{{ c.example_label }} <bdi dir="ltr">JHZ-DEMO-7K4P8Q2</bdi></p>
     </form>
-    {% if preview_enabled %}
-    <form class="example-action" method="post" action="/{{ lang }}/#tracking-result">{% csrf_token %}<input type="hidden" name="preview_state" value="found"><button type="submit">{{ c.view_example }} <span aria-hidden="true">↗</span></button></form>
-    {% endif %}
     <div class="trust-strip"><span><i aria-hidden="true">✓</i>{{ c.trust_a }}</span><span><i aria-hidden="true">✓</i>{{ c.trust_b }}</span><span><i aria-hidden="true">✓</i>{{ c.trust_c }}</span></div>
-  </div>
-  <div class="hero-art">
-    <div class="route-card"><span><i class="route-dot" aria-hidden="true"></i>{{ c.china }}</span><span class="route-dash" aria-hidden="true"></span><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m3 17 9-4 9 4-9 4-9-4Zm4-2V8h10v7M10 8V4h4v4"/></svg><span class="route-dash" aria-hidden="true"></span><span>{{ c.destination }}<i class="route-dot destination-dot" aria-hidden="true"></i></span></div>
-    <img class="shipping-scene" src="{% static 'illustrations/shipping-scene.svg' %}" width="600" height="500" alt="{{ c.illustration_alt }}" fetchpriority="high">
-    <p class="art-caption">{{ c.route_label }}</p>
+    {% if whatsapp_url %}<a class="hero-whatsapp" href="{{ whatsapp_url }}" rel="noreferrer"><span class="whatsapp-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 11.5a8.5 8.5 0 0 1-12.8 7.3L3 20l1.2-4.7a8.5 8.5 0 1 1 16.3-3.8Z"/><path d="m9 7 1 2-1 1a7 7 0 0 0 4 4l1-1 2 1v1a1 1 0 0 1-1 1 8 8 0 0 1-7-7 1 1 0 0 1 1-1Z"/></svg></span>{{ c.support_link }} <span aria-hidden="true">↗</span></a>{% endif %}
   </div>
 </section>
-{% if preview_enabled %}
-<div class="preview-banner wrap"><span class="preview-badge">{{ c.preview }}</span><p>{{ c.preview_note }}</p></div>
-<details class="design-review wrap" {% if is_demo %}open{% endif %}>
-  <summary>{{ c.design_review }} <span aria-hidden="true">+</span></summary>
-  <p>{{ c.design_review_note }}</p>
-  <form method="post" action="/{{ lang }}/#tracking-result" class="state-controls">{% csrf_token %}{% for value,label in preview_states %}<button type="submit" name="preview_state" value="{{ value }}" {% if is_demo and state == value %}aria-current="true"{% endif %}>{{ label }}</button>{% endfor %}</form>
-</details>
-{% endif %}
 {% if state %}{% if stored_result %}{% include "public/partials/stored_result.html" %}{% else %}{% include "public/partials/tracking_result.html" %}{% endif %}{% endif %}
-<section class="steps wrap" aria-labelledby="steps-heading">
-  <div class="section-heading"><span class="eyebrow">{{ c.steps_eyebrow }}</span><h2 id="steps-heading">{{ c.steps_title }}</h2></div>
-  <div class="steps-grid"><article><span class="step-number">01</span><h3>{{ c.step1_title }}</h3><p>{{ c.step1_body }}</p></article><article><span class="step-number">02</span><h3>{{ c.step2_title }}</h3><p>{{ c.step2_body }}</p></article><article><span class="step-number">03</span><h3>{{ c.step3_title }}</h3><p>{{ c.step3_body }}</p></article></div>
-</section>
-<section class="service-context wrap" aria-labelledby="service-heading">
-  <div><span class="eyebrow">{{ c.service_eyebrow }}</span><h2 id="service-heading">{{ c.service_title }}</h2><p>{{ c.service_intro }}</p><a class="text-link" href="/{{ lang }}/who-we-are/">{{ c.about_link }} <span aria-hidden="true">↗</span></a></div>
-  <div class="service-pills">{% for icon,title,body in c.services %}<span><svg viewBox="0 0 24 24" aria-hidden="true"><use href="{% static 'illustrations/service-icons.svg' %}#{{ icon }}"/></svg>{{ title }}</span>{% endfor %}</div>
-</section>
 <section class="faq wrap" aria-labelledby="faq-heading">
-  <div class="section-heading"><span class="eyebrow">{{ c.faq_eyebrow }}</span><h2 id="faq-heading">{{ c.faq_title }}</h2><p>{{ c.faq_intro }}</p></div>
-  <div class="faq-list">{% for question,answer in c.faqs %}<details><summary>{{ question }}<span aria-hidden="true">+</span></summary><p>{{ answer }}</p></details>{% endfor %}</div>
+  <div class="section-heading faq-heading">
+    <span class="faq-emblem" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11.5a8 8 0 0 1-8 8H5l-3 2v-10a8 8 0 0 1 16-1"/><path d="M10 8a2 2 0 1 1 3 1.7c-.7.4-1 1-1 1.8M12 15h.01"/></svg></span>
+    <span class="eyebrow">{{ c.faq_eyebrow }}</span>
+    <h2 id="faq-heading">{{ c.faq_title }}</h2>
+    <p>{{ c.faq_intro }}</p>
+  </div>
+  <div class="faq-list">
+    {% for question,answer in c.faqs %}
+    <details name="shipping-faq">
+      <summary><span class="faq-number" aria-hidden="true">0{{ forloop.counter }}</span><span class="faq-question">{{ question }}</span><span class="faq-toggle" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 10h12"/><path class="faq-toggle-vertical" d="M10 4v12"/></svg></span></summary>
+      <div class="faq-answer"><p>{{ answer }}</p></div>
+    </details>
+    {% endfor %}
+  </div>
 </section>
-<section class="support wrap"><div><h2>{{ c.support_title }}</h2><p>{{ c.support_body }}</p></div><a href="mailto:info@jahez.online">{{ c.support_link }} <span aria-hidden="true">↗</span></a></section>
+<section class="support wrap"><div><h2>{{ c.support_title }}</h2><p>{{ c.support_body }}</p></div>{% if whatsapp_url %}<a href="{{ whatsapp_url }}" rel="noreferrer">{{ c.support_link }} <span aria-hidden="true">↗</span></a>{% endif %}</section>
 {% endblock %}

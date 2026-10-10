@@ -55,8 +55,8 @@ class Shipment(models.Model):
 
     class TrackingMode(models.TextChoices):
         MANUAL = "manual", _("Manual")
-        API = "api", _("Carrier API (not connected)")
-        HYBRID = "hybrid", _("Hybrid (manual now)")
+        API = "api", _("Carrier tracking")
+        HYBRID = "hybrid", _("Manual and carrier tracking")
 
     customer = models.ForeignKey(Customer, on_delete=models.PROTECT, verbose_name=_("Customer"))
     reference = models.CharField(_("Private customer reference"), max_length=44, unique=True, default=public_reference, editable=False)
@@ -236,7 +236,7 @@ class Document(models.Model):
 class AuditEntry(models.Model):
     actor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, editable=False)
     identity = models.CharField(max_length=80, default="staff", editable=False)
-    shipment = models.ForeignKey(Shipment, on_delete=models.PROTECT, null=True, related_name="audit_entries", editable=False)
+    shipment = models.ForeignKey(Shipment, on_delete=models.SET_NULL, null=True, related_name="audit_entries", editable=False)
     object_type = models.CharField(max_length=40, editable=False)
     object_id = models.CharField(max_length=40, editable=False)
     action = models.CharField(max_length=80, editable=False)
@@ -250,6 +250,15 @@ class AuditEntry(models.Model):
 
     def __str__(self):
         return f"{self.action} · {self.object_type} {self.object_id}"
+
+
+class FileRemoval(models.Model):
+    """Private cleanup outbox; survives a storage failure after record deletion."""
+    storage_name = models.CharField(max_length=255, unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        default_permissions = ()
 
 
 from apps.core.model_labels import localize_generated_labels

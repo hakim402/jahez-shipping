@@ -1,12 +1,14 @@
+import mimetypes
 import os
 from pathlib import Path
 from django.core.exceptions import ImproperlyConfigured
 from django.templatetags.static import static
-from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 
 BASE_DIR = Path(__file__).resolve().parents[2]
-APP_VERSION = "0.8.0"
+# Minimal container images may omit the host MIME registry for WebP.
+mimetypes.add_type("image/webp", ".webp")
+APP_VERSION = "0.8.1"
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "")
 if len(SECRET_KEY) < 50 or SECRET_KEY.startswith(("REPLACE_", "GENERATE_")):
     raise ImproperlyConfigured("DJANGO_SECRET_KEY must contain at least 50 characters. Generate a private environment file with scripts/init_dev_env.py.")
@@ -25,6 +27,7 @@ LANGUAGE_CODE = "ar"
 LANGUAGES = [("en", "English"), ("ar", "العربية")]
 TIME_ZONE = "UTC"
 BUSINESS_TIME_ZONE = os.environ.get("SHIPPING_BUSINESS_TIME_ZONE", "Asia/Kabul")
+SHIPPING_WHATSAPP_NUMBER = os.environ.get("SHIPPING_WHATSAPP_NUMBER", "").strip()
 USE_I18N = True
 USE_TZ = True
 LOCALE_PATHS = [BASE_DIR / "locale"]
@@ -79,44 +82,15 @@ SESSION_COOKIE_SAMESITE = "Lax"
 DATA_UPLOAD_MAX_MEMORY_SIZE = 1024 * 1024
 FILE_UPLOAD_MAX_MEMORY_SIZE = 1024 * 1024
 UNFOLD = {
-    "SITE_TITLE": _("JAHEZ Shipping"), "SITE_HEADER": "JAHEZ Shipping", "SITE_SUBHEADER": _("Operations workspace"), "SITE_VERSION": APP_VERSION,
+    "SITE_TITLE": _("JAHEZ Shipping"), "SITE_HEADER": "JAHEZ Shipping", "SITE_SUBHEADER": _("Operations workspace"), "SITE_VERSION": None,
     "SITE_URL": "/", "SITE_ICON": {"light": lambda request: static("brand/jahez-icon-brand.png"), "dark": lambda request: static("brand/jahez-icon-white.png")},
     "SITE_FAVICONS": [{"rel": "icon", "type": "image/png", "href": lambda request: static("brand/jahez-icon-brand.png")}],
     "ENVIRONMENT": "apps.core.admin.environment", "DASHBOARD_CALLBACK": "apps.core.admin.dashboard",
     "LOGIN": {"image": lambda request: static("illustrations/shipping-scene.svg")},
-    "SHOW_LANGUAGES": True, "STYLES": [lambda request: static("css/admin.css")],
+    "SHOW_LANGUAGES": True, "STYLES": [lambda request: static("css/admin.css") + "?v=20261010-admin"],
     "COLORS": {"primary": {"50": "#F4F1FF", "100": "#EDE6FF", "200": "#D9CBFF", "300": "#BBA3FF", "400": "#9979FF", "500": "#7B57FC", "600": "#6842E5", "700": "#5734C9", "800": "#4527A8", "900": "#351E80", "950": "#21114D"}},
-    "SIDEBAR": {"show_all_applications": False, "navigation": [{"title": _("Workspace"), "items": [{"title": _("Dashboard"), "icon": "dashboard", "link": reverse_lazy("admin:index")}, {"title": _("Open public tracking"), "icon": "travel_explore", "link": reverse_lazy("home")}]}, {"title": _("Access management"), "items": [{"title": _("Users"), "icon": "group", "link": reverse_lazy("admin:auth_user_changelist"), "permission": lambda request: request.user.has_perm("auth.view_user")}, {"title": _("Groups"), "icon": "shield", "link": reverse_lazy("admin:auth_group_changelist"), "permission": lambda request: request.user.has_perm("auth.view_group")}]}]},
+    "SIDEBAR": {"show_all_applications": False, "navigation": "apps.core.admin.navigation"},
 }
-
-# Explicit staff navigation; every linked model view also enforces permissions.
-UNFOLD['SIDEBAR']['navigation'].insert(1, {
-    'title': _('Shipping operations'),
-    'items': [
-        {'title': _(title), 'icon': icon, 'link': reverse_lazy('admin:shipments_' + model + '_changelist'),
-         'permission': (lambda model: lambda request: request.user.has_perm('shipments.view_' + model))(model)}
-        for title, icon, model in [('Shipments', 'package_2', 'shipment'), ('Customers', 'group', 'customer'),
-            ('Shipment items', 'inventory_2', 'shipmentitem'), ('Tracking events', 'timeline', 'trackingevent'),
-            ('Tracking references', 'route', 'trackingleg'), ('Private documents', 'description', 'document'),
-            ('Audit entries', 'history', 'auditentry')]
-    ],
-})
-
-UNFOLD['SIDEBAR']['navigation'].insert(2, {
-    'title': _('Carrier integration'), 'items': [
-        {'title': _('Integration health'), 'icon': 'monitor_heart', 'link': reverse_lazy('admin:integration_health'), 'permission': lambda request: request.user.has_perm('tracking.view_integrationjob')},
-        {'title': _('Integration jobs'), 'icon': 'work_history', 'link': reverse_lazy('admin:tracking_integrationjob_changelist'), 'permission': lambda request: request.user.has_perm('tracking.view_integrationjob')},
-        {'title': _('Webhook receipts'), 'icon': 'inbox', 'link': reverse_lazy('admin:tracking_webhookreceipt_changelist'), 'permission': lambda request: request.user.has_perm('tracking.view_webhookreceipt')},
-    ],
-})
-
-UNFOLD['SIDEBAR']['navigation'].insert(3, {
-    'title': _('AI Workspace'), 'items': [
-        {'title': _('Operational assistant'), 'icon': 'manage_search', 'link': reverse_lazy('admin:ai_assistant'), 'permission': lambda request: request.user.has_perm('ai.query_shipments') and request.user.has_perm('shipments.view_shipment')},
-        {'title': _('AI Workspace'), 'icon': 'auto_awesome', 'link': reverse_lazy('admin:ai_workspace'), 'permission': lambda request: request.user.has_perm('ai.view_aidraft')},
-        {'title': _('AI drafts'), 'icon': 'rate_review', 'link': reverse_lazy('admin:ai_aidraft_changelist'), 'permission': lambda request: request.user.has_perm('ai.view_aidraft')},
-    ],
-})
 
 # Proxy identity is accepted only from exact configured peers; the edge must overwrite X-Real-IP.
 import ipaddress
