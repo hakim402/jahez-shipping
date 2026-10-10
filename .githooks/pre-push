@@ -1,0 +1,10 @@
+#!/bin/sh
+set -eu
+cd "$(git rev-parse --show-toplevel)"
+# Scan the complete history of each outgoing ref, including old commits in tags.
+while read -r local_ref local_sha remote_ref remote_sha; do
+    case "$local_sha" in
+        0000000000000000000000000000000000000000) continue ;;
+    esac
+    python3 scripts/check_publication.py "$local_sha"
+done

@@ -16,3 +16,17 @@ backups
 docs/screenshots
 
 docs/protected-baseline.json
+AGENTS.md
+PROJECT_PROMPT.md
+docs
+.githooks
+.github
+*.pem
+*.key
+*.p12
+*.pfx
+*.bundle
+.ssh
+.aws
+.codex
+.agents

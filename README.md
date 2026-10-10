@@ -4,7 +4,7 @@ An independent English/Arabic Django shipping platform for JAHEZ TRADE CO.
 
 **Release 0.8.1: prepared for guided VPS deployment.** Includes the approved bilingual public interface, configurable WhatsApp contact, clearer admin navigation, English/Arabic form guidance and permission-checked deletion with retained audit history. Production uses a hardened image/Compose package, private configuration validation, backup/recovery and paused upgrade controls. See the [release checks](docs/RELEASE_0_8_1.md), [admin guide](docs/ADMIN_GUIDE.md), [VPS guide](docs/DEPLOYMENT_VPS.md), [Nginx/SSL](docs/NGINX_SSL.md), [upgrade/rollback](docs/UPGRADE_ROLLBACK.md), [backup/restore](docs/BACKUP_RESTORE.md) and [operating guidance](docs/OPERATIONS_RUNBOOK.md).
 
-Repository: [hakim402/jahez-shipping](https://github.com/hakim402/jahez-shipping). Phase 9 deployment remains in progress: actual host inventory, DNS/TLS activation, production credentials, provider/webhook verification and off-server backup scheduling still require live server evidence. Existing JAHEZ website/brand sources remain read-only. No development environment or database is included in the repository.
+Repository: [hakim402/jahez-shipping](https://github.com/hakim402/jahez-shipping). Live deployment requires host inventory, DNS/TLS, private production configuration, provider/webhook verification and tested off-server backups. No development environment or database is included in the repository. See [publication policy](docs/PUBLICATION_POLICY.md); enable its Git hooks immediately after cloning.
 
 ## Local quick start
 
@@ -34,7 +34,6 @@ For labeled local fixtures, run `docker compose --env-file .env.dev -p jahez-shi
 
 For explicit carrier fixtures, run `docker compose --env-file .env.dev -p jahez-shipping-dev -f compose.dev.yml exec -T web python manage.py seed_tracking_demo`. Review **DEMO-CARRIER** and its private carrier event, then approve bilingual display text/publication. This command performs no live provider request and cannot run in production.
 
-[Phase 5 review](docs/phases/PHASE_05_AI_DRAFTS.md) · [AI behavior/model setup](docs/AI_BEHAVIOR.md) · [Phase 4 report](docs/phases/PHASE_04_17TRACK.md) · [17TRACK setup and contracts](docs/17TRACK_INTEGRATION.md) · [Data model](docs/DATA_MODEL.md) · [Status rules](docs/STATUS_RULES.md) · [Bill mapping](docs/DOCUMENT_FIELD_MAPPING.md) · [Company/CEO copy](docs/PUBLIC_COPY_REVIEW.md) · [Local development](docs/LOCAL_DEVELOPMENT.md) · [Phase progress](docs/PROGRESS.md) · [Technical decisions](docs/TECHNICAL_DECISIONS.md) · [Project boundaries](docs/PROJECT_BOUNDARIES.md) · [Asset manifest](docs/ASSET_MANIFEST.md) · [Complete project specification](PROJECT_PROMPT.md)
 
 For local AI review, run `docker compose --env-file .env.dev -p jahez-shipping-dev -f compose.dev.yml exec -T web python manage.py seed_ai_demo`, then open [English AI Workspace](http://localhost:18744/en/admin/ai/aidraft/workspace/) or [Arabic AI Workspace](http://localhost:18744/ar/admin/ai/aidraft/workspace/). No Groq request, account creation or customer message is sent by the seed.
 
@@ -42,7 +41,9 @@ For local AI review, run `docker compose --env-file .env.dev -p jahez-shipping-d
 
 ```bash
 docker compose --env-file .env.dev -p jahez-shipping-dev -f compose.dev.yml run --rm web python manage.py test --settings=config.settings.test
-python3 scripts/check_boundaries.py
 ```
 
-Production Compose is complete and locally verified; the owner has approved Phase 9 and selected guided server commands. Actual host inventory is pending. No VPS, Nginx, DNS or SSL changes have been made. Implement one phase at a time; read AGENTS.md and progress before continuing.
+
+[AI behavior](docs/AI_BEHAVIOR.md) · [17TRACK integration](docs/17TRACK_INTEGRATION.md) · [Data model](docs/DATA_MODEL.md) · [Status rules](docs/STATUS_RULES.md) · [Local development](docs/LOCAL_DEVELOPMENT.md)
+
+The production package has been verified locally. Actual VPS, certificate and provider acceptance checks must be completed on the intended deployment.

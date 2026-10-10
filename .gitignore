@@ -18,3 +18,36 @@ celerybeat-schedule*
 /docs/screenshots/*admin-dashboard*
 
 docs/protected-baseline.json
+
+# Private owner instructions, project history and review captures stay local.
+AGENTS.md
+PROJECT_PROMPT.md
+.env.*
+!.env.dev.example
+!.env.prod.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.bundle
+.ssh/
+.aws/
+.codex/
+.agents/
+/docs/*
+!/docs/17TRACK_INTEGRATION.md
+!/docs/ADMIN_GUIDE.md
+!/docs/AI_BEHAVIOR.md
+!/docs/AI_SEARCH_TOOLS.md
+!/docs/BACKUP_RESTORE.md
+!/docs/DATA_MODEL.md
+!/docs/DEPLOYMENT_VPS.md
+!/docs/DOCUMENT_FIELD_MAPPING.md
+!/docs/LOCAL_DEVELOPMENT.md
+!/docs/NGINX_SSL.md
+!/docs/OPERATIONS_RUNBOOK.md
+!/docs/POSTGRES_MIGRATION.md
+!/docs/RELEASE_0_8_1.md
+!/docs/STATUS_RULES.md
+!/docs/UPGRADE_ROLLBACK.md
+!/docs/PUBLICATION_POLICY.md
