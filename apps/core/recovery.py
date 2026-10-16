@@ -66,15 +66,13 @@ def database_info(database,private,immutable=False):
             raise RecoveryError('database_integrity')
         migrations=db.execute('SELECT app,name FROM django_migrations ORDER BY app,name').fetchall()
         schema=db.execute("SELECT name,sql FROM sqlite_master WHERE sql IS NOT NULL ORDER BY name").fetchall()
-        documents=db.execute('SELECT file,checksum,size FROM shipments_document').fetchall()
-        tables=[name for name,sql in schema if name.startswith(('shipments_','tracking_','ai_')) and sql.startswith('CREATE TABLE')]
+        tables=[name for name,sql in schema if sql.startswith('CREATE TABLE') and name!='sqlite_sequence']
         records={name:db.execute('SELECT count(*) FROM "'+name.replace('"','""')+'"').fetchone()[0] for name in tables}
-        if not any(app=='shipments' for app,name in migrations):raise RecoveryError('not_shipping_database')
-        for name,checksum,size in documents:
-            file=private/relative(name)
-            if not file.is_file() or file.is_symlink() or file.stat().st_size!=size or sha(file)!=checksum:
-                raise RecoveryError('document_mismatch')
-    return {'migrations':migrations,'schema_sha256':hashlib.sha256(json.dumps(schema).encode()).hexdigest(),'documents':len(documents),'records':records}
+        if not {'auth_user','django_session','django_migrations','django_content_type','django_admin_log'}.issubset(tables):
+            raise RecoveryError('not_foundation_database')
+        if any(name.startswith(('shipments_','tracking_','ai_')) for name in tables):
+            raise RecoveryError('legacy_schema_requires_matching_old_image')
+    return {'migrations':migrations,'schema_sha256':hashlib.sha256(json.dumps(schema).encode()).hexdigest(),'records':records}
 
 
 def require_quiet(data,acknowledged):
@@ -111,7 +109,7 @@ def backup(data,destination,quiesced=False,label='manual'):
             target.execute('PRAGMA journal_mode=DELETE')
         shutil.copytree(private,staging/'private',symlinks=False)
         info=database_info(staging/'shipping.sqlite3',staging/'private',True)
-        manifest={'project':'jahez-shipping','format':1,'id':ident,'created_at':datetime.now(timezone.utc).isoformat(),
+        manifest={'project':'jahez-shipping','format':2,'id':ident,'created_at':datetime.now(timezone.utc).isoformat(),
             'app_version':app_version(),'label':'pre-upgrade' if label=='pre-upgrade' else 'manual',
             **info,'files':{p.relative_to(staging).as_posix():{'sha256':sha(p),'size':p.stat().st_size}
                           for p in [staging/'shipping.sqlite3',*tree(staging/'private')]}}
@@ -131,7 +129,7 @@ def verify(archive):
     manifest_path=archive/'manifest.json'
     if manifest_path.is_symlink() or manifest_path.stat().st_size>5*1024*1024:raise RecoveryError('invalid_manifest')
     manifest=json.loads(manifest_path.read_text())
-    if manifest.get('project')!='jahez-shipping' or manifest.get('format')!=1 or manifest.get('app_version')!=app_version():
+    if manifest.get('project')!='jahez-shipping' or manifest.get('format')!=2 or manifest.get('app_version')!=app_version():
         raise RecoveryError('incompatible_backup')
     if not isinstance(manifest.get('files'),dict) or 'shipping.sqlite3' not in manifest['files']:raise RecoveryError('invalid_manifest')
     actual={p.relative_to(archive).as_posix() for p in tree(archive)}-{'manifest.json'}
@@ -142,7 +140,7 @@ def verify(archive):
         p=archive/rel
         if p.stat().st_size!=meta['size'] or sha(p)!=meta['sha256']:raise RecoveryError('checksum_mismatch')
     info=database_info(archive/'shipping.sqlite3',archive/'private',True)
-    if info['schema_sha256']!=manifest['schema_sha256'] or info['documents']!=manifest['documents'] or info['records']!=manifest.get('records',info['records']) or [list(x) for x in info['migrations']]!=manifest['migrations']:
+    if info['schema_sha256']!=manifest['schema_sha256'] or info['records']!=manifest.get('records',info['records']) or [list(x) for x in info['migrations']]!=manifest['migrations']:
         raise RecoveryError('schema_or_documents_mismatch')
     return manifest
 
@@ -185,7 +183,7 @@ def restore(archive,target,replace=False,confirm_target='',quiesced=False,allow_
             if installed.exists():installed.rename(staging/('failed-'+name))
             (rollback/name).rename(target/name)
         raise
-    return {'documents':manifest['documents'],'files':len(manifest['files']),'rollback_retained':exists}
+    return {'files':len(manifest['files']),'rollback_retained':exists}
 
 
 def prune(destination,days):

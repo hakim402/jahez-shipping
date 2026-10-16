@@ -1,6 +1,6 @@
 {
   "name": "jahez-shipping-assets",
-  "version": "0.8.1",
+  "version": "0.9.0",
   "private": true,
   "scripts": {
     "build": "tailwindcss -i frontend/styles.css -o static/css/site.css --minify && node scripts/copy_frontend.mjs",

@@ -1,16 +1,6 @@
 {% extends "admin/base_site.html" %}{% load i18n %}
-{% block content %}
-<div class="jahez-dashboard">
-<section class="jahez-welcome"><h2>{% translate 'Manage your shipments' %}</h2><p>{% translate 'Create a shipment, add its products and updates, then publish the reviewed details.' %}</p>{% if can_add_shipment %}<a class="jahez-admin-link" href="{% url 'admin:shipments_shipment_add' %}">＋ {% translate 'Create shipment' %}</a>{% endif %}</section>
-{% if can_view_shipments %}
-<div class="jahez-metrics">
-<a href="{% url 'admin:shipments_shipment_changelist' %}?stage=pending"><span>{% translate 'Pending' %}</span><strong>{{ metrics.pending }}</strong><small>{% translate 'Created, warehouse or preparing' %}</small></a>
-<a href="{% url 'admin:shipments_shipment_changelist' %}?stage=transit"><span>{% translate 'In transit' %}</span><strong>{{ metrics.transit }}</strong><small>{% translate 'Departed through delivery route' %}</small></a>
-<a href="{% url 'admin:shipments_shipment_changelist' %}?stage=delivered"><span>{% translate 'Delivered' %}</span><strong>{{ metrics.delivered }}</strong><small>{% translate 'Confirmed completion' %}</small></a>
-<a href="{% url 'admin:shipments_shipment_changelist' %}?stage=attention"><span>{% translate 'Delayed / exception' %}</span><strong>{{ metrics.attention }}</strong><small>{% translate 'Known overdue ETA, confirmed delay or hold' %}</small></a>
-</div>
-<section class="jahez-shell-card jahez-recent"><div class="jahez-section-title"><h3>{% translate 'Recent shipments' %}</h3><a href="{% url 'admin:shipments_shipment_changelist' %}">{% translate 'View all shipments' %} ↗</a></div>
-{% if recent_shipments %}<div class="jahez-table-scroll"><table><thead><tr><th>{% translate 'Shipment' %}</th><th>{% translate 'Customer' %}</th><th>{% translate 'Status' %}</th><th>{% translate 'Publication' %}</th><th>{% translate 'Updated' %}</th></tr></thead><tbody>{% for shipment in recent_shipments %}<tr><td><a href="{% url 'admin:shipments_shipment_change' shipment.pk %}"><bdi>S{{ shipment.pk }}</bdi> · {{ shipment.internal_order }}</a>{% if shipment.is_demo %}<span class="jahez-shell-label">DEMO</span>{% endif %}</td><td>{{ shipment.customer }}</td><td><span class="jahez-status">{{ shipment.get_status_display }}</span></td><td>{% if shipment.published %}{% translate 'Published' %}{% else %}{% translate 'Private draft' %}{% endif %}</td><td><bdi dir="ltr">{{ shipment.updated_at|date:'Y-m-d H:i' }} {{ business_timezone }}</bdi></td></tr>{% endfor %}</tbody></table></div>{% else %}<p>{% translate 'No shipments yet. Create a customer, save a private shipment, add items and milestones, then publish only the safe summary.' %}</p>{% endif %}</section>
-<section class="jahez-shell-card jahez-attention"><h3>{% translate 'Needs attention' %}</h3>{% for shipment in attention_shipments %}<p><a href="{% url 'admin:shipments_shipment_change' shipment.pk %}"><bdi>S{{ shipment.pk }}</bdi> · {{ shipment.get_status_display }}</a></p>{% empty %}<p>{% translate 'No active shipment meets the attention rules.' %}</p>{% endfor %}</section>
-{% else %}<section class="jahez-shell-card"><p>{% translate 'Ask the owner to assign an operations or read-only role. Shipment metrics require view permission.' %}</p></section>{% endif %}
-</div>{% endblock %}
+{% block content %}<div class="jahez-dashboard"><section class="jahez-welcome">
+<h2>{% translate 'Container tracking preparation' %}</h2>
+<p>{% translate 'The foundation is ready. Container registration and refresh will be added in a separately approved phase.' %}</p>
+<p>{% translate 'No tracking data is currently published by this candidate.' %}</p>
+</section></div>{% endblock %}

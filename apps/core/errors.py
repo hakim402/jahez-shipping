@@ -8,7 +8,7 @@ def error_response(request,status,kind='error'):
     copy=dict(COPY[lang])
     if kind=='maintenance':
         copy.update(title='Shipping is briefly under maintenance' if lang=='en' else 'تجري صيانة مؤقتة لنظام الشحن',
-                    body='Please try again shortly. Your saved shipment records are retained.' if lang=='en' else 'يرجى المحاولة بعد قليل. تبقى سجلات شحناتك محفوظة.')
+                    body='Please try again shortly. Your account is retained.' if lang=='en' else 'يرجى المحاولة بعد قليل. يبقى حسابك محفوظاً.')
     return render(request,'errors/error.html',{'lang':lang,'direction':'ltr' if lang=='en' else 'rtl',
         'copy':copy,'status':status,'request_id':getattr(request,'correlation_id','')},status=status)
 def bad_request(request,exception):return error_response(request,400)

@@ -1,123 +1,114 @@
+import json
+import logging
 import secrets
 from unittest.mock import patch
-from django.contrib.auth.models import User
+from django.apps import apps
+from django.contrib import admin
+from django.contrib.auth.models import Group, Permission, User
 from django.core.cache import cache
-from django.core.management import call_command
-from django.core.management.base import CommandError
-from django.db import connection
-from django.test import Client, TestCase, override_settings
+from django.core.management import call_command, get_commands
 from django.contrib.staticfiles import finders
-from django.urls import reverse
-from django.utils import translation
+from django.db import connection
+from django.test import Client, TestCase, SimpleTestCase, override_settings
+from apps.core.safe_logging import SafeFormatter
 
-class PublicPreviewTests(TestCase):
-    def test_localized_pages_and_language_switches(self):
-        for lang, direction, other in [("en", "ltr", "ar"), ("ar", "rtl", "en")]:
-            for suffix in ["", "who-we-are/"]:
-                with self.subTest(lang=lang, suffix=suffix):
-                    r = self.client.get(f"/{lang}/{suffix}")
-                    self.assertEqual(r.status_code, 200)
-                    self.assertContains(r, f'lang="{lang}" dir="{direction}"')
-                    self.assertContains(r, f'/{other}/{suffix}')
-                    self.assertContains(r, "noindex,nofollow")
-    def test_root_uses_arabic_default(self):
-        self.assertRedirects(self.client.get("/"), "/ar/")
-    def test_preview_post_does_not_echo_reference(self):
-        reference = "PRIVATE-JAHEZ-CAPABILITY-12345"
-        r = self.client.post("/en/", {"reference": reference})
-        self.assertEqual(r.status_code, 200)
-        self.assertNotContains(r, reference)
-        self.assertContains(r, "We could not find that reference.")
-        self.assertEqual(r["Cache-Control"], "no-store")
-        self.assertEqual(r["X-Robots-Tag"], "noindex, nofollow")
-    def test_preview_post_requires_csrf(self):
-        c = Client(enforce_csrf_checks=True)
-        self.assertEqual(c.post("/en/", {"reference": "private"}).status_code, 403)
-    def test_valid_origin_post_with_real_csrf_token(self):
-        c = Client(enforce_csrf_checks=True)
-        r = c.get("/en/", secure=True)
-        self.assertEqual(r["Referrer-Policy"], "same-origin")
-        self.assertContains(r, 'name="referrer" content="same-origin"')
-        token = c.cookies["jahez_shipping_csrf"].value
-        r = c.post("/en/", {"reference": "synthetic-reference", "csrfmiddlewaretoken": token}, secure=True, HTTP_ORIGIN="https://testserver")
-        self.assertEqual(r.status_code, 200)
-        self.assertNotContains(r, "synthetic-reference")
-    def test_untrusted_origins_remain_rejected(self):
-        c = Client(enforce_csrf_checks=True)
-        c.get("/en/", secure=True)
-        token = c.cookies["jahez_shipping_csrf"].value
-        for origin in ["null", "https://untrusted.example"]:
-            with self.subTest(origin=origin):
-                self.assertEqual(c.post("/en/", {"csrfmiddlewaretoken": token}, secure=True, HTTP_ORIGIN=origin).status_code, 403)
-    def test_no_private_media_route(self):
-        self.assertEqual(self.client.get("/media/customer.pdf").status_code, 404)
-        self.assertEqual(self.client.get("/data/shipping.sqlite3").status_code, 404)
-    def test_assets_exist(self):
-        for name in ["css/site.css", "js/alpine.min.js", "brand/jahez-icon-brand.png", "fonts/Cairo-Regular.ttf", "illustrations/shipping-scene.svg"]:
-            self.assertTrue(finders.find(name), name)
-    def test_health_and_provider_independence(self):
-        self.assertEqual(self.client.get("/health/live/").json()["status"], "ok")
-        with patch("apps.core.views.Redis.from_url") as redis:
-            self.assertEqual(self.client.get("/health/ready/").status_code, 200)
-            redis.return_value.ping.assert_called_once()
-        with patch("apps.core.views.Redis.from_url", side_effect=ConnectionError):
-            self.assertEqual(self.client.get("/health/ready/").status_code, 503)
-    @override_settings(DEBUG=True)
-    def test_seed_is_idempotent_and_production_disabled(self):
-        call_command("seed_demo")
-        call_command("seed_demo")
-        self.assertEqual(User.objects.count(), 0)
-        with override_settings(DEBUG=False), self.assertRaises(CommandError):
-            call_command("seed_demo")
-    def test_sqlite_uses_immediate_short_transactions(self):
-        self.assertEqual(connection.settings_dict["OPTIONS"]["transaction_mode"], "IMMEDIATE")
-        self.assertFalse(connection.settings_dict["ATOMIC_REQUESTS"])
+class FoundationTests(TestCase):
+    def setUp(self):cache.clear()
 
-class AdminFoundationTests(TestCase):
-    def setUp(self):
-        cache.clear()
-    def test_unfold_login_in_both_languages(self):
-        for lang in ["en", "ar"]:
-            r = self.client.get(f"/{lang}/admin/login/")
-            self.assertEqual(r.status_code, 200)
-            self.assertContains(r, "جاهز للشحن" if lang == "ar" else "JAHEZ Shipping")
-            self.assertContains(r, "unfold")
-    def test_staff_login_with_csrf_creates_authenticated_session(self):
-        password = secrets.token_urlsafe(32)
-        user = User.objects.create_user("synthetic-login-check", password=password, is_staff=True)
-        c = Client(enforce_csrf_checks=True)
-        c.get("/en/admin/login/")
-        token = c.cookies["jahez_shipping_csrf"].value
-        r = c.post("/en/admin/login/", {"username": user.username, "password": password, "csrfmiddlewaretoken": token, "next": "/en/admin/"}, HTTP_ORIGIN="http://testserver")
-        self.assertEqual(r.status_code, 302)
-        self.assertEqual(c.session["_auth_user_id"], str(user.pk))
-        self.assertContains(c.get("/en/admin/"), "Shipment metrics require view permission.")
-    def test_dashboard_requires_staff(self):
-        self.assertEqual(self.client.get("/en/admin/").status_code, 302)
-        user = User.objects.create_user("viewer", password="temporary-test-password")
-        self.client.force_login(user)
-        self.assertEqual(self.client.get("/en/admin/").status_code, 302)
-    def test_staff_dashboard_is_real_shell_without_fake_metrics(self):
-        user = User.objects.create_user("teststaff", is_staff=True)
-        self.client.force_login(user)
-        r = self.client.get("/en/admin/")
-        self.assertEqual(r.status_code, 200)
-        self.assertContains(r, "Shipment metrics require view permission.")
-        self.assertContains(r, "Manage your shipments")
-        self.assertNotContains(r, "AI awaits its approved phase")
-        self.assertNotContains(r, "Manage Users")
-        r = self.client.get("/ar/admin/")
-        self.assertContains(r, "إدارة شحناتك")
-    def test_account_management_requires_permissions(self):
-        user = User.objects.create_user("staff", is_staff=True)
-        self.client.force_login(user)
-        self.assertEqual(self.client.get("/en/admin/auth/user/").status_code, 403)
-    def test_login_is_bounded(self):
-        for _ in range(10):
-            self.assertNotEqual(self.client.post("/en/admin/login/", {"username": "absent", "password": "invalid"}).status_code, 429)
-        r = self.client.post("/en/admin/login/", {"username": "absent", "password": "invalid"})
-        self.assertEqual(r.status_code, 429)
-        self.assertEqual(r["Retry-After"], "300")
-    def test_login_fails_closed_if_cache_unavailable(self):
-        with patch("apps.core.middleware.cache.add", side_effect=ConnectionError):
-            self.assertEqual(self.client.post("/en/admin/login/").status_code, 503)
+    def test_schema_admin_and_commands_have_no_business_features(self):
+        self.assertFalse(any(t.startswith(('shipments_','tracking_','ai_')) for t in connection.introspection.table_names()))
+        self.assertEqual({m._meta.label for m in admin.site._registry},{'auth.User','auth.Group'})
+        self.assertFalse([m for m in apps.get_models() if m._meta.app_label in ('shipments','tracking','ai')])
+        commands=get_commands()
+        for name in ('seed_demo','seed_tracking_demo','seed_ai_demo','seed_search_demo'):self.assertNotIn(name,commands)
+        call_command('setup_roles');self.assertEqual(User.objects.count(),0)
+
+    @override_settings(SHIPPING_WHATSAPP_NUMBER='+971 (50) 123-4567')
+    def test_public_bilingual_empty_state_branding_whatsapp_and_static(self):
+        for lang,dir in (('en','ltr'),('ar','rtl')):
+            for suffix in ('','who-we-are/'):
+                r=self.client.get('/'+lang+'/'+suffix)
+                self.assertEqual(r.status_code,200);self.assertContains(r,'dir="'+dir+'"')
+                self.assertContains(r,'https://wa.me/971501234567');self.assertContains(r,'jahez.online')
+            r=self.client.get('/'+lang+'/')
+            self.assertContains(r,'disabled');self.assertNotContains(r,'type="submit"')
+            self.assertNotContains(r,'JHZ-DEMO');self.assertNotContains(r,'stored_result')
+            self.assertContains(r,'Container tracking is being prepared' if lang=='en' else 'نعمل على تجهيز تتبع الحاويات')
+        for name in ('css/site.css','js/alpine.min.js','images/majed-saleem-600.webp','fonts/Cairo-Regular.ttf'):
+            self.assertTrue(finders.find(name),name)
+
+    @override_settings(SHIPPING_WHATSAPP_NUMBER='invalid-private-number')
+    def test_invalid_contact_hidden_and_public_post_is_not_a_lookup(self):
+        r=self.client.get('/en/');self.assertNotContains(r,'wa.me/');self.assertNotContains(r,'invalid-private-number')
+        with patch('apps.integrations.groq.create_client') as provider:
+            r=self.client.post('/en/',{'reference':'SYNTHETIC-PRIVATE-REFERENCE'})
+            self.assertEqual(r.status_code,405);self.assertNotIn(b'SYNTHETIC-PRIVATE-REFERENCE',r.content);provider.assert_not_called()
+
+    def test_admin_auth_session_csrf_permissions_and_minimal_navigation(self):
+        password=secrets.token_urlsafe(32)
+        user=User.objects.create_user('synthetic-staff',password=password,is_staff=True)
+        group=Group.objects.create(name='Retained group');permission=Permission.objects.get(codename='view_user')
+        group.permissions.add(permission);user.groups.add(group)
+        c=Client(enforce_csrf_checks=True)
+        for lang in ('en','ar'):
+            self.assertContains(c.get('/'+lang+'/admin/login/'),'unfold')
+        token=c.cookies['jahez_shipping_csrf'].value
+        self.assertEqual(c.post('/en/admin/login/',{'username':user.username,'password':password,'csrfmiddlewaretoken':token},HTTP_ORIGIN='https://invalid.test').status_code,403)
+        r=c.post('/en/admin/login/',{'username':user.username,'password':password,'csrfmiddlewaretoken':token},HTTP_ORIGIN='http://testserver')
+        self.assertEqual(r.status_code,302);self.assertEqual(c.session['_auth_user_id'],str(user.pk))
+        for lang in ('en','ar'):
+            r=c.get('/'+lang+'/admin/');self.assertEqual(r.status_code,200)
+            self.assertContains(r,'Container tracking preparation' if lang=='en' else 'تجهيز تتبع الحاويات')
+            for forbidden in ('/admin/shipments/','/admin/ai/','integration-health','recent_shipments'):self.assertNotContains(r,forbidden)
+        self.assertEqual(c.get('/en/admin/auth/user/').status_code,200)
+        self.assertEqual(c.get('/en/admin/auth/group/').status_code,403)
+        for path in ('/webhooks/17track/','/en/admin/shipments/shipment/','/en/admin/ai/aidraft/workspace/','/en/admin/integration-health/','/media/private.pdf','/data/shipping.sqlite3'):
+            self.assertEqual(c.get(path).status_code,404,path)
+
+    def test_login_shared_counter_and_failure_closed(self):
+        for _ in range(10):self.assertNotEqual(self.client.post('/en/admin/login/',{}).status_code,429)
+        self.assertEqual(self.client.post('/en/admin/login/',{}).status_code,429)
+        with patch('apps.core.middleware.cache.add',side_effect=ConnectionError):
+            self.assertEqual(self.client.post('/ar/admin/login/',{}).status_code,503)
+
+    def test_health_checks_remaining_schema_cache_only(self):
+        with patch('apps.integrations.groq.create_client') as provider:
+            self.assertEqual(self.client.get('/health/live/').status_code,200)
+            self.assertEqual(self.client.get('/health/ready/').json(),{'status':'ready'});provider.assert_not_called()
+        with patch('apps.core.views.cache.add',side_effect=ConnectionError):self.assertEqual(self.client.get('/health/ready/').status_code,503)
+        with patch('django.db.migrations.executor.MigrationExecutor.migration_plan',return_value=[object()]):
+            self.assertEqual(self.client.get('/health/ready/').status_code,503)
+
+    def test_privacy_headers_generic_errors_and_proxy_identity(self):
+        r=self.client.get('/en/PRIVATE-NAME?key=PRIVATE-KEY')
+        self.assertEqual(r.status_code,404);self.assertNotIn(b'PRIVATE',r.content)
+        for key in ('X-Request-ID','Content-Security-Policy','X-Frame-Options','Referrer-Policy'):self.assertIn(key,r)
+        self.assertEqual(r['Cache-Control'],'no-store')
+        from apps.core.privacy import client_address
+        from django.test import RequestFactory
+        request=RequestFactory().get('/',REMOTE_ADDR='192.0.2.1',HTTP_X_REAL_IP='198.51.100.1')
+        with override_settings(TRUSTED_PROXY_IPS=[]):self.assertEqual(client_address(request),'192.0.2.1')
+        with override_settings(TRUSTED_PROXY_IPS=['192.0.2.1']):self.assertEqual(client_address(request),'198.51.100.1')
+
+class ProviderAndConfigTests(SimpleTestCase):
+    def test_client_disabled_and_mocked_transport_only(self):
+        from apps.integrations.groq import create_client,configuration,ProviderUnavailable
+        self.assertEqual(configuration(),'disabled')
+        with self.assertRaises(ProviderUnavailable):create_client()
+        import httpx
+        seen=[]
+        def handler(request):
+            seen.append(request);return httpx.Response(200,json={'object':'list','data':[]})
+        with override_settings(GROQ_ENABLED=True,GROQ_API_KEY='synthetic-only-key',GROQ_TEXT_MODEL='synthetic-model',GROQ_TEXT_OUTPUT_MODE='schema'):
+            with create_client(transport=httpx.MockTransport(handler)) as client:client.models.list()
+        self.assertEqual(len(seen),1);self.assertEqual(str(seen[0].url),'https://api.groq.com/openai/v1/models')
+
+    def test_production_values_and_error_logging_do_not_leak(self):
+        from deploy.production_env import validate,EnvironmentError
+        values={'DJANGO_SECRET_KEY':secrets.token_urlsafe(64),'DJANGO_ALLOWED_HOSTS':'shipping.jahez.online','DJANGO_CSRF_TRUSTED_ORIGINS':'https://shipping.jahez.online','SHIPPING_DATA_DIR':'/data'}
+        validate(values)
+        for name,value in (('DJANGO_SECRET_KEY','PRIVATE-KEY'),('DJANGO_ALLOWED_HOSTS','*'),('CACHE_REDIS_URL','redis://PRIVATE@other/1'),('GROQ_ENABLED','maybe')):
+            with self.assertRaises(EnvironmentError) as error:validate({**values,name:value})
+            self.assertIn(name,str(error.exception));self.assertNotIn('PRIVATE',str(error.exception))
+        record=logging.LogRecord('httpx',logging.ERROR,'PRIVATE-FILE',1,'PRIVATE-KEY',(),None)
+        self.assertNotIn('PRIVATE',SafeFormatter().format(record))

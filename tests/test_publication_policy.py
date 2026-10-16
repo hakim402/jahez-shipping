@@ -5,6 +5,7 @@ import os
 import subprocess
 import tempfile
 import unittest
+import shutil
 from pathlib import Path
 
 from scripts.check_publication import check, content_issues, forbidden_path
@@ -14,15 +15,20 @@ class PublicationPolicyTests(unittest.TestCase):
     def test_private_paths_even_if_force_added(self):
         for name in ("AGENTS.md", "PROJECT_PROMPT.md", "nested/agents.md", ".env.prod",
                      "private/snapshot.tar.gz", "data/upload.pdf", "backup.bundle",
-                     "docs/PROGRESS.md", "docs/screenshots/admin.jpg", "key.pem",
+                     "docs/PROGRESS.md", "docs/archive/pre-container-20261016/README.md", "docs/AI_BEHAVIOR.md", "docs/screenshots/admin.jpg", "key.pem",
                      "db.sqlite3-wal", ".ssh/id_rsa"):
             with self.subTest(name=name):
                 self.assertTrue(forbidden_path(name))
 
     def test_public_runtime_and_reviewed_guides(self):
         for name in (".env.dev.example", ".env.prod.example", "docs/DEPLOYMENT_VPS.md",
-                     "apps/shipments/models.py", "static/images/majed-saleem.webp"):
+                     "apps/shipments/models.py", "docs/CONTAINER_DESIGN.md", "static/images/majed-saleem.webp"):
             self.assertFalse(forbidden_path(name))
+
+    def test_old_public_guides_do_not_allow_private_archive_or_current_stale_guides(self):
+        self.assertTrue(forbidden_path("docs/AI_BEHAVIOR.md"))
+        self.assertFalse(forbidden_path("docs/AI_BEHAVIOR.md", historical=True))
+        self.assertTrue(forbidden_path("docs/archive/AI_BEHAVIOR.md", historical=True))
 
     def test_sensitive_content_reports_categories_only(self):
         fixtures = [b"gsk_" + b"x" * 48, b"ghp_" + b"x" * 40,
@@ -32,6 +38,7 @@ class PublicationPolicyTests(unittest.TestCase):
             self.assertTrue(content_issues(data))
         self.assertEqual(content_issues(b"GROQ_API_KEY=<your-private-key>"), [])
 
+    @unittest.skipUnless(shutil.which("git"), "Git history test runs on the host/CI; Git is absent from minimal runtime.")
     def test_checks_staged_blobs_and_old_history(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

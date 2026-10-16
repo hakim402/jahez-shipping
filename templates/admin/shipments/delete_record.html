@@ -1,7 +1,0 @@
-{% extends "admin/base_site.html" %}{% load i18n %}
-{% block content %}<section class="jahez-shell-card jahez-upload">
-  <h2>{{ title }}</h2><p>{{ opts.verbose_name }} · <strong>{{ object }}</strong></p>
-  {% if problem %}<div class="jahez-ops-note">{{ problem }}</div>
-  {% else %}<p>{% translate 'Only this record will be removed. Linked records and staff history are protected.' %}</p>{% endif %}
-  <form method="post">{% csrf_token %}{{ form.non_field_errors }}{% if not problem %}{{ form.as_p }}<button class="jahez-admin-link jahez-delete-button" type="submit">{% translate 'Delete permanently' %}</button>{% endif %} <a href="{{ cancel_url }}">{% translate 'Cancel' %}</a></form>
-</section>{% endblock %}

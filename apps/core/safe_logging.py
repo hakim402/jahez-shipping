@@ -13,7 +13,7 @@ class SafeFormatter(logging.Formatter):
         method=getattr(record,'method','')
         if method in ('GET','HEAD','POST','PUT','PATCH','DELETE','OPTIONS'):entry['method']=method
         route=getattr(record,'route','')
-        if route in ('public','admin','webhook','health','other'):entry['route']=route
+        if route in ('public','admin','health','other'):entry['route']=route
         request_id=getattr(record,'request_id','')
         import re
         if isinstance(request_id,str) and re.fullmatch('[0-9a-f]{16}',request_id):entry['request_id']=request_id

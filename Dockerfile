@@ -14,8 +14,8 @@ ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PIP_DISABLE_PIP_VERSION_CHECK=1
 WORKDIR /app
 COPY requirements.lock ./
 RUN pip install --no-cache-dir --require-hashes -r requirements.lock
-RUN groupadd --gid 10001 shipping && useradd --uid 10001 --gid shipping --no-create-home shipping && mkdir -p /data/private /beat /app/staticfiles && chown -R shipping:shipping /data /beat /app
-RUN chmod 0700 /data /data/private /beat
+RUN groupadd --gid 10001 shipping && useradd --uid 10001 --gid shipping --no-create-home shipping && mkdir -p /data/private /app/staticfiles && chown -R shipping:shipping /data /app
+RUN chmod 0700 /data /data/private
 COPY --chown=shipping:shipping apps ./apps
 COPY --chown=shipping:shipping config ./config
 COPY --chown=shipping:shipping templates ./templates

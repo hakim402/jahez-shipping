@@ -27,14 +27,14 @@ class RequestSafetyMiddleware:
         response.setdefault('X-Content-Type-Options','nosniff')
         response.setdefault('X-Frame-Options','DENY')
         response.setdefault('Referrer-Policy','same-origin')
-        private=('/admin/' in request.path or request.path.startswith(('/health/','/webhooks/')))
+        private=('/admin/' in request.path or request.path.startswith(('/health/',)))
         if private or request.method=='POST' or response.status_code>=400:
             if 'no-store' not in response.get('Cache-Control',''):
                 response['Cache-Control']='no-store'
             response['X-Robots-Tag']='noindex, nofollow'
         if not request.path.startswith('/static/') and 'Content-Security-Policy' not in response:
             response['Content-Security-Policy']="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
-        route='health' if request.path.startswith('/health/') else 'webhook' if request.path.startswith('/webhooks/') else 'admin' if '/admin/' in request.path else 'public' if request.path in ('/en/','/ar/') else 'other'
+        route='health' if request.path.startswith('/health/') else 'admin' if '/admin/' in request.path else 'public' if request.path in ('/en/','/ar/') else 'other'
         logging.getLogger('jahez.request').info('complete',extra={'request_id':request.correlation_id,
             'method':request.method,'route':route,'status':response.status_code,'duration_ms':int((time.monotonic()-started)*1000)})
         return response

@@ -1,6 +1,6 @@
 name: jahez-shipping-dev
 x-app: &app
-  image: jahez-shipping-dev:0.8.1
+  image: jahez-shipping-dev:0.9.0
   build:
     context: .
     target: development
@@ -8,7 +8,6 @@ x-app: &app
   volumes:
     - .:/app
     - shipping_data:/data
-    - beat_state:/beat
   depends_on:
     redis:
       condition: service_healthy
@@ -30,24 +29,6 @@ services:
       timeout: 6s
       retries: 5
       start_period: 20s
-  worker:
-    <<: *app
-    command: celery -A config worker --concurrency=1 --loglevel=INFO --hostname=shipping@%h
-    healthcheck:
-      test: ["CMD-SHELL", "celery -A config inspect ping --timeout 5 --destination shipping@$$HOSTNAME | grep -q pong"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 30s
-  beat:
-    <<: *app
-    command: celery -A config beat --loglevel=INFO --schedule=/beat/celerybeat-schedule --pidfile=/beat/beat.pid
-    healthcheck:
-      test: ["CMD", "python", "-c", "import os; from pathlib import Path; os.kill(int(Path('/beat/beat.pid').read_text()), 0)"]
-      interval: 30s
-      timeout: 5s
-      retries: 3
-      start_period: 30s
   frontend:
     image: node:22.23.3-bookworm-slim
     working_dir: /app
@@ -83,5 +64,4 @@ networks:
 volumes:
   shipping_data:
   redis_data:
-  beat_state:
   frontend_modules:

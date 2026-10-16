@@ -9,7 +9,7 @@ import shutil
 parser=argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--data-dir',default='/data')
 parser.add_argument('--destination',default='/data/backups')
-parser.add_argument('--quiesced',action='store_true',help='Assert web, workers and other writers have been stopped.')
+parser.add_argument('--quiesced',action='store_true',help='Assert web and all other writers have been stopped.')
 parser.add_argument('--label',choices=['manual','pre-upgrade'],default='manual')
 parser.add_argument('--verify')
 parser.add_argument('--prune',action='store_true',help='Explicitly purge verified backups older than retention.')
@@ -18,7 +18,7 @@ parser.add_argument('--export-dir',help='Explicit private mounted destination; c
 args=parser.parse_args()
 try:
     if args.verify:
-        result=verify(args.verify);print('PASS: backup files, SQLite integrity/foreign keys, schema and document mapping verified.')
+        result=verify(args.verify);print('PASS: backup files, SQLite integrity/foreign keys, schema and retained private files verified.')
     else:
         path=backup(args.data_dir,args.destination,args.quiesced,args.label)
         print('Backup complete: '+path.name)

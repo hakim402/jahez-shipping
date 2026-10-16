@@ -1,2 +1,0 @@
-{% extends "admin/base_site.html" %}{% load i18n %}
-{% block content %}<section class="jahez-shell-card jahez-upload"><h2>{{ title }}</h2><p>{% translate 'PDF, PNG or JPEG only. Maximum 5 MiB, 40 PDF pages, 20 million image pixels. Active/encrypted PDFs and mismatched file types are rejected. Files are private and downloaded only by authorized staff.' %}</p><form method="post" enctype="multipart/form-data">{% csrf_token %}{{ form.as_p }}<button class="jahez-admin-link" type="submit">{% translate 'Upload private document' %}</button></form></section>{% endblock %}

@@ -7,22 +7,19 @@
   </picture>
   <div class="hero-copy">
     <h1 id="home-heading">{{ c.headline_a }}<br><span>{{ c.headline_b }}</span></h1>
-    <form id="tracking-form" class="tracking-form" method="post" action="/{{ lang }}/#tracking-result" novalidate x-data="trackingForm" data-invalid="{{ invalid|yesno:'true,false' }}" x-on:submit="submit($event)" x-bind:aria-busy="busy">
-      {% csrf_token %}
-      <label for="reference" class="sr-only">{{ c.reference }}</label>
+    <div class="tracking-form" role="region" aria-labelledby="tracking-unavailable">
+      <label for="reference">{{ c.reference }}</label>
       <div class="tracking-controls">
-        <span class="search-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg></span>
-        <input id="reference" name="reference" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="80" placeholder="{{ c.placeholder }}" aria-describedby="tracking-help tracking-error" aria-invalid="{{ invalid|yesno:'true,false' }}" x-bind:aria-invalid="invalid" x-ref="reference" x-on:input="invalid = false" dir="ltr" required>
-        <button type="submit" x-bind:disabled="busy"><span x-show="!busy">{{ c.track }}</span><span x-cloak x-show="busy">{{ c.track_busy }}</span><span class="arrow" aria-hidden="true">→</span></button>
+        <input id="reference" type="text" placeholder="{{ c.placeholder }}" dir="ltr" disabled aria-describedby="tracking-unavailable">
+        <button type="button" disabled>{{ c.track }}</button>
       </div>
-      <p id="tracking-error" class="field-error" role="alert" x-show="invalid" {% if not invalid %}style="display:none"{% endif %}>{{ c.invalid_message }}</p>
-      <p id="tracking-help" class="tracking-help"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M7 10V7a5 5 0 0 1 10 0v3"/><rect x="5" y="10" width="14" height="11" rx="3"/></svg>{{ c.tracking_help }}</p>
-    </form>
+      <p id="tracking-unavailable" class="tracking-help" role="status">{{ tracking_empty }}</p>
+    </div>
     <div class="trust-strip"><span><i aria-hidden="true">✓</i>{{ c.trust_a }}</span><span><i aria-hidden="true">✓</i>{{ c.trust_b }}</span><span><i aria-hidden="true">✓</i>{{ c.trust_c }}</span></div>
     {% if whatsapp_url %}<a class="hero-whatsapp" href="{{ whatsapp_url }}" rel="noreferrer"><span class="whatsapp-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 11.5a8.5 8.5 0 0 1-12.8 7.3L3 20l1.2-4.7a8.5 8.5 0 1 1 16.3-3.8Z"/><path d="m9 7 1 2-1 1a7 7 0 0 0 4 4l1-1 2 1v1a1 1 0 0 1-1 1 8 8 0 0 1-7-7 1 1 0 0 1 1-1Z"/></svg></span>{{ c.support_link }} <span aria-hidden="true">↗</span></a>{% endif %}
   </div>
 </section>
-{% if state %}{% if stored_result %}{% include "public/partials/stored_result.html" %}{% else %}{% include "public/partials/tracking_result.html" %}{% endif %}{% endif %}
+
 <section class="faq wrap" aria-labelledby="faq-heading">
   <div class="section-heading faq-heading">
     <span class="faq-emblem" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11.5a8 8 0 0 1-8 8H5l-3 2v-10a8 8 0 0 1 16-1"/><path d="M10 8a2 2 0 1 1 3 1.7c-.7.4-1 1-1 1.8M12 15h.01"/></svg></span>

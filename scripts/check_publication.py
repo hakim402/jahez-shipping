@@ -6,7 +6,9 @@ import subprocess
 from pathlib import PurePosixPath
 
 
-PUBLIC_DOCS = {
+PUBLIC_DOCS = {'NGINX_SSL.md', 'CONTAINER_DESIGN.md', 'PUBLICATION_POLICY.md', 'LOCAL_DEVELOPMENT.md', 'UPGRADE_ROLLBACK.md', 'DEPLOYMENT_VPS.md', 'OPERATIONS_RUNBOOK.md', 'BACKUP_RESTORE.md', 'DATA_MODEL.md', 'ADMIN_GUIDE.md'}
+# Previously reviewed public guide names remain valid only in already published history.
+HISTORICAL_PUBLIC_DOCS = {
     "17TRACK_INTEGRATION.md", "ADMIN_GUIDE.md", "AI_BEHAVIOR.md",
     "AI_SEARCH_TOOLS.md", "BACKUP_RESTORE.md", "DATA_MODEL.md",
     "DEPLOYMENT_VPS.md", "DOCUMENT_FIELD_MAPPING.md", "LOCAL_DEVELOPMENT.md",
@@ -33,7 +35,7 @@ def git(*args):
     return subprocess.check_output(["git", *args])
 
 
-def forbidden_path(name):
+def forbidden_path(name, historical=False):
     path = PurePosixPath(name)
     lower = path.name.lower()
     if lower in {"agents.md", "project_prompt.md"}:
@@ -47,7 +49,7 @@ def forbidden_path(name):
     if lower in {"id_rsa", "id_ed25519", "credentials", "credentials.json"}:
         return True
     if path.parts[0].lower() == "docs":
-        return len(path.parts) != 2 or path.name not in PUBLIC_DOCS
+        return len(path.parts) != 2 or path.name not in (PUBLIC_DOCS | HISTORICAL_PUBLIC_DOCS if historical else PUBLIC_DOCS)
     return False
 
 
@@ -89,7 +91,7 @@ def check(index=False, refs=()):
             fields = meta.decode().split()
             mode, oid = (fields[0], fields[1]) if index else (fields[0], fields[2])
             name = raw_name.decode("utf-8", "surrogateescape")
-            if forbidden_path(name):
+            if forbidden_path(name, historical=not index):
                 errors.add(f"{name}: private path")
                 continue
             if mode == "160000":

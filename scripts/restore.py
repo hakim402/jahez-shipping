@@ -14,7 +14,7 @@ args=parser.parse_args()
 print('Restore target: '+str(Path(args.target).absolute()))
 try:
     result=restore(args.backup,args.target,args.replace,args.confirm_target,args.quiesced,args.allow_damaged_target)
-    print('PASS: restored matching database/files verified; documents='+str(result['documents'])+'; prior target retained='+str(result['rollback_retained']))
+    print('PASS: restored matching database/files verified; files='+str(result['files'])+'; prior target retained='+str(result['rollback_retained']))
 except Exception:
     print('Restore refused or failed. Keep writers paused; inspect private target/rollback/staging and backup validation. No source archive was modified.',file=sys.stderr)
     raise SystemExit(1) from None

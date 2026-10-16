@@ -1,49 +1,34 @@
 # JAHEZ Shipping
 
-An independent English/Arabic Django shipping platform for JAHEZ TRADE CO.
+English/Arabic Django foundation for shared container tracking. **0.9.0 is a cleanup candidate, not a deployed release.** The last recorded live release is 0.8.1; this cleanup does not migrate owner databases or change the VPS.
 
-**Release 0.8.1: prepared for guided VPS deployment.** Includes the approved bilingual public interface, configurable WhatsApp contact, clearer admin navigation, English/Arabic form guidance and permission-checked deletion with retained audit history. Production uses a hardened image/Compose package, private configuration validation, backup/recovery and paused upgrade controls. See the [release checks](docs/RELEASE_0_8_1.md), [admin guide](docs/ADMIN_GUIDE.md), [VPS guide](docs/DEPLOYMENT_VPS.md), [Nginx/SSL](docs/NGINX_SSL.md), [upgrade/rollback](docs/UPGRADE_ROLLBACK.md), [backup/restore](docs/BACKUP_RESTORE.md) and [operating guidance](docs/OPERATIONS_RUNBOOK.md).
+The candidate keeps the branded homepage/company page, RTL, configured WhatsApp contact, Unfold administrator authentication, sessions, shared login protection, safe logs and SQLite backup/restore. Public tracking is explicitly unavailable. Container registration, website retrieval, Groq extraction and daily refresh are planned only; no public request calls a provider.
 
-Repository: [hakim402/jahez-shipping](https://github.com/hakim402/jahez-shipping). Live deployment requires host inventory, DNS/TLS, private production configuration, provider/webhook verification and tested off-server backups. No development environment or database is included in the repository. See [publication policy](docs/PUBLICATION_POLICY.md); enable its Git hooks immediately after cloning.
+Legacy business tables are removed by guarded, irreversible migrations. Existing installations require a separately approved maintenance window and verified matching old-image database/private-file backup. **Do not run migration/startup commands against existing owner data during this review.**
 
-## Local quick start
+## Verify in isolation
 
-Requires running Docker Desktop (macOS) or Docker Engine with Compose (Linux), plus Python 3 for the environment helper. Run commands from this project directory.
-
-```bash
-python3 scripts/init_dev_env.py
-docker compose --env-file .env.dev -p jahez-shipping-dev -f compose.dev.yml build
-docker compose --env-file .env.dev -p jahez-shipping-dev -f compose.dev.yml run --rm web python manage.py migrate
-docker compose --env-file .env.dev -p jahez-shipping-dev -f compose.dev.yml run --rm web python manage.py setup_roles
-docker compose --env-file .env.dev -p jahez-shipping-dev -f compose.dev.yml up -d
-docker compose --env-file .env.dev -p jahez-shipping-dev -f compose.dev.yml run --rm web python manage.py createsuperuser
-```
-
-The helper creates a private `.env.dev` with an independent random secret; it never overwrites an existing file. Do not use the example placeholder as a real secret. The environment persists across restarts. No provider API keys are required.
-
-- English: http://localhost:18744/en/
-- Arabic: http://localhost:18744/ar/
-- Admin: http://localhost:18744/en/admin/ (Arabic: `/ar/admin/`)
-- Integration health: http://localhost:18744/en/admin/integration-health/ (Arabic: `/ar/admin/integration-health/`)
-- Liveness: http://localhost:18744/health/live/
-- Readiness: http://localhost:18744/health/ready/
-
-Create your own admin interactively with a strong unique password (minimum 12 characters). No default admin account/password is shipped. Assign intended staff to Shipping Operations or Shipping Read Only through Users.
-
-For labeled local fixtures, run `docker compose --env-file .env.dev -p jahez-shipping-dev -f compose.dev.yml exec -T web python manage.py seed_demo`. Copy the generated reference from the authorized shipment detail and submit it on the public homepage. The seed creates four synthetic shipments and one private sample bill, without creating users. The original shipping bill is still needed for its real field mapping.
-
-For explicit carrier fixtures, run `docker compose --env-file .env.dev -p jahez-shipping-dev -f compose.dev.yml exec -T web python manage.py seed_tracking_demo`. Review **DEMO-CARRIER** and its private carrier event, then approve bilingual display text/publication. This command performs no live provider request and cannot run in production.
-
-
-For local AI review, run `docker compose --env-file .env.dev -p jahez-shipping-dev -f compose.dev.yml exec -T web python manage.py seed_ai_demo`, then open [English AI Workspace](http://localhost:18744/en/admin/ai/aidraft/workspace/) or [Arabic AI Workspace](http://localhost:18744/ar/admin/ai/aidraft/workspace/). No Groq request, account creation or customer message is sent by the seed.
-
-## Focused verification
+With Docker running, from this independent checkout:
 
 ```bash
-docker compose --env-file .env.dev -p jahez-shipping-dev -f compose.dev.yml run --rm web python manage.py test --settings=config.settings.test
+docker build --target production -t jahez-shipping-cleanup:0.9.0 .
+python3 scripts/verify_cleanup.py
+docker run --rm --network none -e DJANGO_SETTINGS_MODULE=config.settings.test -e SHIPPING_DATA_DIR=/tmp/review jahez-shipping-cleanup:0.9.0 python manage.py test --settings=config.settings.test
+python3 scripts/check_boundaries.py
+python3 scripts/check_publication.py --index
+git diff --check
 ```
 
+The cleanup verifier uses synthetic private data, a separate no-port Compose project and retained immutable 0.8.1 image; no owner env/volume/service is used. Review results in the local-only cleanup report. No default admin/password is shipped.
 
-[AI behavior](docs/AI_BEHAVIOR.md) · [17TRACK integration](docs/17TRACK_INTEGRATION.md) · [Data model](docs/DATA_MODEL.md) · [Status rules](docs/STATUS_RULES.md) · [Local development](docs/LOCAL_DEVELOPMENT.md)
+## Maintained guides
 
-The production package has been verified locally. Actual VPS, certificate and provider acceptance checks must be completed on the intended deployment.
+- [Local development and isolated review](docs/LOCAL_DEVELOPMENT.md)
+- [Minimal admin](docs/ADMIN_GUIDE.md) and [current data model](docs/DATA_MODEL.md)
+- [Operations and Groq configuration](docs/OPERATIONS_RUNBOOK.md)
+- [Backup/restore](docs/BACKUP_RESTORE.md) and [future migration/upgrade](docs/UPGRADE_ROLLBACK.md)
+- [Deployment boundaries](docs/DEPLOYMENT_VPS.md) and [Nginx/SSL](docs/NGINX_SSL.md)
+- [Next-phase design, not implementation](docs/CONTAINER_DESIGN.md)
+- [Publication policy](docs/PUBLICATION_POLICY.md)
+
+Runtime: Django 5.2, templates, Tailwind, Alpine, Unfold, SQLite; Redis exists only for shared fail-closed login counters. Development adds a frontend compiler/watch service. No Celery, broker, scheduler, upload pipeline or active business models. The three old app labels remain installed solely to run historical migrations and their retirement graph.

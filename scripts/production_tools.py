@@ -25,8 +25,9 @@ def read_env(path):
 def scope(review_dir=None):
     if review_dir:
         directory=Path(review_dir).resolve()
-        if not directory.name.startswith('jahez-phase08-') or directory.parent!=Path('/private/tmp').resolve() and directory.parent!=Path('/tmp').resolve():raise ValueError('Invalid review directory.')
-        return 'jahez-shipping-phase08-review',['docker','compose','--env-file',str(directory/'review.env'),'-p','jahez-shipping-phase08-review','-f',str(ROOT/'compose.prod.yml'),'-f',str(directory/'review.yml')]
+        if directory.parent!=(ROOT/'private/cleanup-review').resolve() or not directory.name.startswith('compose-'):
+            raise ValueError('Invalid isolated review directory.')
+        return 'jahez-shipping-cleanup-review',['docker','compose','--env-file',str(directory/'review.env'),'-p','jahez-shipping-cleanup-review','-f',str(ROOT/'compose.prod.yml'),'-f',str(directory/'review.yml')]
     return 'jahez-shipping-prod',['docker','compose','--env-file',str(ROOT/'.env.prod'),'-p','jahez-shipping-prod','-f',str(ROOT/'compose.prod.yml')]
 
 def call(arguments,capture=False):
@@ -36,8 +37,8 @@ def call(arguments,capture=False):
     return result.stdout
 
 def contract(model,project,review=False):
-    if model['name']!=project or set(model['services'])!={'web','worker','beat','redis'}:raise ValueError('Compose service/project contract failed.')
-    for name in ('web','worker','beat'):
+    if model['name']!=project or set(model['services'])!={'web','redis'}:raise ValueError('Compose service/project contract failed.')
+    for name in ('web',):
         svc=model['services'][name]
         if not svc.get('read_only') or svc.get('environment',{}).get('DJANGO_SETTINGS_MODULE')!='config.settings.production':raise ValueError('Production settings/read-only contract failed.')
         if any(v['type']=='bind' for v in svc.get('volumes',[])):raise ValueError('Production source bind mount refused.')
@@ -46,7 +47,7 @@ def contract(model,project,review=False):
     if review:
         if ports:raise ValueError('Review must have no host ports.')
     elif len(ports)!=1 or ports[0].get('host_ip')!='127.0.0.1' or str(ports[0].get('published'))!='18743':raise ValueError('Production loopback port contract failed.')
-    for name in ('worker','beat','redis'):
+    for name in ('redis',):
         if model['services'][name].get('ports'):raise ValueError('Non-web published port refused.')
     for vol in model['volumes'].values():
         if not vol['name'].startswith(project+'_'):raise ValueError('Foreign volume refused.')

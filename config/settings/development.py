@@ -5,6 +5,3 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 # Django serves source static assets in development; WhiteNoise is production-only.
 MIDDLEWARE = [m for m in MIDDLEWARE if m != "whitenoise.middleware.WhiteNoiseMiddleware"]
-
-# Synthetic design examples are allowed only when DEBUG is also true.
-PUBLIC_UI_PREVIEW_ENABLED = True
