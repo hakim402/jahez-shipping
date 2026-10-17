@@ -16,7 +16,7 @@
     <div class="tracking-notice" role="alert"><h2>{% translate 'Tracking is temporarily unavailable' %}</h2><p>{% translate 'Please try again shortly or contact JAHEZ for help.' %}</p></div>
   {% elif state == 'found' %}
     <section class="journey-summary" aria-labelledby="summary-heading">
-      <div class="journey-title"><h2 id="summary-heading">{% translate 'Container' %} <bdi dir="ltr">{{ shipment.container_number|default:'—' }}</bdi></h2><span class="journey-status">{{ shipment.status }}</span></div>
+      {% comment %} <div class="journey-title"><h2 id="summary-heading">{% translate 'Container' %} <bdi dir="ltr">{{ shipment.container_number|default:'—' }}</bdi></h2><span class="journey-status">{{ shipment.status }}</span></div> {% endcomment %}
       <p class="shared-code">{% translate 'Shared tracking code' %}: <bdi dir="ltr">{{ lookup_code }}</bdi></p>
       {% if shipment.stale %}<div class="tracking-notice stale" role="status"><strong>{% translate 'These updates may be out of date' %}</strong><p>{% translate 'The last approved carrier check is over 30 hours old. Contact JAHEZ for confirmation; saved updates remain visible.' %}</p></div>{% endif %}
       <p class="last-checked">{% translate 'Last successful carrier check' %}: {% if shipment.checked %}<bdi dir="ltr">{{ shipment.checked }}</bdi>{% else %}{% translate 'Not available. These are reviewed saved updates.' %}{% endif %}</p>
