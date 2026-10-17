@@ -10,7 +10,7 @@ import tempfile
 from pathlib import Path
 from production_tools import ROOT, scope, call, contract
 parser=argparse.ArgumentParser(description=__doc__)
-parser.add_argument('--image',default='jahez-shipping-cleanup:0.9.0')
+parser.add_argument('--image',default='jahez-shipping-review:0.9.0')
 parser.add_argument('--old-image',default='sha256:60dd55dc3c2f781c9ea2f10d75729b05fbed21f783cc34e6f746e4fe63db4db3')
 args=parser.parse_args()
 base=ROOT/'private/cleanup-review';base.mkdir(parents=True,exist_ok=True)

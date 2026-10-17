@@ -1,54 +1,87 @@
-# Local development and isolated acceptance
+# Local development
 
-Use only this Shipping checkout. Docker Desktop (macOS) or Engine/Compose (Linux), Python 3 and Compose 2.24.4+ are required for the isolated no-port override. Normal development is `jahez-shipping-dev`, loopback 18744; production is `jahez-shipping-prod`, loopback 18743. Never infer target identity from a port alone.
+Requirements: Docker Desktop or Docker Engine with Compose, Git and Python 3 for the small host utilities. Node and Django dependencies run inside Docker; a host `node_modules` or Python virtual environment is optional. Run these commands from the repository root.
 
-The owner-authorized local reset is historical and complete. Development has the cleaned schema plus `containers.0001_initial` and `0002_reviewed_public_tracking`, preserving the existing owner-managed administrator and private files/configuration through additive migrations. No synthetic journey/account was seeded there. Keep the private matching old-image recovery archive. Do not reset development again or use the fresh-install sequence on it. Production reset remains a separate Phase 8 operation pending access and recovery checks.
+Local project: `jahez-shipping-dev`. Web: `127.0.0.1:18744`. Data lives in named Docker volumes; `.env.dev` is private. An existing local database and administrator are preserved.
 
-## Current addresses and admin access
+## First setup on a new checkout
 
-Home: `http://localhost:18744/en/` or `/ar/`; company: `/en/who-we-are/` or `/ar/who-we-are/`; admin: `/en/admin/` or `/ar/admin/`; lookup: `/en/track/` or `/ar/track/`. A reviewed public journey's code opens `/<language>/track/<code>/`. Lookup accepts the random JAHEZ code, never B/L or a physical container number.
-
-Preserve an existing intended administrator. If the owner requests a new one, create it interactively with configured validation:
-
-```bash
-docker compose --env-file .env.dev -p jahez-shipping-dev -f compose.dev.yml exec web python manage.py createsuperuser
-```
-
-Enter the password only at its hidden terminal prompts; the configured minimum is 12 characters. Do not bypass validation, publish credentials or seed a default account. Existing hashes, sessions and permissions remain owner data. [Admin workflow](ADMIN_GUIDE.md) covers publication review, manual fallback, identity binding and explicit refresh.
-
-## New empty development installation only
-
-After verifying the intended installation is new and empty:
+Create the environment only if `.env.dev` is absent:
 
 ```bash
 python3 scripts/init_dev_env.py
-docker compose --env-file .env.dev -p jahez-shipping-dev -f compose.dev.yml build
+```
+
+The initializer generates a private secret and refuses to overwrite an existing file. Set `SHIPPING_BUSINESS_TIME_ZONE=Asia/Shanghai` for China time. Add your own WhatsApp/Groq configuration privately when needed. Groq is disabled in the example; ordinary operation and tests need no API key.
+
+```bash
+docker compose --env-file .env.dev -p jahez-shipping-dev -f compose.dev.yml build web
 docker compose --env-file .env.dev -p jahez-shipping-dev -f compose.dev.yml up -d --wait redis
 docker compose --env-file .env.dev -p jahez-shipping-dev -f compose.dev.yml run --rm --no-deps web python manage.py migrate --noinput
 docker compose --env-file .env.dev -p jahez-shipping-dev -f compose.dev.yml run --rm --no-deps web python manage.py createsuperuser
-docker compose --env-file .env.dev -p jahez-shipping-dev -f compose.dev.yml up -d web frontend
+docker compose --env-file .env.dev -p jahez-shipping-dev -f compose.dev.yml up -d --wait web frontend
 ```
 
-The initializer preserves an existing `.env.dev`. For an existing cleaned installation, inspect applied/pending migrations and retain a matching private backup before an approved additive migration. Populated legacy schemas require [their separate recovery gate](UPGRADE_ROLLBACK.md), not this empty-install sequence. Web never auto-migrates. Source newer than its schema fails readiness; fix the reviewed migration mismatch rather than resetting data.
+Enter your chosen administrator credentials at the terminal prompts. Use the configured password validation. Existing installations only need a new administrator if the owner requests one.
 
-Redis is required for shared fail-closed login/lookup limits and readiness. No API key is needed for ordinary local operation or mocked acceptance. Groq stays disabled in examples; preserve any existing private configuration. No worker, broker or Beat exists. The daily timer is prepared but inactive until Phase 8.
+Open [the website](http://localhost:18744/en/), [Arabic](http://localhost:18744/ar/) or [admin](http://localhost:18744/en/admin/). See the [admin guide](ADMIN_GUIDE.md) for real workflow steps.
 
-## Synthetic release verification
+## Daily work
 
-Use the [README build/test sequence](../README.md#reproduce-release-verification-in-isolation). The new production-image verifier is:
+Python source reloads in the development web container. The frontend container watches templates and Tailwind source. After pulling code, apply any forward migrations without deleting the database:
 
 ```bash
-python3 scripts/verify_release.py --image jahez-shipping-phase07:0.9.0
+git pull --ff-only origin main
+docker compose --env-file .env.dev -p jahez-shipping-dev -f compose.dev.yml stop web
+docker compose --env-file .env.dev -p jahez-shipping-dev -f compose.dev.yml build web
+docker compose --env-file .env.dev -p jahez-shipping-dev -f compose.dev.yml run --rm --no-deps web python manage.py migrate --noinput
+docker compose --env-file .env.dev -p jahez-shipping-dev -f compose.dev.yml up -d --wait web frontend
 ```
 
-It uses production settings, the installed image, no owner env/data/host ports and an internal-only network. Provider results come from local synthetic fixtures. It verifies the complete lifecycle, actual shared Redis/outage behavior, runtime resource/security/static/health controls, web recreation and matching recovery with model rows/private hashes. It cleans only its validated project/volumes; private synthetic evidence remains ignored. `--keep-review` retains a successful fixture temporarily for browser acceptance; after inspecting it, run `python3 scripts/verify_release.py --cleanup PRIVATE_REVIEW_DIRECTORY` with the exact generated directory. Do not leave synthetic sessions/resources running after review.
+Keep meaningful local records backed up before schema work. Image rebuilding uses locked dependencies; source-only edits normally just reload. When frontend dependencies change, recreate the frontend container so its startup reruns `npm ci`:
 
-The historical `verify_cleanup.py --image jahez-shipping-phase07:0.9.0 --old-image VERIFIED_0_8_1_IMAGE_ID` additionally needs a verified matching immutable 0.8.1 image; substitute its checked ID, not an assumed tag. It tests guarded legacy transition/refusal and old-image restore only, not the chosen future fresh-production reset. No real B/L is queried or seeded by either verifier. Unit/source/Groq tests use local fixtures/mock transport, including parser/host/redirect constraints, prompt injection, time/token/content caps, concurrency and private/public separation. `tests.test_release_journey` exercises the whole admin-to-archive lifecycle; corruption regressions remain in `tests.test_recovery`.
+```bash
+docker compose --env-file .env.dev -p jahez-shipping-dev -f compose.dev.yml up -d --force-recreate frontend
+```
 
-Browser acceptance uses disposable synthetic journeys/contact/session. It verifies EN/AR keyboard forms, public/admin pages, desktop/mobile RTL, source dates, timeline and stale/error states. A local preview proxy may forward to the isolated production image for layout review; it is not real HTTPS/proxy/cookie deployment evidence. No message is sent, live provider accessed, owner login tested or real journey opted into publication. Release, authorized live source and production/scheduled evidence are recorded separately.
+For an immediate asset rebuild or Arabic catalog compilation:
 
-## Routine source work
+```bash
+docker compose --env-file .env.dev -p jahez-shipping-dev -f compose.dev.yml exec frontend npm run build
+docker compose --env-file .env.dev -p jahez-shipping-dev -f compose.dev.yml exec web python scripts/compile_translations.py
+```
 
-Django reloads Python in development. The frontend watches templates/styles; `exec frontend npm run build` rebuilds compiled CSS/local Alpine. Production has no source mount/watch/dev server. Run `python3 scripts/compile_translations.py` after Arabic catalog edits. Dependency/runtime changes need a deliberate scoped rebuild, not a restart of unrelated projects.
+## Status, logs and stopping
 
-Use the exact development Compose prefix followed by `ps` or safe `logs --tail 50 web redis frontend`. Check migration consistency with `python manage.py makemigrations --check --dry-run` in the configured isolated runtime. Do not run ordinary tests against owner data or print resolved environments. `down` preserves named volumes; never use `-v`, global prune or another app's commands. [Prepared scheduler instructions](OPERATIONS_RUNBOOK.md#prepared-linux-timer--activation-only-in-phase-8) remain installation guidance, not activation permission.
+```bash
+docker compose --env-file .env.dev -p jahez-shipping-dev -f compose.dev.yml ps
+docker compose --env-file .env.dev -p jahez-shipping-dev -f compose.dev.yml logs --tail 50 web redis frontend
+docker compose --env-file .env.dev -p jahez-shipping-dev -f compose.dev.yml stop
+```
+
+`stop` retains containers and data. `down` also retains named volumes unless `-v` is supplied. Keep those volumes and private environment files when updating code. Check readiness at http://localhost:18744/health/ready/; a missing migration or Redis outage returns 503.
+
+## Test without owner data
+
+This production image uses temporary test databases, synthetic references and mocked provider requests. It has no network or owner-data mounts:
+
+```bash
+docker build --target production -t jahez-shipping-review:0.9.0 .
+docker run --rm --network none --read-only --tmpfs /tmp:rw,noexec,nosuid,size=256m \
+  --cap-drop ALL --security-opt no-new-privileges --pids-limit 128 --memory 768m --cpus 1 \
+  jahez-shipping-review:0.9.0 python manage.py test --settings=config.settings.test
+python3 -m unittest tests.test_publication_policy
+```
+
+For complete synthetic release/Redis/failure/recreation/backup acceptance:
+
+```bash
+python3 scripts/verify_release.py --image jahez-shipping-review:0.9.0
+python3 scripts/verify_nginx.py
+```
+
+The verifier creates a dedicated project with no host ports, an internal network, separate volumes and a synthetic environment. It cleans its disposable Docker resources. `private/release-review/` holds ignored evidence. Never point it at owner environments or volumes. `--keep-review` is only for immediate synthetic browser review; clean the exact generated directory using `--cleanup` afterward.
+
+`scripts/verify_cleanup.py --image jahez-shipping-review:0.9.0 --old-image VERIFIED_OLD_IMAGE_ID` is the optional historical migration/recovery rehearsal. It requires a retained matching 0.8.1 image. It is not a normal development or deployment command.
+
+Before publishing, use the [publication checks](PUBLICATION_POLICY.md). `python3 scripts/check_boundaries.py` is an additional owner-checkout check when its private protected-source baseline exists; it does not require modifying sibling projects.

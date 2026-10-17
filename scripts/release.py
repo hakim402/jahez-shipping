@@ -1,4 +1,4 @@
-"""Future reduced-runtime release steps. No implicit migration or owner-service restart."""
+"""Scoped production maintenance: status, pause, backup, migrate and resume."""
 import argparse
 import json
 from production_tools import scope, call, contract

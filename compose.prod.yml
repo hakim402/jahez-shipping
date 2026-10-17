@@ -1,4 +1,4 @@
-# Cleanup candidate: do not start against an existing database without owner-approved migration/backup.
+# Production web and Redis. Apply migrations through the documented update steps.
 name: jahez-shipping-prod
 x-app: &app
   image: ${SHIPPING_IMAGE:-jahez-shipping:0.9.0}

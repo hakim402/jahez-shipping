@@ -6,7 +6,10 @@ import subprocess
 from pathlib import PurePosixPath
 
 
-PUBLIC_DOCS = {'NGINX_SSL.md', 'CONTAINER_DESIGN.md', 'PUBLICATION_POLICY.md', 'LOCAL_DEVELOPMENT.md', 'UPGRADE_ROLLBACK.md', 'DEPLOYMENT_VPS.md', 'OPERATIONS_RUNBOOK.md', 'BACKUP_RESTORE.md', 'DATA_MODEL.md', 'ADMIN_GUIDE.md'}
+PUBLIC_DOCS = {
+    'ADMIN_GUIDE.md', 'BACKUP_RESTORE.md', 'DATA_MODEL.md',
+    'DEPLOYMENT_VPS.md', 'LOCAL_DEVELOPMENT.md', 'PUBLICATION_POLICY.md',
+}
 # Previously reviewed public guide names remain valid only in already published history.
 HISTORICAL_PUBLIC_DOCS = {
     "17TRACK_INTEGRATION.md", "ADMIN_GUIDE.md", "AI_BEHAVIOR.md",
@@ -14,7 +17,7 @@ HISTORICAL_PUBLIC_DOCS = {
     "DEPLOYMENT_VPS.md", "DOCUMENT_FIELD_MAPPING.md", "LOCAL_DEVELOPMENT.md",
     "NGINX_SSL.md", "OPERATIONS_RUNBOOK.md", "POSTGRES_MIGRATION.md",
     "RELEASE_0_8_1.md", "STATUS_RULES.md", "UPGRADE_ROLLBACK.md",
-    "PUBLICATION_POLICY.md",
+    "PUBLICATION_POLICY.md", "CONTAINER_DESIGN.md",
 }
 PRIVATE_DIRS = {
     "private", "data", "backups", "node_modules", ".venv", "venv",

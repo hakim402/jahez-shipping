@@ -22,12 +22,14 @@ class PublicationPolicyTests(unittest.TestCase):
 
     def test_public_runtime_and_reviewed_guides(self):
         for name in (".env.dev.example", ".env.prod.example", "docs/DEPLOYMENT_VPS.md",
-                     "apps/shipments/models.py", "docs/CONTAINER_DESIGN.md", "static/images/majed-saleem.webp"):
+                     "apps/shipments/models.py", "docs/DATA_MODEL.md", "static/images/majed-saleem.webp"):
             self.assertFalse(forbidden_path(name))
 
     def test_old_public_guides_do_not_allow_private_archive_or_current_stale_guides(self):
-        self.assertTrue(forbidden_path("docs/AI_BEHAVIOR.md"))
-        self.assertFalse(forbidden_path("docs/AI_BEHAVIOR.md", historical=True))
+        for name in ("AI_BEHAVIOR.md", "CONTAINER_DESIGN.md", "NGINX_SSL.md",
+                     "OPERATIONS_RUNBOOK.md", "UPGRADE_ROLLBACK.md"):
+            self.assertTrue(forbidden_path("docs/" + name))
+            self.assertFalse(forbidden_path("docs/" + name, historical=True))
         self.assertTrue(forbidden_path("docs/archive/AI_BEHAVIOR.md", historical=True))
 
     def test_sensitive_content_reports_categories_only(self):

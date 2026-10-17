@@ -1,7 +1,9 @@
 .env
-.env.dev
-.env.prod
+.env.*
+!.env.dev.example
+!.env.prod.example
 .venv/
+venv/
 node_modules/
 __pycache__/
 *.py[cod]
@@ -9,22 +11,16 @@ __pycache__/
 /data/
 /private/
 /staticfiles/
+/backups/
 *.sqlite3
 *.sqlite3-*
 *.db
 *.log
 celerybeat-schedule*
-/backups/
-/docs/screenshots/*admin-dashboard*
 
-docs/protected-baseline.json
-
-# Private owner instructions, project history and review captures stay local.
+# Owner instructions, credentials and local operational material.
 AGENTS.md
 PROJECT_PROMPT.md
-.env.*
-!.env.dev.example
-!.env.prod.example
 *.pem
 *.key
 *.p12
@@ -34,14 +30,12 @@ PROJECT_PROMPT.md
 .aws/
 .codex/
 .agents/
+
+# Only maintained public guides belong in Git.
 /docs/*
 !/docs/ADMIN_GUIDE.md
 !/docs/BACKUP_RESTORE.md
-!/docs/CONTAINER_DESIGN.md
 !/docs/DATA_MODEL.md
 !/docs/DEPLOYMENT_VPS.md
 !/docs/LOCAL_DEVELOPMENT.md
-!/docs/NGINX_SSL.md
-!/docs/OPERATIONS_RUNBOOK.md
 !/docs/PUBLICATION_POLICY.md
-!/docs/UPGRADE_ROLLBACK.md

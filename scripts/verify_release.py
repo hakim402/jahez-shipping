@@ -13,7 +13,7 @@ import tempfile
 from production_tools import ROOT,scope,call,contract
 
 parser=argparse.ArgumentParser(description=__doc__)
-parser.add_argument("--image",default="jahez-shipping-phase07:0.9.0")
+parser.add_argument("--image",default="jahez-shipping-review:0.9.0")
 parser.add_argument("--keep-review",action="store_true",help="Keep a successful isolated fixture for immediate browser review; clean it with --cleanup.")
 parser.add_argument("--cleanup",metavar="PRIVATE_REVIEW_DIRECTORY")
 args=parser.parse_args()

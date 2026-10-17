@@ -1,24 +1,44 @@
-# Manual container administration
+# Administrator workflow
 
-Use `/en/admin/` or `/ar/admin/`. Containers appears first; Users and Groups live under collapsed Administration, visible only with the corresponding Django permissions. Staff access alone grants no container permissions. No default credentials, automatic role assignment or temporary owner account exists. Create intended administrators interactively with configured password validation.
+Open `/en/admin/` or `/ar/admin/`. Create your intended administrator interactively using the [local](LOCAL_DEVELOPMENT.md) or [production](DEPLOYMENT_VPS.md#change-private-settings-or-create-an-administrator) command. There is no default login or automatic role assignment. Staff status alone grants no container permissions; Users/Groups appear only with the corresponding Django permissions.
 
-## Register and maintain a journey
+## Add a container journey
 
-1. Add a Container with the carrier B/L/search reference. Leave the physical container empty until the source identifies one unambiguously or the administrator selects it. Confirm identity before binding; a bound B/L/container cannot be reassigned. A later voyage is a separate journey.
-2. Fill Basic information from verified facts, including bilingual route labels. Missing facts remain empty. The list shows identity, route, effective status, actual/estimated arrival, last successful refresh, publication and archive state.
-3. Use Progress and timeline for independent English/Arabic notes and a manual status override. Select **Use carrier status (clear override)** to return to the stored carrier state. Unknown carrier state stays Needs review.
-4. Add or edit manual updates inline, providing English and Arabic titles. Carrier updates are read-only in the saved timeline and cannot be edited through manual inlines. Undated updates are allowed. Dated updates are displayed by source clock text, with undated updates last; different source zones may not describe an absolute chronological order.
-5. Source / advanced details starts collapsed. Manually copy only verified departure/arrival facts. Enter `YYYY-MM-DD`, `YYYY-MM-DD HH:MM` or second precision; supply a source zone only when explicitly known. Actual and estimated values remain distinct. A missing zone never becomes an inferred UTC instant. Internal evidence/claims are not exposed in the form.
-6. New journeys and events are private. To publish, set Published and check the review confirmation after reviewing the current facts and intended public events. This saves a separate approved snapshot. Published manual event details must be bilingual. Republishing working edits or restoring an archived published journey also requires confirmation. Archive retains the journey; hard deletion and bulk publication are disabled.
+1. Choose **Containers → Add** and enter the carrier B/L/search reference.
+2. Keep the physical container number empty until the carrier identifies one, or explicitly select the intended number from a multi-container result.
+3. Keep B/L, container, vessel and voyage distinct. Register a new journey for a later voyage rather than rebinding an existing journey.
+4. Save privately. A generated `JHZ-...` code belongs to this journey; everyone sharing that container uses the same public code.
 
-A saved, reviewed, published and non-archived journey offers a working shared code-only link with clipboard feedback. Customers can use that same code from the homepage or switch English/Arabic on the result. Share it only with intended recipients: possession of the random code permits viewing the approved journey. B/L and physical container numbers are not lookup credentials. Private, archived or not-yet-reviewed journeys have no working public result or copy button.
+Source identity is fixed after binding. Changing a B/L/container/source means a separate journey. The two-model [data rules](DATA_MODEL.md) explain identity and date precision.
 
-Saving private working edits without checking confirmation leaves the approved snapshot unchanged. Checking confirmation replaces it with the reviewed current facts and selected public events. Turning a manual event public requires confirmation; turning it private removes its approved copy immediately. Unpublishing clears the snapshot and archiving immediately hides the whole journey. Reopening publication requires review. Carrier events shown at first publication are only recognized, dated milestones; unknown or undated carrier entries need investigation.
+## Refresh and review
 
-**Auto-publish validated carrier updates** is off by default. Enable it only after owner review of that real journey, with the confirmation checkbox. It applies only to an already reviewed, published and non-archived journey. It can advance currently retrieved, validated carrier facts and known dated carrier milestones. It preserves approved manual updates/status, omitted facts and reviewed Arabic port labels. New AI Arabic labels and private manual edits require another human confirmation. Unknown/undated stages or a failed refresh retain the old public snapshot and need admin attention. An unreviewed change to the manual status override also holds automatic publication. Use **Refresh now** on a saved active journey, review its confirmation page, then submit the protected POST. Save manual edits first. The check never publishes a private journey. Carrier updates enter the public snapshot only under the explicit opt-in rules above; otherwise review and confirm separately. Archived journeys cannot refresh. Missing/ambiguous identities, source/AI failures and concurrent edits keep the last good facts; feedback explains how to retry or use verified manual updates. A stale edit form must be reloaded before saving.
+Use **Refresh now** for one explicit bounded carrier/Groq attempt. Check the returned container identity, route, vessel/voyage, actual versus estimated dates, carrier status and last-success time. Review Arabic labels before approving them. HTTP success alone does not establish that extracted facts are correct.
 
-The list now includes **Refresh attention**, with a filter for journeys needing attention. Progress and timeline exposes last attempt, last successful check and the same attention text. A failed attempt leaves the previous success time intact. Unknown carrier stages need review; no success yet is Not checked yet; success over 30 hours old is Stale. An active claim displays Checking carrier. Archived or completed journeys show why daily checks skip them. A successful unchanged check advances the success time without adding duplicate events or notifications.
+The adapter uses a fixed Sea Legend website interface, not an arbitrary URL. The interface is undocumented and can change or become unavailable; unattended-use permission and long-term availability are not established by a successful sample. Groq only proposes bounded port-label translations; it does not browse, choose facts, change identities or determine delivery. Provider requests are explicit admin/batch actions, never public lookups.
 
-The Phase 5 command includes unpublished active journeys and keeps checking past an estimated arrival. Archived journeys and any journey with a completed carrier state or completed manual override are excluded. An explicit Refresh now remains available for a saved non-archived journey, including a deliberately requested check of a completed journey. The daily timer is prepared but not installed/enabled before Phase 8. No messages are sent. Public page views read approved saved data and never start a refresh, AI request or scheduled job. Results label actual/estimated dates and missing zones, identify carrier versus JAHEZ updates, and show stale information after 30 hours. A missing successful check remains unknown. There is no continuous GPS tracking.
+A failed refresh keeps previously accepted facts, manual edits and the public snapshot. Inspect the allowlisted failure/attention message and last attempt versus last success. Unknown stages require review. The provider operation has an 18-second hard bound; a concurrent edit/claim prevents a stale result from overwriting newer work.
 
-Ordinary Django admin logs record edits. Existing users, hashes, sessions and permissions are preserved; assigning access is a separate deliberate owner action. Synthetic review uses isolated disposable storage, never owner accounts or real carrier identities. See [data rules](DATA_MODEL.md), [local setup](LOCAL_DEVELOPMENT.md) and [source limitations](OPERATIONS_RUNBOOK.md#phase-1-carrier-source-proof).
+## Manual correction and fallback
+
+When the source is unavailable, copy verified information into the manual English/Arabic fields and add a manual event if needed. Distinguish actual/estimated/unknown dates and retain their original precision. Use a manual status override deliberately; clearing it returns to the carrier state. Private notes and newly added manual events are not automatically public.
+
+A carrier date without a source timezone remains unknown. China business display time (`Asia/Shanghai`) must not be assumed to be the source clock's timezone. ETA passing does not establish arrival, collection or completion.
+
+## Publish and share
+
+1. Review the intended English/Arabic public details and event visibility.
+2. Confirm first publication in admin. This creates a strict approved snapshot, not a live view of private working fields.
+3. Open the tracking link and verify it in both languages before sharing it.
+
+Public lookup accepts only the JAHEZ code. It does not accept a B/L or physical-container number. Missing/private/archived/unreviewed results share generic feedback. Codes grant shared access; keep operational captures private and avoid analytics that collect result URLs.
+
+**Automatically publish validated carrier updates** is off by default. Opt in only after reviewing that real journey and its first publication. It cannot first-publish a private record, expose manual notes/new private events, accept unknown statuses or approve unreviewed AI labels. Unknown/uncertain changes preserve the old public copy and flag admin attention. Manual changes still need deliberate review/publication.
+
+The public last-success time refers to the approved snapshot. A private refresh does not make an older public copy current. Public information is marked stale after 30 hours; this is milestone tracking rather than continuous GPS.
+
+## Archive and daily checks
+
+Archive hides the result immediately while retaining the journey/events. Prefer archiving to deletion; a container with events is protected from deletion. Archived or completed journeys are skipped by the batch. An old ETA alone does not stop checks.
+
+Daily refresh is an optional host timer, configured separately from publication opt-in and business display timezone. Review its one-shot/schedule setup in [production](DEPLOYMENT_VPS.md#refresh-commands-and-optional-daily-schedule). Use the admin attention filter to inspect failures/stale successes; a timer being enabled is not proof a scheduled run succeeded.

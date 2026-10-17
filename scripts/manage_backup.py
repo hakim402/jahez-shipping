@@ -1,4 +1,4 @@
-"""Future reduced-runtime backup wrapper: keeps web paused on failure."""
+"""Back up the two-service production runtime; keep web paused on failure."""
 import argparse
 import subprocess
 import sys

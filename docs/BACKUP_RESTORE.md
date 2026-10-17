@@ -1,29 +1,53 @@
-# Matching database and private-file recovery
+# Backup, restore and rollback
 
-A code commit is not a database backup. Local release acceptance uses only disposable synthetic databases/private files; owner data, volumes and existing archives remain unchanged. Real destructive application requires a verified **old 0.8.1** backup and its immutable source/image. See [exact transition commands](UPGRADE_ROLLBACK.md). Reversing migrations cannot recover deleted rows.
+A backup belongs to a matching application version, schema, private-file set and recoverable image/source. A Git commit alone cannot recover deleted records. Keep private backup archives, environment files and recovery images out of GitHub and public downloads.
 
-The reduced recovery helper uses SQLite online backup and a quiesced complete private-file copy. It verifies integrity/foreign keys, all table counts, applied migrations/schema and file hashes. Restore additionally compares the exact staged and installed SQLite file size/SHA-256, plus private-file sets/sizes/SHA-256, against the verified archive before reporting success. A valid SQLite row change with unchanged counts/schema must fail too. Container/Event rows, approved snapshots, auth/session rows and retained private bytes belong to the same recovery point. New archives use format 2 / app 0.9.0 and contain auth hashes/sessions; they remain confidential, with directories 0700 and files 0600. It refuses legacy business schemas: verify/restore old format-1 archives with their matching old image instead. Archive version/hash/file-set mismatch, symlinks and protected/code paths are refused.
+## Take a production backup
 
-For a later approved reduced-runtime maintenance window:
-
-```bash
-python3 scripts/manage_backup.py --confirm-production
-```
-
-This pauses only the reduced web service, backs up and resumes on success. A failure keeps web paused and retains the maintenance marker. It refuses installations with legacy worker/Beat containers, which need the transition sequence. Redis stays up. No backup scheduler is installed; the separate carrier-refresh timer package remains inactive. Manual `backup.py --quiesced` requires a Shipping marker but cannot independently prove writers stopped; operators must stop raw SQLite/one-off writers too.
-
-Inside an appropriately scoped one-off container, using the matching archive version and an actual archive ID:
+From the Shipping checkout on the VPS:
 
 ```bash
-python scripts/backup.py --verify /data/backups/ARCHIVE_ID
-python scripts/restore.py --backup /data/backups/ARCHIVE_ID --target /data/restore-review-UNIQUE_ID
-python scripts/verify_restore.py /data/backups/ARCHIVE_ID /data/restore-review-UNIQUE_ID
+sudo python3 scripts/manage_backup.py --confirm-production
 ```
 
-Choose a fresh empty isolated target. No worker or provider starts against it. Before any restored writer starts, the verifier checks all table counts/schema/migrations, exact restored SQLite bytes, the exact private-file set/sizes/checksums and bilingual pages. Keep the isolated target cold until verification; later application writes are not the original recovery point. Missing, additional, corrupted or symlinked private files fail verification even if database counts still match. For deliberate existing-target replacement, the helper additionally requires `--replace --confirm-target /data --quiesced`, a valid Shipping maintenance marker and a verified archive **outside** the target hierarchy, mounted separately at `/recovery`. It retains previous DB/WAL/SHM/private files in `.pre-restore-UUID`; failed installation retains evidence and restores moved originals. Damaged-target recovery additionally requires `--allow-damaged-target`; it is not automatic.
+This pauses only Shipping web, takes and verifies a SQLite/private-file backup, and resumes web after migration/health checks. Redis stays running. If it fails, preserve the maintenance state and inspect the error before resuming. The wrapper is for the current two-service runtime; old worker/Beat installations are refused.
 
-A restore discards writes after the chosen snapshot. Obtain an explicit recovery decision for those writes; keep writers stopped and preserve failure-state evidence. Configure encrypted off-server access/transfer, retention, failure monitoring and retrieved-copy restore in a later approved operational step. No remote destination, credentials, transfer, purge or schedule is configured by this cleanup.
+Archives are stored in `/data/backups/ARCHIVE_ID` inside the Shipping data volume, with private directories/files. The printed ID identifies the recovery point. Verification checks SQLite integrity, foreign keys, all table counts, schema/migrations, exact file hashes and the complete private-file set. Current archives use format 2/app 0.9.0. They include accounts/sessions and published snapshots, so they remain confidential.
 
-The release verifier `python3 scripts/verify_release.py` rehearses matching 0.9.0 backup/isolated restore using synthetic container/event rows, public snapshots and private bytes. It compares every original table row and actual hashes, rejects valid-database row changes and same-length private corruption through the CLI, and proves a corrupted staged copy cannot replace the original target. This local rehearsal does not establish an off-server copy, production recovery or host-loss protection.
+Keep administrator edits and any installed daily refresh paused for a maintenance window. Record the image ID/source commit with the backup; retain that image before rebuilding a mutable tag. The [production update sequence](DEPLOYMENT_VPS.md#routine-update-after-pushing-local-code) shows the image-retention command. Keep `.env.prod` separately protected without printing its values.
 
-If a recorded old image is missing, do not assume another tag is equivalent. A recovery image may be reconstructed only from verified retained source and lockfiles, under a separate tag. Record its new immutable identity and verify a copied retained archive in isolation, including actual recovered rows/private hashes, before treating it as a recovery option. Preserve a private image export and checksum. A successful synthetic rehearsal does not establish compatibility with an uninspected production archive or reproduce the missing original image bytes.
+## Verify an archive
+
+Replace `ARCHIVE_ID` with the actual printed ID:
+
+```bash
+sudo docker compose --env-file .env.prod -p jahez-shipping-prod -f compose.prod.yml run --rm --no-deps web python scripts/backup.py --verify /data/backups/ARCHIVE_ID
+```
+
+The selected image must match the archive's version/schema. Old format-1/0.8.1 archives require the retained old image/source and its verifier. Current code deliberately refuses incompatible archives. Preserve historical migrations and their recovery tests.
+
+## Prove an isolated restore
+
+Choose a new, unused restore directory in the Shipping volume. These commands restore into that separate directory, leaving the active database in place:
+
+```bash
+TARGET="/data/restore-review-$(date -u +%Y%m%dT%H%M%SZ)"
+sudo docker compose --env-file .env.prod -p jahez-shipping-prod -f compose.prod.yml run --rm --no-deps web python scripts/restore.py --backup /data/backups/ARCHIVE_ID --target "$TARGET"
+sudo docker compose --env-file .env.prod -p jahez-shipping-prod -f compose.prod.yml run --rm --no-deps web python scripts/verify_restore.py /data/backups/ARCHIVE_ID "$TARGET"
+```
+
+Run with the matching image. The verifier compares exact restored SQLite bytes and all private-file sizes/hashes before Django opens the restored database, then checks table counts/migrations and bilingual pages with providers disabled. A cold restore must be verified before writers alter it. Retain or remove only that explicit disposable review directory after inspection; it is not the live `/data/private` directory or a backup archive.
+
+## Recover the active installation
+
+A restore discards writes after the chosen backup. Confirm the recovery point and preserve the current failure-state database/files first. Pause web and any refresh schedule, verify no other writer is using the Shipping volume, select the matching image/source and verify an isolated restore before replacing active storage.
+
+The restore CLI requires `--replace --confirm-target /data --quiesced` for an existing target plus a valid Shipping maintenance marker. Mount the verified archive separately at `/recovery`; an archive inside the target hierarchy is refused. It retains previous target files in a `.pre-restore-...` directory. Replacing damaged storage additionally requires `--allow-damaged-target`; it is never automatic. Exact host mounts/image/paths must be selected for the actual recovery case, not copied from a historical reset script.
+
+For a failed migration, an older image alone cannot use an incompatible new schema. Recover the matching database/private files, configuration and image together, then verify migrations, internal readiness, administrator access and public results before allowing writes. Reverse migrations and `git checkout` do not restore deleted data.
+
+## Off-server protection and retention
+
+The volume-local archive protects against an application mistake, not loss of the VPS. Choose an owner-controlled off-server destination, encrypt before transfer, restrict access and set an explicit retention/failure-monitoring policy. Retrieve a copy from that destination and repeat the matching-image isolated restore, including actual private-file hashes. A successful upload or metadata listing is not a restore test.
+
+No off-server destination or scheduled backup has been configured by the code. The carrier-refresh timer does not back up the database. Retention pruning is explicit: verify the correct recovery points and retrieved-copy restore before removing older archives, images or private files. Docker volume deletion/global pruning is not routine project cleanup.

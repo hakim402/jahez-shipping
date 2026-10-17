@@ -2,7 +2,7 @@
 from pathlib import Path
 import hashlib, json, subprocess
 root = Path(__file__).resolve().parents[1]
-baseline_file = root / "docs/protected-baseline.json"
+baseline_file = root / "private/maintenance/protected-baseline.json"
 if not baseline_file.exists():
     raise SystemExit("Local protected-source baseline absent. Establish a fresh read-only baseline for this checkout before implementation; do not claim a protected-source verification.")
 baseline = json.loads(baseline_file.read_text())

@@ -6,7 +6,7 @@ from django.apps import apps
 from django.contrib import admin
 from django.contrib.auth.models import Group, Permission, User
 from django.core.cache import cache
-from django.core.management import call_command, get_commands
+from django.core.management import get_commands
 from django.contrib.staticfiles import finders
 from django.db import connection
 from django.test import Client, TestCase, SimpleTestCase, override_settings
@@ -20,8 +20,8 @@ class FoundationTests(TestCase):
         self.assertEqual({m._meta.label for m in admin.site._registry},{'auth.User','auth.Group','containers.Container'})
         self.assertFalse([m for m in apps.get_models() if m._meta.app_label in ('shipments','tracking','ai')])
         commands=get_commands()
-        for name in ('seed_demo','seed_tracking_demo','seed_ai_demo','seed_search_demo'):self.assertNotIn(name,commands)
-        call_command('setup_roles');self.assertEqual(User.objects.count(),0)
+        for name in ('seed_demo','seed_tracking_demo','seed_ai_demo','seed_search_demo','setup_roles'):self.assertNotIn(name,commands)
+        self.assertEqual(User.objects.count(),0)
 
     @override_settings(SHIPPING_WHATSAPP_NUMBER='+971 (50) 123-4567')
     def test_public_bilingual_empty_state_branding_whatsapp_and_static(self):
