@@ -1,15 +1,111 @@
 /* Scoped manual container admin; public branding/styles are unchanged. */
-.model-container .jahez-control{border:1px solid #a99bbd;border-radius:7px;background:#fff;color:#17132b;padding:10px 12px;min-height:44px;width:100%;max-width:42rem;box-sizing:border-box}
-.dark .model-container .jahez-control{background:#211a33;color:#f4f1ff;border-color:#675478}
-.model-container .jahez-source-time{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:12px;max-width:46rem}
-.model-container .jahez-source-time>div{min-width:0}.model-container .jahez-source-time label{display:block;font-size:12px;margin-block-end:6px}
-.model-container .jahez-copy{display:inline-block;background:#5734c9;color:#fff;padding:11px 16px;border-radius:7px;min-height:44px;margin-block:10px;cursor:pointer}
-.model-container .jahez-copy:focus-visible,.model-container .jahez-control:focus-visible{outline:3px solid #9979ff;outline-offset:3px}
-.model-container .jahez-timeline{max-width:52rem;overflow-wrap:anywhere}.model-container .jahez-timeline article{border-inline-start:3px solid #9d83d1;padding:10px 18px;margin-block:12px;background:#f7f4fc;border-radius:4px}
-.dark .model-container .jahez-timeline article{background:#292034}.model-container .jahez-timeline h3{font-weight:600}.model-container .jahez-timeline p{margin-block:6px;font-size:12px}.model-container .jahez-event-detail{white-space:normal;line-height:1.8}
-.model-container .jahez-tracking-link{overflow-wrap:anywhere;max-width:52rem}.model-container .jahez-tracking-link label{display:block;margin-block:10px 5px}.model-container bdi{unicode-bidi:isolate;overflow-wrap:anywhere}
-.model-container textarea{max-width:100%;box-sizing:border-box}.model-container .inline-group{min-width:0}
-@media(max-width:700px){.model-container .jahez-source-time{grid-template-columns:minmax(0,1fr)}.model-container .jahez-timeline article{padding:10px 12px}}
+.model-container .jahez-control {
+  border: 1px solid #a99bbd;
+  border-radius: 7px;
+  background: #fff;
+  color: #17132b;
+  padding: 10px 12px;
+  min-height: 44px;
+  width: 100%;
+  max-width: 42rem;
+  box-sizing: border-box;
+}
+.dark .model-container .jahez-control {
+  background: #211a33;
+  color: #f4f1ff;
+  border-color: #675478;
+}
+.model-container .jahez-source-time {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  gap: 12px;
+  max-width: 46rem;
+}
+.model-container .jahez-source-time > div {
+  min-width: 0;
+}
+.model-container .jahez-source-time label {
+  display: block;
+  font-size: 12px;
+  margin-block-end: 6px;
+}
+.model-container .jahez-copy {
+  display: inline-block;
+  background: #5734c9;
+  color: #fff;
+  padding: 11px 16px;
+  border-radius: 7px;
+  min-height: 44px;
+  margin-block: 10px;
+  cursor: pointer;
+}
+.model-container .jahez-copy:focus-visible,
+.model-container .jahez-control:focus-visible {
+  outline: 3px solid #9979ff;
+  outline-offset: 3px;
+}
+.model-container .jahez-timeline {
+  max-width: 52rem;
+  overflow-wrap: anywhere;
+}
+.model-container .jahez-timeline article {
+  border-inline-start: 3px solid #9d83d1;
+  padding: 10px 18px;
+  margin-block: 12px;
+  background: #f7f4fc;
+  border-radius: 4px;
+}
+.dark .model-container .jahez-timeline article {
+  background: #292034;
+}
+.model-container .jahez-timeline h3 {
+  font-weight: 600;
+}
+.model-container .jahez-timeline p {
+  margin-block: 6px;
+  font-size: 12px;
+}
+.model-container .jahez-event-detail {
+  white-space: normal;
+  line-height: 1.8;
+}
+.model-container .jahez-tracking-link {
+  overflow-wrap: anywhere;
+  max-width: 52rem;
+}
+.model-container .jahez-tracking-link label {
+  display: block;
+  margin-block: 10px 5px;
+}
+.model-container bdi {
+  unicode-bidi: isolate;
+  overflow-wrap: anywhere;
+}
+.model-container textarea {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+.model-container .inline-group {
+  min-width: 0;
+}
+@media (max-width: 700px) {
+  .model-container .jahez-source-time {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .model-container .jahez-timeline article {
+    padding: 10px 12px;
+  }
+}
 
-.jahez-refresh-link { display: inline-flex; align-items: center; min-height: 38px; padding: 6px 12px; border: 1px solid #d1d5db; border-radius: 6px; white-space: nowrap; }
-.dark .jahez-refresh-link { border-color: #374151; }
+.jahez-refresh-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+  padding: 6px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+.dark .jahez-refresh-link {
+  border-color: #374151;
+}

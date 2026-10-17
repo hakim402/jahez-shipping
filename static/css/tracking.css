@@ -1,58 +1,273 @@
 /* Public saved-data tracking; scoped to the approved homepage form/result page. */
-.tracking-page { background: #f8f7fc; }
-.tracking-page .site-header { color: var(--ink, #252039); }
-.tracking-page .mobile-subnav { background: #eee9f7; }
-.tracking-page .tracking-result { padding-block: 32px 64px; max-width: 1120px; margin-block-start: 0; }
-.tracking-back { color: #5734c9; display: inline-block; padding-block: 8px; }
-.tracking-page .result-heading { display: block; max-width: 740px; margin-block: 20px; padding-block-end: 0; border: 0; }
-.tracking-page .result-heading h1 { font-size: clamp(30px, 5vw, 48px); line-height: 1.3; margin-block: 12px; letter-spacing: -1px; }
-html[lang=ar] .tracking-page .result-heading h1 { font-size: clamp(28px, 4vw, 40px); line-height: 1.6; letter-spacing: 0; }
-.result-heading p, .public-timeline > p, .last-checked { color: #635d73; line-height: 1.8; }
-.tracking-page .tracking-form { background: #fff; border: 1px solid #ded7ed; padding: 24px; border-radius: 20px; max-width: 740px; margin-block: 24px 32px; }
-.tracking-page .tracking-form label, .tracking-page .tracking-help { color: #423653; }
-.tracking-page .tracking-controls { border: 1px solid #c7bddc; background: #fff; }
-.tracking-page .tracking-controls input { color: #252039; min-width: 0; }
-.tracking-page .tracking-controls button { background: #5734c9; color: #fff; }
-.tracking-controls input:focus-visible, .tracking-controls button:focus-visible, .tracking-back:focus-visible, .tracking-support a:focus-visible { outline: 3px solid #9979ff; outline-offset: 4px; }
-.tracking-notice { background: #f1edf9; border: 1px solid #ded3f1; border-radius: 14px; padding: 18px 22px; margin-block: 22px; line-height: 1.8; }
-.tracking-notice h2, .tracking-notice h3, .tracking-notice p { margin-block: 0 6px; }
-.tracking-notice.stale { background: #fff6e7; border-color: #efd8a9; }
-.journey-summary { background: #fff; border: 1px solid #e6dff0; border-radius: 24px; padding: 32px; }
-.journey-title { display: flex; gap: 16px; justify-content: space-between; align-items: start; flex-wrap: wrap; }
-.journey-title h2 { margin: 0; font-size: 25px; }
-.journey-status { background: #ece5ff; color: #4527a8; border-radius: 100px; padding: 8px 16px; font-weight: 600; }
-.shared-code { font-size: 14px; color: #635d73; overflow-wrap: anywhere; }
-.journey-facts { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 22px; padding-block: 22px; border-block: 1px solid #eee9f5; }
-.journey-facts dt { color: #635d73; font-size: 13px; margin-block-end: 8px; }
-.journey-facts dd { margin: 0; font-weight: 600; overflow-wrap: anywhere; }
-.journey-dates { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 28px; }
-.journey-dates h3 { font-size: 18px; }
-.journey-dates section > div { margin-block: 14px; }
-.journey-dates small, .event-time small { display: block; color: #635d73; margin-block-start: 6px; }
-.time-kind { display: inline-block; font-size: 13px; color: #5734c9; margin-inline-end: 8px; }
-.public-timeline { margin-block-start: 40px; }
-.public-timeline ol { list-style: none; padding-inline-start: 22px; margin-inline-start: 9px; border-inline-start: 2px solid #d8ccee; }
-.public-timeline li { position: relative; margin-block: 22px; }
-.public-timeline li::before { content: ''; width: 12px; height: 12px; border-radius: 50%; background: #6842e5; position: absolute; inset-inline-start: -29px; top: 27px; }
-.public-timeline article { padding: 22px 26px; background: #fff; border: 1px solid #e6dff0; border-radius: 18px; overflow-wrap: anywhere; }
-.public-timeline h3 { font-size: 20px; margin-block: 8px; }
-.public-timeline p { line-height: 1.85; }
-.event-origin { color: #635d73; font-size: 13px; margin: 0; }
-.event-detail { white-space: pre-line; }
-.muted { color: #635d73; }
-.tracking-support { border-radius: 20px; padding: 28px; background: #eee9f8; margin-block-start: 36px; }
-.tracking-support h2 { margin-block-start: 0; font-size: 24px; }
-.tracking-support a { color: #4527a8; display: inline-block; min-height: 44px; padding-block: 10px; }
+.tracking-page {
+  background: #f8f7fc;
+}
+.tracking-page .site-header {
+  color: var(--ink, #252039);
+}
+.tracking-page .mobile-subnav {
+  background: #eee9f7;
+}
+.tracking-page .tracking-result {
+  padding-block: 32px 64px;
+  max-width: 1120px;
+  margin-block-start: 0;
+}
+.tracking-back {
+  color: #5734c9;
+  display: inline-block;
+  padding-block: 8px;
+}
+.tracking-page .result-heading {
+  display: block;
+  max-width: 740px;
+  margin-block: 20px;
+  padding-block-end: 0;
+  border: 0;
+}
+.tracking-page .result-heading h1 {
+  font-size: clamp(30px, 5vw, 48px);
+  line-height: 1.3;
+  margin-block: 12px;
+  letter-spacing: -1px;
+}
+html[lang="ar"] .tracking-page .result-heading h1 {
+  font-size: clamp(28px, 4vw, 40px);
+  line-height: 1.6;
+  letter-spacing: 0;
+}
+.result-heading p,
+.public-timeline > p,
+.last-checked {
+  color: #635d73;
+  line-height: 1.8;
+}
+.tracking-page .tracking-form {
+  background: #fff;
+  border: 1px solid #ded7ed;
+  padding: 24px;
+  border-radius: 20px;
+  max-width: 740px;
+  margin-block: 24px 32px;
+}
+.tracking-page .tracking-form label,
+.tracking-page .tracking-help {
+  color: #423653;
+}
+.tracking-page .tracking-controls {
+  border: 1px solid #c7bddc;
+  background: #fff;
+}
+.tracking-page .tracking-controls input {
+  color: #252039;
+  min-width: 0;
+}
+.tracking-page .tracking-controls button {
+  background: #5734c9;
+  color: #fff;
+}
+.tracking-controls input:focus-visible,
+.tracking-controls button:focus-visible,
+.tracking-back:focus-visible,
+.tracking-support a:focus-visible {
+  outline: 3px solid #9979ff;
+  outline-offset: 4px;
+}
+.tracking-notice {
+  background: #f1edf9;
+  border: 1px solid #ded3f1;
+  border-radius: 14px;
+  padding: 18px 22px;
+  margin-block: 22px;
+  line-height: 1.8;
+}
+.tracking-notice h2,
+.tracking-notice h3,
+.tracking-notice p {
+  margin-block: 0 6px;
+}
+.tracking-notice.stale {
+  background: #fff6e7;
+  border-color: #efd8a9;
+}
+.journey-summary {
+  background: #fff;
+  border: 1px solid #e6dff0;
+  border-radius: 24px;
+  padding: 32px;
+}
+.journey-title {
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+  align-items: start;
+  flex-wrap: wrap;
+}
+.journey-title h2 {
+  margin: 0;
+  font-size: 25px;
+}
+.journey-status {
+  background: #ece5ff;
+  color: #4527a8;
+  border-radius: 100px;
+  padding: 8px 16px;
+  font-weight: 600;
+}
+.shared-code {
+  font-size: 14px;
+  color: #635d73;
+  overflow-wrap: anywhere;
+}
+.journey-facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+  padding-block: 22px;
+  border-block: 1px solid #eee9f5;
+}
+.journey-facts dt {
+  color: #635d73;
+  font-size: 13px;
+  margin-block-end: 8px;
+}
+.journey-facts dd {
+  margin: 0;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.journey-dates {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px;
+}
+.journey-dates h3 {
+  font-size: 18px;
+}
+.journey-dates section > div {
+  margin-block: 14px;
+}
+.journey-dates small,
+.event-time small {
+  display: block;
+  color: #635d73;
+  margin-block-start: 6px;
+}
+.time-kind {
+  display: inline-block;
+  font-size: 13px;
+  color: #5734c9;
+  margin-inline-end: 8px;
+}
+.public-timeline {
+  margin-block-start: 40px;
+}
+.public-timeline ol {
+  list-style: none;
+  padding-inline-start: 22px;
+  margin-inline-start: 9px;
+  border-inline-start: 2px solid #d8ccee;
+}
+.public-timeline li {
+  position: relative;
+  margin-block: 22px;
+}
+.public-timeline li::before {
+  content: "";
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #6842e5;
+  position: absolute;
+  inset-inline-start: -29px;
+  top: 27px;
+}
+.public-timeline article {
+  padding: 22px 26px;
+  background: #fff;
+  border: 1px solid #e6dff0;
+  border-radius: 18px;
+  overflow-wrap: anywhere;
+}
+.public-timeline h3 {
+  font-size: 20px;
+  margin-block: 8px;
+}
+.public-timeline p {
+  line-height: 1.85;
+}
+.event-origin {
+  color: #635d73;
+  font-size: 13px;
+  margin: 0;
+}
+.event-detail {
+  white-space: pre-line;
+}
+.muted {
+  color: #635d73;
+}
+.tracking-support {
+  border-radius: 20px;
+  padding: 28px;
+  background: #eee9f8;
+  margin-block-start: 36px;
+}
+.tracking-support h2 {
+  margin-block-start: 0;
+  font-size: 24px;
+}
+.tracking-support a {
+  color: #4527a8;
+  display: inline-block;
+  min-height: 44px;
+  padding-block: 10px;
+}
 @media (max-width: 780px) {
-  .tracking-page .tracking-result { padding-block: 22px 40px; }
-  .tracking-page .tracking-form, .journey-summary { padding: 20px; border-radius: 18px; }
-  .journey-facts { grid-template-columns: repeat(2,minmax(0,1fr)); }
-  .journey-dates { grid-template-columns: 1fr; gap: 8px; }
-  .journey-title h2 { font-size: 21px; }
-  .public-timeline article { padding: 18px; }
-  .tracking-support { padding: 22px; }
-  .tracking-page .tracking-controls { display: flex; flex-direction: column; gap: 8px; padding: 8px; }
-  .tracking-page .tracking-controls input, .tracking-page .tracking-controls button { width: 100%; min-height: 48px; }
-  .tracking-page .tracking-controls input { flex: none; font-size: 16px; }
-  .tracking-page .shared-code bdi, .tracking-page .last-checked bdi { display: block; margin-block-start: 5px; font-size: 13px; white-space: nowrap; }
+  .tracking-page .tracking-result {
+    padding-block: 22px 40px;
+  }
+  .tracking-page .tracking-form,
+  .journey-summary {
+    padding: 20px;
+    border-radius: 18px;
+  }
+  .journey-facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .journey-dates {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .journey-title h2 {
+    font-size: 21px;
+  }
+  .public-timeline article {
+    padding: 18px;
+  }
+  .tracking-support {
+    padding: 22px;
+  }
+  .tracking-page .tracking-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px;
+  }
+  .tracking-page .tracking-controls input,
+  .tracking-page .tracking-controls button {
+    width: 100%;
+    min-height: 48px;
+  }
+  .tracking-page .tracking-controls input {
+    flex: none;
+    font-size: 16px;
+  }
+  .tracking-page .shared-code bdi,
+  .tracking-page .last-checked bdi {
+    display: block;
+    margin-block-start: 5px;
+    font-size: 13px;
+    white-space: nowrap;
+  }
 }
