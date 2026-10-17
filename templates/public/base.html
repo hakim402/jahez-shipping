@@ -7,7 +7,7 @@
   <title>{% if page == 'about' %}{{ c.about_page_title }}{% else %}{{ c.page_title }}{% endif %}</title>
   <meta name="description" content="{{ page_description }}">
   <meta name="robots" content="noindex,nofollow">
-  <meta name="referrer" content="same-origin">
+  <meta name="referrer" content="{% if page == 'tracking' %}no-referrer{% else %}same-origin{% endif %}">
   <meta name="theme-color" content="#5734C9">
   <link rel="canonical" href="{{ canonical_url }}">
   <meta property="og:title" content="{% if page == 'about' %}{{ c.about_page_title }}{% else %}{{ c.page_title }}{% endif %}">
@@ -15,13 +15,14 @@
   <meta property="og:type" content="website">
   <link rel="icon" href="{% static 'brand/jahez-icon-brand.png' %}">
   <link rel="stylesheet" href="{% static 'css/site.css' %}?v=20261010-company-v4">
-  <link rel="alternate" hreflang="en" href="https://shipping.jahez.online/en/{% if page == 'about' %}who-we-are/{% endif %}">
-  <link rel="alternate" hreflang="ar" href="https://shipping.jahez.online/ar/{% if page == 'about' %}who-we-are/{% endif %}">
-  <link rel="alternate" hreflang="x-default" href="https://shipping.jahez.online/ar/{% if page == 'about' %}who-we-are/{% endif %}">
+  {% if page == 'home' or page == 'tracking' %}<link rel="stylesheet" href="{% static 'css/tracking.css' %}?v=20261017">{% endif %}
+  <link rel="alternate" hreflang="en" href="https://shipping.jahez.online/en/{% if page == 'about' %}who-we-are/{% elif page == 'tracking' %}track/{% endif %}">
+  <link rel="alternate" hreflang="ar" href="https://shipping.jahez.online/ar/{% if page == 'about' %}who-we-are/{% elif page == 'tracking' %}track/{% endif %}">
+  <link rel="alternate" hreflang="x-default" href="https://shipping.jahez.online/ar/{% if page == 'about' %}who-we-are/{% elif page == 'tracking' %}track/{% endif %}">
   <script defer src="{% static 'js/site.js' %}"></script>
   <script defer src="{% static 'js/alpine.min.js' %}"></script>
 </head>
-<body{% if page == 'home' %} class="home-page"{% elif page == 'about' %} class="about-page"{% endif %}>
+<body{% if page == 'home' %} class="home-page"{% elif page == 'about' %} class="about-page"{% elif page == 'tracking' %} class="tracking-page"{% endif %}>
   <a href="#main" class="skip-link">{% if lang == 'ar' %}انتقل إلى المحتوى{% else %}Skip to content{% endif %}</a>
   <header class="site-header wrap">
     <a class="brand" href="/{{ lang }}/">
@@ -31,7 +32,7 @@
     <nav aria-label="{% if lang == 'ar' %}التنقل الرئيسي{% else %}Main navigation{% endif %}">
       <a class="nav-about" href="/{{ lang }}/who-we-are/" {% if page == 'about' %}aria-current="page"{% endif %}>{{ c.nav_about }}</a>
       <a class="main-site" href="https://jahez.online/{{ lang }}" rel="noreferrer">{{ c.main_site }} <span aria-hidden="true">↗</span></a>
-      <a class="language-switch" href="/{{ other_lang }}/{% if page == 'about' %}who-we-are/{% endif %}" lang="{{ other_lang }}" hreflang="{{ other_lang }}">
+      <a class="language-switch" href="{{ switch_url }}" lang="{{ other_lang }}" hreflang="{{ other_lang }}">
         <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c5 5 5 13 0 18-5-5-5-13 0-18Z"/></svg>
         {{ c.switch }}
       </a>

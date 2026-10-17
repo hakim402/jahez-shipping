@@ -17,7 +17,7 @@ class FoundationTests(TestCase):
 
     def test_schema_admin_and_commands_have_no_business_features(self):
         self.assertFalse(any(t.startswith(('shipments_','tracking_','ai_')) for t in connection.introspection.table_names()))
-        self.assertEqual({m._meta.label for m in admin.site._registry},{'auth.User','auth.Group'})
+        self.assertEqual({m._meta.label for m in admin.site._registry},{'auth.User','auth.Group','containers.Container'})
         self.assertFalse([m for m in apps.get_models() if m._meta.app_label in ('shipments','tracking','ai')])
         commands=get_commands()
         for name in ('seed_demo','seed_tracking_demo','seed_ai_demo','seed_search_demo'):self.assertNotIn(name,commands)
@@ -31,9 +31,9 @@ class FoundationTests(TestCase):
                 self.assertEqual(r.status_code,200);self.assertContains(r,'dir="'+dir+'"')
                 self.assertContains(r,'https://wa.me/971501234567');self.assertContains(r,'jahez.online')
             r=self.client.get('/'+lang+'/')
-            self.assertContains(r,'disabled');self.assertNotContains(r,'type="submit"')
+            self.assertContains(r,'type="submit"');self.assertContains(r,'name="code"')
             self.assertNotContains(r,'JHZ-DEMO');self.assertNotContains(r,'stored_result')
-            self.assertContains(r,'Container tracking is being prepared' if lang=='en' else 'نعمل على تجهيز تتبع الحاويات')
+            self.assertContains(r,'shared JAHEZ code' if lang=='en' else 'رمز جاهز المشترك')
         for name in ('css/site.css','js/alpine.min.js','images/majed-saleem-600.webp','fonts/Cairo-Regular.ttf'):
             self.assertTrue(finders.find(name),name)
 
@@ -58,7 +58,7 @@ class FoundationTests(TestCase):
         self.assertEqual(r.status_code,302);self.assertEqual(c.session['_auth_user_id'],str(user.pk))
         for lang in ('en','ar'):
             r=c.get('/'+lang+'/admin/');self.assertEqual(r.status_code,200)
-            self.assertContains(r,'Container tracking preparation' if lang=='en' else 'تجهيز تتبع الحاويات')
+            self.assertContains(r,'Container management' if lang=='en' else 'إدارة الحاويات')
             for forbidden in ('/admin/shipments/','/admin/ai/','integration-health','recent_shipments'):self.assertNotContains(r,forbidden)
         self.assertEqual(c.get('/en/admin/auth/user/').status_code,200)
         self.assertEqual(c.get('/en/admin/auth/group/').status_code,403)

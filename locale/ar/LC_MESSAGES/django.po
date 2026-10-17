@@ -1,5 +1,5 @@
 msgid ""
-msgstr "Language: ar\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\n"
+msgstr "Language: ar\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
 msgid "JAHEZ Shipping"
 msgstr "جاهز للشحن"
@@ -33,3 +33,672 @@ msgstr "الأساس جاهز. ستتم إضافة تسجيل الحاويات �
 
 msgid "No tracking data is currently published by this candidate."
 msgstr "لا تنشر هذه النسخة أي بيانات تتبع حالياً."
+
+msgid "A valid list of carrier container identities is required."
+msgstr "يجب تقديم قائمة صحيحة بأرقام الحاويات الواردة من الناقل."
+
+msgid "Accepted source evidence"
+msgstr "أدلة المصدر المعتمدة"
+
+msgid "Actual"
+msgstr "فعلي"
+
+msgid "Actual arrival"
+msgstr "الوصول الفعلي"
+
+msgid "Actual departure"
+msgstr "المغادرة الفعلية"
+
+msgid "Actual or estimated"
+msgstr "فعلي أو متوقع"
+
+msgid "An actual carrier event without a source ID requires a source time."
+msgstr "يتطلب الحدث الفعلي للناقل وقتاً من المصدر إذا لم يتوفر معرّف للحدث."
+
+msgid "Archived at"
+msgstr "تاريخ الأرشفة"
+
+msgid "Arrived"
+msgstr "وصلت"
+
+msgid "B/L or search reference"
+msgstr "بوليصة الشحن أو مرجع البحث"
+
+msgid "Bound source identities cannot be reassigned. Register a separate journey."
+msgstr "لا يمكن إعادة تعيين هوية المصدر بعد تحديد الحاوية. سجّل رحلة مستقلة."
+
+msgid "Carrier"
+msgstr "الناقل"
+
+msgid "Carrier events require a source ID or stable status and location codes."
+msgstr "تتطلب أحداث الناقل معرّفاً لدى المصدر أو رموزاً ثابتة للحالة والموقع."
+
+msgid "Carrier status"
+msgstr "حالة الناقل"
+
+msgid "Completed"
+msgstr "مكتملة"
+
+msgid "Container"
+msgstr "حاوية"
+
+msgid "Container event"
+msgstr "حدث الحاوية"
+
+msgid "Container events"
+msgstr "أحداث الحاوية"
+
+msgid "Container number"
+msgstr "رقم الحاوية"
+
+msgid "Containers"
+msgstr "الحاويات"
+
+msgid "Created at"
+msgstr "تاريخ الإنشاء"
+
+msgid "Customs"
+msgstr "التخليص الجمركي"
+
+msgid "Deduplication key"
+msgstr "معرّف منع التكرار"
+
+msgid "Destination code"
+msgstr "رمز ميناء الوجهة"
+
+msgid "Destination label (Arabic)"
+msgstr "اسم ميناء الوجهة بالعربية"
+
+msgid "Destination label (English)"
+msgstr "اسم ميناء الوجهة بالإنجليزية"
+
+msgid "Detail (Arabic)"
+msgstr "التفاصيل بالعربية"
+
+msgid "Detail (English)"
+msgstr "التفاصيل بالإنجليزية"
+
+msgid "Empty uses the carrier status. Manual notes remain independent of carrier updates."
+msgstr "اتركه فارغاً لاستخدام حالة الناقل. تبقى الملاحظات اليدوية مستقلة عن تحديثات الناقل."
+
+msgid "Equipment quantity"
+msgstr "عدد الحاويات"
+
+msgid "Equipment type"
+msgstr "نوع الحاوية"
+
+msgid "Estimated"
+msgstr "متوقع"
+
+msgid "Estimated arrival"
+msgstr "الوصول المتوقع"
+
+msgid "Estimated departure"
+msgstr "المغادرة المتوقعة"
+
+msgid "Event origin, container and milestone identity cannot be changed."
+msgstr "لا يمكن تغيير مصدر الحدث أو حاويته أو معرّف مرحلته."
+
+msgid "Evidence must match the configured adapter and source fingerprint."
+msgstr "يجب أن تطابق الأدلة موصل المصدر المحدد وبصمة محتواه."
+
+msgid "In transit"
+msgstr "قيد النقل"
+
+msgid "Internal journey grouping; use a new key for a later journey, even with the same container."
+msgstr "معرّف داخلي لتجميع الرحلة؛ استخدم معرّفاً جديداً لأي رحلة لاحقة حتى لو كانت للحاوية نفسها."
+
+msgid "JAHEZ lookup code"
+msgstr "رمز التتبع لدى جاهز"
+
+msgid "Journey and lookup identities cannot be changed."
+msgstr "لا يمكن تغيير معرّف الرحلة أو رمز التتبع."
+
+msgid "Journey key"
+msgstr "معرّف الرحلة"
+
+msgid "Keep accepted source evidence within 8 KiB with adapter, fingerprint, observation time and facts only."
+msgstr "يجب ألا تتجاوز أدلة المصدر المعتمدة 8 كيلوبايت، وأن تقتصر على موصل المصدر والبصمة ووقت المعاينة والحقائق."
+
+msgid "Last refresh attempt"
+msgstr "آخر محاولة تحديث"
+
+msgid "Last successful refresh"
+msgstr "آخر تحديث ناجح"
+
+msgid "Leave empty until the carrier identifies one container or an administrator selects it."
+msgstr "اتركه فارغاً حتى يحدد الناقل حاوية واحدة أو يختارها المسؤول."
+
+msgid "Location code"
+msgstr "رمز الموقع"
+
+msgid "Manual"
+msgstr "يدوي"
+
+msgid "Manual notes (Arabic)"
+msgstr "ملاحظات يدوية بالعربية"
+
+msgid "Manual notes (English)"
+msgstr "ملاحظات يدوية بالإنجليزية"
+
+msgid "Manual status override"
+msgstr "الحالة المحددة يدوياً"
+
+msgid "More than one container was found. An explicit selection is required."
+msgstr "عُثر على أكثر من حاوية. يجب اختيار الحاوية المطلوبة صراحةً."
+
+msgid "Needs review"
+msgstr "بحاجة إلى مراجعة"
+
+msgid "On hold"
+msgstr "متوقفة مؤقتاً"
+
+msgid "Origin"
+msgstr "مصدر الحدث"
+
+msgid "Origin code"
+msgstr "رمز ميناء المنشأ"
+
+msgid "Origin label (Arabic)"
+msgstr "اسم ميناء المنشأ بالعربية"
+
+msgid "Origin label (English)"
+msgstr "اسم ميناء المنشأ بالإنجليزية"
+
+msgid "Preparing"
+msgstr "قيد التجهيز"
+
+msgid "Public event"
+msgstr "حدث منشور"
+
+msgid "Published"
+msgstr "منشورة"
+
+msgid "Raw carrier status"
+msgstr "حالة الناقل الأصلية"
+
+msgid "Raw source status"
+msgstr "الحالة الأصلية لدى المصدر"
+
+msgid "Raw source text"
+msgstr "النص الأصلي لدى المصدر"
+
+msgid "Ready for collection"
+msgstr "جاهزة للاستلام"
+
+msgid "Refresh claim"
+msgstr "حجز التحديث"
+
+msgid "Refresh claim expiry"
+msgstr "انتهاء حجز التحديث"
+
+msgid "Refresh failure code"
+msgstr "رمز تعذر التحديث"
+
+msgid "Revision"
+msgstr "رقم المراجعة"
+
+msgid "Select a container present in the carrier result."
+msgstr "اختر حاوية موجودة في نتيجة الناقل."
+
+msgid "Source adapter"
+msgstr "موصل المصدر"
+
+msgid "Source event ID"
+msgstr "معرّف الحدث لدى المصدر"
+
+msgid "Source fingerprint"
+msgstr "بصمة محتوى المصدر"
+
+msgid "Source leg"
+msgstr "مرحلة الرحلة لدى المصدر"
+
+msgid "Source location"
+msgstr "الموقع لدى المصدر"
+
+msgid "Source time"
+msgstr "الوقت لدى المصدر"
+
+msgid "Source website"
+msgstr "موقع المصدر"
+
+msgid "Stable source leg identity when a journey revisits a location; never a retrieval time."
+msgstr "معرّف ثابت لمرحلة الرحلة عند المرور بالموقع مجدداً؛ لا تستخدم وقت جلب البيانات."
+
+msgid "The carrier container does not match the bound journey."
+msgstr "رقم حاوية الناقل لا يطابق الحاوية المحددة لهذه الرحلة."
+
+msgid "The source time designation must match this field."
+msgstr "يجب أن يطابق وصف الوقت، فعلياً أو متوقعاً، هذا الحقل."
+
+msgid "Title (Arabic)"
+msgstr "العنوان بالعربية"
+
+msgid "Title (English)"
+msgstr "العنوان بالإنجليزية"
+
+msgid "Unknown"
+msgstr "غير معروف"
+
+msgid "Updated at"
+msgstr "تاريخ التعديل"
+
+msgid "Use a SHA-256 fingerprint."
+msgstr "استخدم بصمة SHA-256."
+
+msgid "Use a carrier search reference of 6 to 40 uppercase letters, digits or hyphens."
+msgstr "استخدم مرجع بحث الناقل بطول 6 إلى 40 حرفاً إنجليزياً كبيراً أو رقماً أو شرطة."
+
+msgid "Use four uppercase letters and seven digits, or leave the container unbound."
+msgstr "استخدم أربعة أحرف إنجليزية كبيرة وسبعة أرقام، أو اترك الحاوية غير محددة."
+
+msgid "Use source time text, precision and actual/estimated designation; leave unknown timezone and instant empty."
+msgstr "أدخل نص الوقت ودقته ووصفه كوقت فعلي أو متوقع كما ورد في المصدر؛ اترك المنطقة الزمنية والوقت المطلق فارغين إذا لم يكونا معروفين."
+
+msgid "Use the generated JAHEZ lookup code."
+msgstr "استخدم رمز التتبع الذي أنشأته جاهز."
+
+msgid "Vessel"
+msgstr "السفينة"
+
+msgid "Voyage"
+msgstr "الرحلة البحرية"
+
+msgid "Active"
+msgstr "نشطة"
+
+msgid "Archive state"
+msgstr "حالة الأرشفة"
+
+msgid "Archived"
+msgstr "مؤرشفة"
+
+msgid "Arrival"
+msgstr "الوصول"
+
+msgid "Basic details"
+msgstr "البيانات الأساسية"
+
+msgid "Carrier refresh is not connected. Use verified manual updates for now."
+msgstr "التحديث من الناقل غير متاح حالياً. استخدم التحديثات اليدوية الموثوقة."
+
+msgid "Check the carrier result before binding. A bound container cannot be reassigned."
+msgstr "تحقق من نتيجة الناقل قبل تحديد الحاوية. لا يمكن إعادة تعيين الحاوية بعد ربطها بالرحلة."
+
+msgid "Confirm publication before saving this change."
+msgstr "أكد النشر قبل حفظ هذا التغيير."
+
+msgid "Confirm publication changes"
+msgstr "تأكيد تغييرات النشر"
+
+msgid "Confirm the B/L and selected container"
+msgstr "تأكيد بوليصة الشحن والحاوية المختارة"
+
+msgid "Confirm the source identity before saving this change."
+msgstr "أكد هوية المصدر قبل حفظ هذا التغيير."
+
+msgid "Container / B/L"
+msgstr "الحاوية / بوليصة الشحن"
+
+msgid "Container management"
+msgstr "إدارة الحاويات"
+
+msgid "Copy only a verified source date. Leave timezone empty when the carrier does not supply one."
+msgstr "انسخ تاريخاً موثوقاً من المصدر فقط. اترك المنطقة الزمنية فارغة إذا لم يحددها الناقل."
+
+msgid "Copy prepared link"
+msgstr "نسخ الرابط المُعدّ"
+
+msgid "Customer tracking pages are not available yet. Publication records your approval for later activation."
+msgstr "صفحات تتبع العملاء غير متاحة بعد. يحفظ النشر موافقتك لاستخدامها عند تفعيل الخدمة."
+
+msgid "Customer tracking pages are not available yet. This link is prepared for later activation."
+msgstr "صفحات تتبع العملاء غير متاحة بعد. هذا الرابط مُعدّ للتفعيل لاحقاً."
+
+msgid "Date only"
+msgstr "تاريخ فقط"
+
+msgid "Date/time as written"
+msgstr "التاريخ والوقت كما وردا"
+
+msgid "Display status"
+msgstr "الحالة المعروضة"
+
+msgid "First 200 timeline updates shown."
+msgstr "يتم عرض أول 200 تحديث في التسلسل الزمني."
+
+msgid "Keep completed journeys for reference. Archiving removes customer access when tracking is available."
+msgstr "احتفظ بالرحلات المكتملة للرجوع إليها. تمنع الأرشفة وصول العملاء عند توفر خدمة التتبع."
+
+msgid "Leave empty for an undated manual update. Dates have no assumed timezone."
+msgstr "اتركه فارغاً لإضافة تحديث يدوي دون تاريخ. لا تُفترض منطقة زمنية للتواريخ."
+
+msgid "Link copied"
+msgstr "تم نسخ الرابط"
+
+msgid "Local manual tracking"
+msgstr "التتبع اليدوي المحلي"
+
+msgid "Manage shared journeys, manual updates and publication from one place."
+msgstr "أدر رحلات الحاويات المشتركة والتحديثات اليدوية والنشر من مكان واحد."
+
+msgid "Manual timeline updates"
+msgstr "التحديثات اليدوية للتسلسل الزمني"
+
+msgid "Manual tracking"
+msgstr "التتبع اليدوي"
+
+msgid "Manual update"
+msgstr "تحديث يدوي"
+
+msgid "Manual-copy fallback: enter only carrier facts you have checked. Leave missing facts empty."
+msgstr "الإدخال اليدوي البديل: أدخل فقط بيانات الناقل التي تحققت منها. اترك البيانات غير المتوفرة فارغة."
+
+msgid "No timeline updates yet. Add a manual update below."
+msgstr "لا توجد تحديثات زمنية بعد. أضف تحديثاً يدوياً أدناه."
+
+msgid "Not provided"
+msgstr "غير متوفر"
+
+msgid "Not selected"
+msgstr "غير محددة"
+
+msgid "Only this journey's manual events can be edited here."
+msgstr "يمكن تعديل الأحداث اليدوية الخاصة بهذه الرحلة فقط هنا."
+
+msgid "Open containers"
+msgstr "فتح الحاويات"
+
+msgid "Ordered by source date text; source timezones may differ. Undated updates follow dated updates."
+msgstr "مرتبة حسب التاريخ الوارد في المصدر؛ قد تختلف المناطق الزمنية. تظهر التحديثات غير المؤرخة بعد التحديثات المؤرخة."
+
+msgid "Prepared tracking link"
+msgstr "رابط التتبع المُعدّ"
+
+msgid "Private"
+msgstr "غير منشورة"
+
+msgid "Progress and timeline"
+msgstr "التقدم والتسلسل الزمني"
+
+msgid "Provide both English and Arabic details before publishing an event."
+msgstr "أدخل التفاصيل بالإنجليزية والعربية قبل نشر الحدث."
+
+msgid "Publication"
+msgstr "النشر"
+
+msgid "Publication / archive"
+msgstr "النشر / الأرشفة"
+
+msgid "Publish and save an active journey to prepare its shared link."
+msgstr "انشر رحلة نشطة واحفظها لإعداد رابطها المشترك."
+
+msgid "Refresh capability"
+msgstr "إمكانية التحديث"
+
+msgid "Required when publishing a container, a manual event, or restoring an archived published journey."
+msgstr "مطلوب عند نشر حاوية أو حدث يدوي أو إعادة تفعيل رحلة منشورة مؤرشفة."
+
+msgid "Route"
+msgstr "المسار"
+
+msgid "Save the journey before adding timeline updates."
+msgstr "احفظ الرحلة قبل إضافة تحديثات التسلسل الزمني."
+
+msgid "Save the journey to generate its shared JAHEZ code."
+msgstr "احفظ الرحلة لإنشاء رمز جاهز المشترك الخاص بها."
+
+msgid "Saved timeline"
+msgstr "التسلسل الزمني المحفوظ"
+
+msgid "Search by container, B/L, JAHEZ code or vessel."
+msgstr "ابحث برقم الحاوية أو بوليصة الشحن أو رمز جاهز أو السفينة."
+
+msgid "Select and copy the link manually."
+msgstr "حدد الرابط وانسخه يدوياً."
+
+msgid "Shared container journeys"
+msgstr "رحلات الحاويات المشتركة"
+
+msgid "Source and advanced details"
+msgstr "المصدر والتفاصيل المتقدمة"
+
+msgid "This journey is bound. Register a separate journey to use another source identity."
+msgstr "تم تحديد الحاوية لهذه الرحلة. سجّل رحلة مستقلة لاستخدام هوية مصدر أخرى."
+
+msgid "Timezone not supplied"
+msgstr "المنطقة الزمنية غير محددة"
+
+msgid "Timezone, only if supplied"
+msgstr "المنطقة الزمنية، إذا وردت في المصدر فقط"
+
+msgid "Tracking link"
+msgstr "رابط التتبع"
+
+msgid "Undated update"
+msgstr "تحديث غير مؤرخ"
+
+msgid "Use Confirm publication changes above to publish this manual event."
+msgstr "استخدم خيار تأكيد تغييرات النشر أعلاه لنشر هذا الحدث اليدوي."
+
+msgid "Use carrier status (clear override)"
+msgstr "استخدام حالة الناقل (إلغاء التحديد اليدوي)"
+
+msgid "Select value"
+msgstr "اختر قيمة"
+
+msgid "Please review the highlighted fields and messages below."
+msgstr "يرجى مراجعة الحقول والرسائل المبيّنة أدناه."
+
+msgid "This journey changed while the form was open. Reload it before saving."
+msgstr "تغيّرت بيانات الرحلة أثناء فتح النموذج. أعد تحميل الصفحة قبل الحفظ."
+
+msgid "Refresh now"
+msgstr "تحديث الآن"
+
+msgid "Carrier check completed. Saved updates remain private; review them before publication."
+msgstr "اكتمل التحقق من الناقل. تبقى التحديثات المحفوظة غير منشورة؛ راجعها قبل النشر."
+
+msgid "Carrier check completed. Some stages need review; no completion was inferred."
+msgstr "اكتمل التحقق من الناقل. بعض المراحل تحتاج إلى مراجعة؛ لم يُفترض اكتمال الرحلة."
+
+msgid "Several containers were found. Verify and select the physical container before retrying."
+msgstr "عُثر على عدة حاويات. تحقّق من رقم الحاوية واخترها قبل المحاولة مجدداً."
+
+msgid "Source identity or route did not match. Verify the registered journey; saved facts were kept."
+msgstr "لم تتطابق هوية المصدر أو المسار. تحقّق من الرحلة المسجلة؛ حُفظت البيانات السابقة."
+
+msgid "The journey changed or another refresh is running. Reload and try again; saved facts were kept."
+msgstr "تغيّرت الرحلة أو يوجد تحديث آخر قيد التنفيذ. أعد تحميل الصفحة وحاول مجدداً؛ حُفظت البيانات السابقة."
+
+msgid "Label translation is unavailable. Check the configured Groq service and try again; saved facts were kept."
+msgstr "ترجمة أسماء الموانئ غير متاحة. تحقّق من إعدادات خدمة Groq وحاول مجدداً؛ حُفظت البيانات السابقة."
+
+msgid "The carrier check timed out. Try again later or use verified manual updates; saved facts were kept."
+msgstr "انتهت مهلة التحقق من الناقل. حاول لاحقاً أو استخدم تحديثات يدوية موثوقة؛ حُفظت البيانات السابقة."
+
+msgid "The carrier check could not be accepted. Check the source or use verified manual updates; saved facts were kept."
+msgstr "تعذّر اعتماد نتيجة التحقق من الناقل. تحقّق من المصدر أو استخدم تحديثات يدوية موثوقة؛ حُفظت البيانات السابقة."
+
+msgid "Save the journey before checking the carrier."
+msgstr "احفظ الرحلة قبل التحقق من الناقل."
+
+msgid "Archived journeys cannot be refreshed. Restore the journey deliberately before checking."
+msgstr "لا يمكن تحديث الرحلات المؤرشفة. أعد تفعيل الرحلة بشكل مقصود قبل التحقق."
+
+msgid "Use Refresh now to check the saved journey. Save manual edits first; checks never publish updates."
+msgstr "استخدم تحديث الآن للتحقق من الرحلة المحفوظة. احفظ التعديلات اليدوية أولاً؛ التحقق لا ينشر التحديثات."
+
+msgid "Check the saved carrier reference and update this journey. Save manual edits first. Checks never publish a journey or its new events."
+msgstr "تحقّق من مرجع الناقل المحفوظ وحدّث هذه الرحلة. احفظ التعديلات اليدوية أولاً. التحقق لا ينشر الرحلة أو أحداثها الجديدة."
+
+msgid "Source dates keep their original precision and timezone. Unknown stages require review. A failed check keeps the last good facts."
+msgstr "تحتفظ تواريخ المصدر بدقتها ومنطقتها الزمنية الأصليتين. تحتاج المراحل غير المعروفة إلى مراجعة. يحتفظ التحقق الفاشل بآخر بيانات موثوقة."
+
+msgid "Back to journey"
+msgstr "العودة إلى الرحلة"
+
+msgid "Refresh attention"
+msgstr "متابعة التحقق"
+
+msgid "Needs attention"
+msgstr "يتطلب المتابعة"
+
+msgid "Archived — daily checks skipped"
+msgstr "مؤرشفة — مستثناة من التحقق اليومي"
+
+msgid "Completed — daily checks skipped"
+msgstr "مكتملة — مستثناة من التحقق اليومي"
+
+msgid "Checking carrier"
+msgstr "جارٍ التحقق من الناقل"
+
+msgid "Carrier stages need review"
+msgstr "مراحل الناقل تتطلب المراجعة"
+
+msgid "Last check failed — retry or verify manual facts"
+msgstr "فشل آخر تحقق — أعد المحاولة أو راجع البيانات اليدوية"
+
+msgid "Not checked yet"
+msgstr "لم يتم التحقق بعد"
+
+msgid "Stale — last successful check is over 30 hours old"
+msgstr "بيانات قديمة — مضى أكثر من 30 ساعة على آخر تحقق ناجح"
+
+msgid "Up to date"
+msgstr "محدّثة"
+
+msgid "Track a container"
+msgstr "تتبع الحاوية"
+
+msgid "Enter the shared JAHEZ code sent by our team. No account is needed."
+msgstr "أدخل رمز جاهز المشترك الذي أرسله فريقنا. لا تحتاج إلى حساب."
+
+msgid "Your container journey"
+msgstr "رحلة حاويتك"
+
+msgid "Published carrier milestones and reviewed JAHEZ updates. This is not continuous GPS tracking."
+msgstr "مراحل الناقل المنشورة وتحديثات جاهز بعد المراجعة. هذه ليست خدمة تتبع مباشر عبر GPS."
+
+msgid "Back to home"
+msgstr "العودة إلى الرئيسية"
+
+msgid "Check your tracking code"
+msgstr "راجع رمز التتبع"
+
+msgid "Use the full JAHEZ code beginning with JHZ-. A B/L or container number cannot be used here."
+msgstr "استخدم رمز جاهز الكامل الذي يبدأ بـ JHZ-. لا يمكن استخدام رقم البوليصة أو الحاوية هنا."
+
+msgid "No published journey found"
+msgstr "لم يتم العثور على رحلة منشورة"
+
+msgid "Check the code with JAHEZ. It may be incorrect or the journey may not be available for sharing."
+msgstr "راجع الرمز مع جاهز. قد يكون غير صحيح أو قد لا تكون الرحلة متاحة للمشاركة."
+
+msgid "Please pause before trying again"
+msgstr "يرجى الانتظار قبل المحاولة مجدداً"
+
+msgid "Too many lookups. Try again in five minutes or contact JAHEZ."
+msgstr "طلبات تتبع كثيرة. حاول بعد خمس دقائق أو تواصل مع جاهز."
+
+msgid "Tracking is temporarily unavailable"
+msgstr "التتبع غير متاح مؤقتاً"
+
+msgid "Please try again shortly or contact JAHEZ. No new carrier check is started by this page."
+msgstr "حاول بعد قليل أو تواصل مع جاهز. لا تُجري هذه الصفحة تحققاً جديداً من الناقل."
+
+msgid "Shared tracking code"
+msgstr "رمز التتبع المشترك"
+
+msgid "These updates may be out of date"
+msgstr "قد تكون هذه التحديثات قديمة"
+
+msgid "The last approved carrier check is over 30 hours old. Contact JAHEZ for confirmation; saved updates remain visible."
+msgstr "مضى أكثر من 30 ساعة على آخر تحقق معتمد من الناقل. تواصل مع جاهز للتأكيد؛ تبقى التحديثات المحفوظة ظاهرة."
+
+msgid "Last successful carrier check"
+msgstr "آخر تحقق ناجح من الناقل"
+
+msgid "Not available. These are reviewed saved updates."
+msgstr "غير متاح. هذه تحديثات محفوظة تمت مراجعتها."
+
+msgid "Destination"
+msgstr "الوجهة"
+
+msgid "Journey updates"
+msgstr "تحديثات الرحلة"
+
+msgid "Dates use the source clock. Missing timezones are not assumed; undated updates appear last."
+msgstr "تعرض التواريخ كما وردت في المصدر دون افتراض المنطقة الزمنية عند غيابها. تظهر التحديثات غير المؤرخة أخيراً."
+
+msgid "Showing a bounded selection of published updates. Contact JAHEZ for earlier details."
+msgstr "تظهر مجموعة محدودة من التحديثات المنشورة. تواصل مع جاهز للاطلاع على التفاصيل السابقة."
+
+msgid "Carrier update"
+msgstr "تحديث الناقل"
+
+msgid "JAHEZ update"
+msgstr "تحديث جاهز"
+
+msgid "Date not provided"
+msgstr "التاريخ غير متاح"
+
+msgid "No published updates yet"
+msgstr "لا توجد تحديثات منشورة بعد"
+
+msgid "Updates appear here after JAHEZ reviews and publishes them."
+msgstr "تظهر التحديثات هنا بعد مراجعتها ونشرها من فريق جاهز."
+
+msgid "Automatically publish validated carrier updates"
+msgstr "نشر تحديثات الناقل المعتمدة تلقائياً"
+
+msgid "Only updates an already published journey after validation. Manual notes and unreviewed translations stay private."
+msgstr "يحدّث رحلة منشورة مسبقاً فقط بعد التحقق. تبقى الملاحظات اليدوية والترجمات غير المراجعة خاصة."
+
+msgid "Reviewed public data"
+msgstr "البيانات العامة التي تمت مراجعتها"
+
+msgid "The reviewed public data is invalid or too large."
+msgstr "البيانات العامة التي تمت مراجعتها غير صالحة أو أكبر من الحد المسموح."
+
+msgid "Check after reviewing to publish current facts and public events. Leave unchecked to save private edits. Required to enable automatic carrier publication."
+msgstr "حدّد الخيار بعد المراجعة لنشر البيانات الحالية والتحديثات العامة. اتركه دون تحديد لحفظ تعديلات خاصة. يلزم التأكيد لتفعيل النشر التلقائي لتحديثات الناقل."
+
+msgid "Customers see the last reviewed public snapshot. Confirm publication changes after reviewing facts and timeline updates."
+msgstr "يرى العملاء آخر بيانات عامة تمت مراجعتها. أكّد تغييرات النشر بعد مراجعة البيانات وتحديثات الرحلة."
+
+msgid "The shared link shows reviewed public updates only. Archiving removes access immediately."
+msgstr "يعرض الرابط المشترك التحديثات العامة التي تمت مراجعتها فقط. تمنع الأرشفة الوصول فوراً."
+
+msgid "Shared tracking link"
+msgstr "رابط التتبع المشترك"
+
+msgid "Copy tracking link"
+msgstr "نسخ رابط التتبع"
+
+msgid "Publish a reviewed active journey to share its tracking link."
+msgstr "انشر رحلة نشطة بعد مراجعتها لمشاركة رابط تتبعها."
+
+msgid "Port of origin"
+msgstr "ميناء المنشأ"
+
+msgid "Port of destination"
+msgstr "ميناء الوجهة"
+
+msgid "Departure"
+msgstr "المغادرة"
+
+msgid "Please try again shortly or contact JAHEZ for help."
+msgstr "حاول بعد قليل أو تواصل مع جاهز للمساعدة."
+
+msgid "Showing recent published updates. Contact JAHEZ for earlier details."
+msgstr "تظهر التحديثات المنشورة الأخيرة. تواصل مع جاهز للاطلاع على التفاصيل السابقة."
+
+msgid "Carrier check completed. Review saved facts and the public snapshot before sharing."
+msgstr "اكتمل التحقق من الناقل. راجع البيانات المحفوظة والنسخة العامة قبل مشاركتها."
+
+msgid "Use Refresh now to check the saved journey. Save manual edits first. Public updates follow the reviewed publication settings."
+msgstr "استخدم التحديث الآن للتحقق من الرحلة المحفوظة. احفظ تعديلاتك اليدوية أولاً. تخضع التحديثات العامة لإعدادات النشر المعتمدة."
+
+msgid "Check the saved carrier reference and update this journey. Save manual edits first. Private journeys stay private. Validated carrier updates publish only for an already reviewed public journey with automatic updates enabled."
+msgstr "تحقق من مرجع الناقل المحفوظ وحدّث هذه الرحلة. احفظ تعديلاتك اليدوية أولاً. تبقى الرحلات الخاصة غير منشورة. لا تُنشر تحديثات الناقل المعتمدة إلا لرحلة عامة تمت مراجعتها وتفعيل التحديثات التلقائية لها."

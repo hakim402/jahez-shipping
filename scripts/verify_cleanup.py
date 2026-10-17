@@ -19,6 +19,7 @@ review=directory/'review';review.mkdir(mode=0o700)
 env=directory/'review.env';override=directory/'review.yml'
 text=(ROOT/'.env.prod.example').read_text().replace('REPLACE_WITH_INDEPENDENT_RANDOM_SECRET_AT_LEAST_50_CHARACTERS',secrets.token_urlsafe(64)).replace('SHIPPING_IMAGE=jahez-shipping:0.9.0','SHIPPING_IMAGE='+args.image)
 text+='\nSHIPPING_ENV_FILE='+json.dumps(str(env))+'\n';env.write_text(text);env.chmod(0o600)
+os.environ.update(SHIPPING_ENV_FILE=str(env),SHIPPING_IMAGE=args.image,SHIPPING_WEB_MEMORY='768m',SHIPPING_REDIS_MEMORY='256m')
 override.write_text('services:\n  web:\n    ports: !reset []\n')
 project,compose=scope(directory)
 if call(['docker','ps','-aq','--filter','label=com.docker.compose.project='+project],True).strip():raise SystemExit('Existing review resources preserved; do not run concurrent verifiers.')
@@ -48,7 +49,7 @@ from pathlib import Path
 h={'Host':'shipping.jahez.online','X-Forwarded-Proto':'https'}
 for lang in ('en','ar'):
  r=urllib.request.urlopen(urllib.request.Request('http://127.0.0.1:8000/'+lang+'/',headers=h));html=r.read().decode()
- assert r.status==200 and r.headers['X-Request-ID'] and 'disabled' in html and 'type="submit"' not in html
+ assert r.status==200 and r.headers['X-Request-ID'] and 'name="code"' in html and 'type="submit"' in html
  css=re.search(r'href="(/static/css/site[^"]+)"',html).group(1);assert re.search(r'/site[.][0-9a-f]+[.]css',css)
  assert urllib.request.urlopen(urllib.request.Request('http://127.0.0.1:8000'+css,headers=h)).status==200
 assert os.getuid()==10001 and not Path('/app/.env.dev').exists() and not Path('/app/.env.prod').exists()
@@ -63,7 +64,7 @@ assert cache.get('synthetic-shared-counter')==2
 from django.contrib.auth.models import User
 assert User.objects.filter(username='synthetic-production-admin').exists()
 p=Path('/data/private/synthetic-retained.bin');assert p.read_bytes()==b'SYNTHETIC PERSISTENCE'
-print('PASS: production-mode fresh clean schema, EN/AR/unavailable state/hashed assets, nonroot/readonly root, shared Redis counters and retained synthetic data.')
+print('PASS: production-mode fresh clean schema, EN/AR/code form/hashed assets, nonroot/readonly root, shared Redis counters and retained synthetic data.')
 """
     first="import django; django.setup(); from django.core.cache import cache; cache.set('synthetic-shared-counter',1,900); from django.contrib.auth.models import User; User.objects.create_superuser('synthetic-production-admin','',None); from pathlib import Path; Path('/data/private/synthetic-retained.bin').write_bytes(b'SYNTHETIC PERSISTENCE')"
     second="import django; django.setup(); from django.core.cache import cache; assert cache.incr('synthetic-shared-counter')==2"

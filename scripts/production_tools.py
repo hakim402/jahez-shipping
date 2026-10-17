@@ -25,9 +25,12 @@ def read_env(path):
 def scope(review_dir=None):
     if review_dir:
         directory=Path(review_dir).resolve()
-        if directory.parent!=(ROOT/'private/cleanup-review').resolve() or not directory.name.startswith('compose-'):
+        reviews={(ROOT/'private/cleanup-review').resolve():'jahez-shipping-cleanup-review',
+                 (ROOT/'private/release-review').resolve():'jahez-shipping-release-review'}
+        if directory.parent not in reviews or not directory.name.startswith('compose-'):
             raise ValueError('Invalid isolated review directory.')
-        return 'jahez-shipping-cleanup-review',['docker','compose','--env-file',str(directory/'review.env'),'-p','jahez-shipping-cleanup-review','-f',str(ROOT/'compose.prod.yml'),'-f',str(directory/'review.yml')]
+        project=reviews[directory.parent]
+        return project,['docker','compose','--env-file',str(directory/'review.env'),'-p',project,'-f',str(ROOT/'compose.prod.yml'),'-f',str(directory/'review.yml')]
     return 'jahez-shipping-prod',['docker','compose','--env-file',str(ROOT/'.env.prod'),'-p','jahez-shipping-prod','-f',str(ROOT/'compose.prod.yml')]
 
 def call(arguments,capture=False):
@@ -41,6 +44,8 @@ def contract(model,project,review=False):
     for name in ('web',):
         svc=model['services'][name]
         if not svc.get('read_only') or svc.get('environment',{}).get('DJANGO_SETTINGS_MODULE')!='config.settings.production':raise ValueError('Production settings/read-only contract failed.')
+        if svc.get('pids_limit')!=128 or float(svc.get('cpus',0))!=1.0:raise ValueError('Production process/CPU bounds contract failed.')
+        if int(svc.get('mem_limit',0))<=0:raise ValueError('Production memory bound required.')
         if any(v['type']=='bind' for v in svc.get('volumes',[])):raise ValueError('Production source bind mount refused.')
         if not svc.get('healthcheck') or svc.get('stop_grace_period')!='1m35s':raise ValueError('Health/grace contract failed.')
     web=model['services']['web'];ports=web.get('ports',[])

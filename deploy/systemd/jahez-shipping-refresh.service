@@ -1,0 +1,24 @@
+# Package only. Review host paths/image/environment and approve activation in Phase 8.
+[Unit]
+Description=JAHEZ Shipping bounded daily container check
+After=docker.service network-online.target
+Wants=network-online.target
+Requires=docker.service
+ConditionPathExists=/opt/jahez-shipping/compose.prod.yml
+ConditionPathExists=/opt/jahez-shipping/.env.prod
+
+[Service]
+Type=oneshot
+User=root
+WorkingDirectory=/opt/jahez-shipping
+ExecStart=/usr/bin/docker compose --env-file /opt/jahez-shipping/.env.prod --project-name jahez-shipping-prod --file /opt/jahez-shipping/compose.prod.yml exec --interactive=false -T web python manage.py refresh_containers --active --limit 50 --max-seconds 900 --quiet
+TimeoutStartSec=960
+Restart=no
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+RestrictAddressFamilies=AF_UNIX
+UMask=0077
+StandardOutput=journal
+StandardError=journal

@@ -145,6 +145,27 @@ def verify(archive):
     return manifest
 
 
+def verify_restored_private_files(target,manifest):
+    """Check retained bytes against the verified archive, not just database metadata."""
+    target=allowed(target)
+    private=target/'private'
+    expected={name:meta for name,meta in manifest['files'].items() if name.startswith('private/')}
+    actual={'private/'+p.relative_to(private).as_posix() for p in tree(private)}
+    if actual!=set(expected):raise RecoveryError('restored_file_set_mismatch')
+    for name,meta in expected.items():
+        file=target/relative(name)
+        if file.stat().st_size!=meta['size'] or sha(file)!=meta['sha256']:
+            raise RecoveryError('restored_file_checksum_mismatch')
+
+
+def verify_restored_database(target,manifest):
+    """Verify the exact quiesced backup bytes before opening the restored DB for writes."""
+    database=allowed(target)/'shipping.sqlite3'
+    expected=manifest['files']['shipping.sqlite3']
+    if database.stat().st_size!=expected['size'] or sha(database)!=expected['sha256']:
+        raise RecoveryError('restored_database_checksum_mismatch')
+
+
 def restore(archive,target,replace=False,confirm_target='',quiesced=False,allow_damaged_target=False):
     manifest=verify(archive);archive=allowed(archive);target=allowed(target)
     if target==archive or archive in target.parents or target in archive.parents:raise RecoveryError('unsafe_restore_target')
@@ -164,6 +185,8 @@ def restore(archive,target,replace=False,confirm_target='',quiesced=False,allow_
     shutil.copy2(archive/'shipping.sqlite3',staging/'shipping.sqlite3')
     shutil.copytree(archive/'private',staging/'private')
     secure_tree(staging);database_info(staging/'shipping.sqlite3',staging/'private',True)
+    verify_restored_database(staging,manifest)
+    verify_restored_private_files(staging,manifest)
     rollback=target/('.pre-restore-'+token)
     moved=[]
     if exists:rollback.mkdir(mode=0o700)
@@ -173,6 +196,8 @@ def restore(archive,target,replace=False,confirm_target='',quiesced=False,allow_
             if original.exists():original.rename(rollback/name);moved.append(name)
         for name in ('shipping.sqlite3','private'):(staging/name).rename(target/name)
         database_info(target/'shipping.sqlite3',target/'private',True)
+        verify_restored_database(target,manifest)
+        verify_restored_private_files(target,manifest)
         (target/'restored-manifest.json').write_text(json.dumps({'archive_id':manifest['id'],'app_version':manifest['app_version']}))
         (target/'restored-manifest.json').chmod(0o600)
         staging.rmdir()

@@ -14,7 +14,7 @@ if len(SECRET_KEY) < 50 or SECRET_KEY.startswith(("REPLACE_", "GENERATE_")):
     raise ImproperlyConfigured("DJANGO_SECRET_KEY must contain at least 50 characters. Generate a private environment file with scripts/init_dev_env.py.")
 DEBUG = False
 ALLOWED_HOSTS = [s.strip() for s in os.environ.get("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1,[::1]").split(",") if s.strip()]
-INSTALLED_APPS = ["unfold", "django.contrib.admin", "django.contrib.auth", "django.contrib.contenttypes", "django.contrib.sessions", "django.contrib.messages", "django.contrib.staticfiles", "apps.core.apps.CoreConfig", "apps.shipments.apps.ShipmentsConfig", "apps.tracking.apps.TrackingConfig", "apps.ai.apps.AIConfig"]
+INSTALLED_APPS = ["unfold", "django.contrib.admin", "django.contrib.auth", "django.contrib.contenttypes", "django.contrib.sessions", "django.contrib.messages", "django.contrib.staticfiles", "apps.core.apps.CoreConfig", "apps.shipments.apps.ShipmentsConfig", "apps.tracking.apps.TrackingConfig", "apps.ai.apps.AIConfig", "apps.containers.apps.ContainersConfig"]
 MIDDLEWARE = ["apps.core.middleware.RequestSafetyMiddleware", "django.middleware.security.SecurityMiddleware", "whitenoise.middleware.WhiteNoiseMiddleware", "django.contrib.sessions.middleware.SessionMiddleware", "django.middleware.locale.LocaleMiddleware", "apps.core.middleware.BusinessTimezoneMiddleware", "django.middleware.common.CommonMiddleware", "django.middleware.csrf.CsrfViewMiddleware", "django.contrib.auth.middleware.AuthenticationMiddleware", "apps.core.middleware.AdminLoginThrottleMiddleware", "django.contrib.messages.middleware.MessageMiddleware", "django.middleware.clickjacking.XFrameOptionsMiddleware"]
 ROOT_URLCONF = "config.urls"
 TEMPLATES = [{"BACKEND": "django.template.backends.django.DjangoTemplates", "DIRS": [BASE_DIR / "templates"], "APP_DIRS": True, "OPTIONS": {"context_processors": ["django.template.context_processors.request", "django.template.context_processors.i18n", "django.contrib.auth.context_processors.auth", "django.contrib.messages.context_processors.messages"]}}]
@@ -36,7 +36,7 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STORAGES = {"default": {"BACKEND": "apps.core.storage.PrivateStorage", "OPTIONS": {"location": PRIVATE_ROOT}}, "staticfiles": {"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"}}
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-# Redis remains only for shared login abuse counters; no broker or background jobs.
+# Redis holds shared login/public-lookup abuse counters; no broker or background jobs.
 CACHES = {"default": {"BACKEND": "django.core.cache.backends.redis.RedisCache", "LOCATION": os.environ.get("CACHE_REDIS_URL", "redis://redis:6379/1"), "KEY_PREFIX": "jahez_shipping", "OPTIONS": {"socket_connect_timeout": 2, "socket_timeout": 2}}}
 GROQ_ENABLED = os.environ.get("GROQ_ENABLED", "false").lower() == "true"
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "")
@@ -60,7 +60,7 @@ SESSION_COOKIE_SAMESITE = "Lax"
 DATA_UPLOAD_MAX_MEMORY_SIZE = 1024 * 1024
 FILE_UPLOAD_MAX_MEMORY_SIZE = 1024 * 1024
 UNFOLD = {
-    "SITE_TITLE": _("JAHEZ Shipping"), "SITE_HEADER": "JAHEZ Shipping", "SITE_SUBHEADER": _("Preparation workspace"), "SITE_VERSION": None,
+    "SITE_TITLE": _("JAHEZ Shipping"), "SITE_HEADER": "JAHEZ Shipping", "SITE_SUBHEADER": _("Shared container journeys"), "SITE_VERSION": None,
     "SITE_URL": "/", "SITE_ICON": {"light": lambda request: static("brand/jahez-icon-brand.png"), "dark": lambda request: static("brand/jahez-icon-white.png")},
     "SITE_FAVICONS": [{"rel": "icon", "type": "image/png", "href": lambda request: static("brand/jahez-icon-brand.png")}],
     "ENVIRONMENT": "apps.core.admin.environment", "DASHBOARD_CALLBACK": "apps.core.admin.dashboard",

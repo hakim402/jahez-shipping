@@ -1,0 +1,9 @@
+{% load i18n %}
+<form class="tracking-form" action="/{{ lang }}/track/" method="get" aria-label="{% translate 'Track a container' %}">
+  <label for="reference">{{ c.reference }}</label>
+  <div class="tracking-controls">
+    <input id="reference" name="code" type="text" placeholder="JHZ-…" dir="ltr" maxlength="30" required autocomplete="off" spellcheck="false" autocapitalize="characters" aria-describedby="tracking-help{% if state == 'invalid' %} tracking-error{% endif %}"{% if state == 'invalid' %} aria-invalid="true"{% endif %} value="{{ lookup_code|default:'' }}">
+    <button type="submit">{{ c.track }}</button>
+  </div>
+  <p id="tracking-help" class="tracking-help">{% translate 'Enter the shared JAHEZ code sent by our team. No account is needed.' %}</p>
+</form>

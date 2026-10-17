@@ -11,12 +11,15 @@ admin.site.index_title = _("Dashboard")
 
 def navigation(request):
     def item(title, icon, url, permission=None):
+        permissions = (permission,) if isinstance(permission, str) else permission
         return {"title": _(title), "icon": icon, "link": reverse(url),
-                "permission": lambda request: not permission or request.user.has_perm(permission)}
-    return [{"title": _("Administration"), "items": [
+                "permission": lambda request: not permissions or any(request.user.has_perm(p) for p in permissions)}
+    return [{"title": _("Containers"), "items": [
+        item("Containers", "inventory_2", "admin:containers_container_changelist", ("containers.view_container", "containers.change_container")),
         item("Dashboard", "dashboard", "admin:index"),
-        item("Users", "group", "admin:auth_user_changelist", "auth.view_user"),
-        item("Groups", "shield", "admin:auth_group_changelist", "auth.view_group"),
+    ]}, {"title": _("Administration"), "collapsible": True, "items": [
+        item("Users", "group", "admin:auth_user_changelist", ("auth.view_user", "auth.change_user")),
+        item("Groups", "shield", "admin:auth_group_changelist", ("auth.view_group", "auth.change_group")),
     ]}]
 
 
@@ -39,7 +42,7 @@ class GroupAdmin(BaseGroupAdmin, ModelAdmin):
 def environment(request):
     from django.conf import settings
     from django.utils.translation import gettext
-    return [gettext("Local preparation") if settings.DEBUG else gettext("Preparation"), "warning"]
+    return [gettext("Local manual tracking") if settings.DEBUG else gettext("Manual tracking"), "warning"]
 
 
 def dashboard(request, context):

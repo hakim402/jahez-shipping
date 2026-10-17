@@ -1,0 +1,48 @@
+{% extends "public/base.html" %}{% load i18n %}
+{% block content %}
+<section class="tracking-result wrap" aria-labelledby="tracking-heading">
+  <a class="tracking-back" href="/{{ lang }}/">{% translate 'Back to home' %}</a>
+  <header class="result-heading"><span class="eyebrow">{{ c.brand }}</span><h1 id="tracking-heading">{% translate 'Your container journey' %}</h1>
+    <p>{% translate 'Published carrier milestones and reviewed JAHEZ updates. This is not continuous GPS tracking.' %}</p>
+  </header>
+  {% include "public/tracking_form.html" %}
+  {% if state == 'invalid' %}
+    <div id="tracking-error" class="tracking-notice" role="alert"><h2>{% translate 'Check your tracking code' %}</h2><p>{% translate 'Use the full JAHEZ code beginning with JHZ-. A B/L or container number cannot be used here.' %}</p></div>
+  {% elif state == 'not_found' %}
+    <div class="tracking-notice" role="status"><h2>{% translate 'No published journey found' %}</h2><p>{% translate 'Check the code with JAHEZ. It may be incorrect or the journey may not be available for sharing.' %}</p></div>
+  {% elif state == 'limited' %}
+    <div class="tracking-notice" role="alert"><h2>{% translate 'Please pause before trying again' %}</h2><p>{% translate 'Too many lookups. Try again in five minutes or contact JAHEZ.' %}</p></div>
+  {% elif state == 'unavailable' %}
+    <div class="tracking-notice" role="alert"><h2>{% translate 'Tracking is temporarily unavailable' %}</h2><p>{% translate 'Please try again shortly or contact JAHEZ for help.' %}</p></div>
+  {% elif state == 'found' %}
+    <section class="journey-summary" aria-labelledby="summary-heading">
+      <div class="journey-title"><h2 id="summary-heading">{% translate 'Container' %} <bdi dir="ltr">{{ shipment.container_number|default:'—' }}</bdi></h2><span class="journey-status">{{ shipment.status }}</span></div>
+      <p class="shared-code">{% translate 'Shared tracking code' %}: <bdi dir="ltr">{{ lookup_code }}</bdi></p>
+      {% if shipment.stale %}<div class="tracking-notice stale" role="status"><strong>{% translate 'These updates may be out of date' %}</strong><p>{% translate 'The last approved carrier check is over 30 hours old. Contact JAHEZ for confirmation; saved updates remain visible.' %}</p></div>{% endif %}
+      <p class="last-checked">{% translate 'Last successful carrier check' %}: {% if shipment.checked %}<bdi dir="ltr">{{ shipment.checked }}</bdi>{% else %}{% translate 'Not available. These are reviewed saved updates.' %}{% endif %}</p>
+      <dl class="journey-facts">
+        <div><dt>{% translate 'Port of origin' %}</dt><dd><bdi>{{ shipment.origin|default:'—' }}</bdi></dd></div>
+        <div><dt>{% translate 'Port of destination' %}</dt><dd><bdi>{{ shipment.destination|default:'—' }}</bdi></dd></div>
+        <div><dt>{% translate 'Vessel' %}</dt><dd><bdi>{{ shipment.vessel|default:'—' }}</bdi></dd></div>
+        <div><dt>{% translate 'Voyage' %}</dt><dd><bdi dir="ltr">{{ shipment.voyage|default:'—' }}</bdi></dd></div>
+        <div><dt>{% translate 'Equipment type' %}</dt><dd><bdi dir="ltr">{{ shipment.equipment_type|default:'—' }}</bdi></dd></div>
+        <div><dt>{% translate 'Equipment quantity' %}</dt><dd>{{ shipment.equipment_quantity|default_if_none:'—' }}</dd></div>
+      </dl>
+      <div class="journey-dates">
+        <section><h3>{% translate 'Departure' %}</h3><div>{% if not shipment.departure_actual %}<span class="time-kind">{% translate 'Actual' %}</span>{% endif %}{% include "public/source_time.html" with value=shipment.departure_actual %}</div>{% if shipment.departure_estimated %}<div>{% include "public/source_time.html" with value=shipment.departure_estimated %}</div>{% endif %}</section>
+        <section><h3>{% translate 'Arrival' %}</h3><div>{% if not shipment.arrival_actual %}<span class="time-kind">{% translate 'Actual' %}</span>{% endif %}{% include "public/source_time.html" with value=shipment.arrival_actual %}</div>{% if shipment.arrival_estimated %}<div>{% include "public/source_time.html" with value=shipment.arrival_estimated %}</div>{% endif %}</section>
+      </div>
+    </section>
+    <section class="public-timeline" aria-labelledby="timeline-heading"><h2 id="timeline-heading">{% translate 'Journey updates' %}</h2><p>{% translate 'Dates use the source clock. Missing timezones are not assumed; undated updates appear last.' %}</p>
+      {% if shipment.limited %}<p>{% translate 'Showing recent published updates. Contact JAHEZ for earlier details.' %}</p>{% endif %}
+      {% if shipment.events %}<ol>{% for event in shipment.events %}<li><article>
+        <p class="event-origin">{% if event.origin == 'carrier' %}{% translate 'Carrier update' %}{% else %}{% translate 'JAHEZ update' %}{% endif %}</p>
+        <h3>{{ event.title }}</h3>{% if event.detail %}<p class="event-detail">{{ event.detail }}</p>{% endif %}
+        {% if event.location %}<p><bdi>{{ event.location }}</bdi></p>{% endif %}
+        {% if event.time %}<div class="event-time">{% include "public/source_time.html" with value=event.time %}</div>{% else %}<p class="muted">{% translate 'Date not provided' %}</p>{% endif %}
+      </article></li>{% endfor %}</ol>{% else %}<div class="tracking-notice"><h3>{% translate 'No published updates yet' %}</h3><p>{% translate 'Updates appear here after JAHEZ reviews and publishes them.' %}</p></div>{% endif %}
+    </section>
+  {% endif %}
+  {% if whatsapp_url %}<aside class="tracking-support"><h2>{{ c.support_title }}</h2><p>{{ c.support_body }}</p><a href="{{ whatsapp_url }}" rel="noreferrer">{{ c.support_link }} ↗</a></aside>{% endif %}
+</section>
+{% endblock %}

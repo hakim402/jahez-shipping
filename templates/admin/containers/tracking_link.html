@@ -1,0 +1,10 @@
+{% load i18n %}
+<div class="jahez-tracking-link">
+  <bdi dir="ltr">{{ code }}</bdi>
+  <p>{% translate "The shared link shows reviewed public updates only. Archiving removes access immediately." %}</p>
+  {% if can_copy %}<label for="jahez-tracking-link">{% translate "Shared tracking link" %}</label>
+  <input id="jahez-tracking-link" class="jahez-control" dir="ltr" readonly value="{{ path }}" data-jahez-link>
+  <button type="button" class="jahez-copy" data-jahez-copy data-copied="{% translate 'Link copied' %}" data-fallback="{% translate 'Select and copy the link manually.' %}">{% translate "Copy tracking link" %}</button>
+  <span role="status" aria-live="polite" data-jahez-copy-status></span>
+  {% else %}<p>{% translate "Publish a reviewed active journey to share its tracking link." %}</p>{% endif %}
+</div>

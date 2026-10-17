@@ -1,0 +1,13 @@
+# Package only; do not install/enable before Phase 8 owner approval.
+[Unit]
+Description=JAHEZ Shipping daily at 09:00 Asia/Kabul
+
+[Timer]
+OnCalendar=*-*-* 09:00:00 Asia/Kabul
+AccuracySec=1min
+RandomizedDelaySec=0
+Persistent=true
+Unit=jahez-shipping-refresh.service
+
+[Install]
+WantedBy=timers.target

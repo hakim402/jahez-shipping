@@ -1,0 +1,1 @@
+<div class="jahez-source-time">{% for subwidget in widget.subwidgets %}<div><label for="{{ subwidget.attrs.id }}">{{ subwidget.label }}</label>{% include subwidget.template_name with widget=subwidget %}</div>{% endfor %}</div>

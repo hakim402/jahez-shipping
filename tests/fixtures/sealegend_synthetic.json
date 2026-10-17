@@ -1,0 +1,70 @@
+{
+  "code": 200,
+  "errorCode": 0,
+  "success": true,
+  "result": {
+    "bkgNo": "DEMOAB123456",
+    "containerList": [
+      {
+        "ctnno": "TEST1234567",
+        "nodeList": [
+          {
+            "actualDate": "2026-01-02 22:30:00",
+            "estimateDate": "2026-01-02 01:00:00",
+            "eventPort": "AAAAA",
+            "movementCode": "KH",
+            "movementName": "Departure",
+            "portFlag": false,
+            "portName": "EXAMPLE ORIGIN",
+            "vesselName": "DEMO",
+            "voyageNo": "EXAMPLE VESSEL/100E"
+          },
+          {
+            "actualDate": "",
+            "estimateDate": "2026-02-03 21:00:00",
+            "eventPort": "BBBBB",
+            "movementCode": "DG",
+            "movementName": "Arrival",
+            "portFlag": false,
+            "portName": "EXAMPLE DESTINATION",
+            "vesselName": "DEMO",
+            "voyageNo": "EXAMPLE VESSEL/100E"
+          },
+          {
+            "actualDate": "2026-01-02 22:30:00",
+            "estimateDate": "2026-01-02 01:00:00",
+            "eventPort": "AAAAA",
+            "movementCode": "KH",
+            "movementName": "Departure",
+            "portFlag": true,
+            "portName": "EXAMPLE ORIGIN",
+            "vesselName": "DEMO",
+            "voyageNo": "EXAMPLE VESSEL/100E"
+          },
+          {
+            "actualDate": "",
+            "estimateDate": "2026-02-03 21:00:00",
+            "eventPort": "BBBBB",
+            "movementCode": "DG",
+            "movementName": "Arrival",
+            "portFlag": true,
+            "portName": "EXAMPLE DESTINATION",
+            "vesselName": "DEMO",
+            "voyageNo": "EXAMPLE VESSEL/100E"
+          }
+        ],
+        "tsPorts": [
+          "AAAAA",
+          "BBBBB"
+        ]
+      }
+    ],
+    "ctnSizeCount": "1*40HC",
+    "por": "AAAAA",
+    "pol": "AAAAA",
+    "pod": "BBBBB",
+    "del": "BBBBB",
+    "deliveryDocumentMethod": 1,
+    "socFlag": false
+  }
+}

@@ -1,6 +1,7 @@
 {% extends "admin/base_site.html" %}{% load i18n %}
 {% block content %}<div class="jahez-dashboard"><section class="jahez-welcome">
-<h2>{% translate 'Container tracking preparation' %}</h2>
-<p>{% translate 'The foundation is ready. Container registration and refresh will be added in a separately approved phase.' %}</p>
-<p>{% translate 'No tracking data is currently published by this candidate.' %}</p>
+<h2>{% translate 'Container management' %}</h2>
+<p>{% translate 'Manage shared journeys, manual updates and publication from one place.' %}</p>
+<p>{% translate 'Use Refresh now to check the saved journey. Save manual edits first; checks never publish updates.' %}</p>
+{% if perms.containers.view_container or perms.containers.change_container %}<a class="jahez-admin-link" href="{% url 'admin:containers_container_changelist' %}">{% translate 'Open containers' %}</a>{% endif %}
 </section></div>{% endblock %}

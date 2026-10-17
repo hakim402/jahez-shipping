@@ -1,0 +1,4 @@
+{% load i18n %}
+{% if errors %}
+<p role="alert" class="errornote bg-red-100 mb-4 text-red-700 px-3 py-2.5 leading-[18px] rounded-default dark:bg-red-500/20 dark:border-red-500/20 dark:text-red-400 {% if class %}{{ class }}{% endif %}">{% translate "Please review the highlighted fields and messages below." %}</p>
+{% endif %}

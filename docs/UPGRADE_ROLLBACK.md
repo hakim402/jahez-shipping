@@ -1,6 +1,8 @@
-# Future destructive transition — owner review only
+# Upgrade and matching recovery gates
 
-**Do not execute against persistent owner data during this cleanup.** The commands below describe a later separately approved maintenance window. The tested supported starting point is the complete 0.8.1 schema. Preserve that source commit and immutable image. Never use `--fake`, delete migration metadata, delete volumes/uploads or reverse migrations to pretend recovery.
+**Do not execute against persistent owner data without the separately approved Phase 8 maintenance window.** The owner selected fresh production: preserve and verify matching old-image recovery, inspect the actual Shipping target, stop its writers, then remove only confirmed active SQLite/WAL/SHM files and fresh-migrate the new image. Never delete recovery/private files or volumes. Working server access and target evidence are still required; development is already cleaned and must not be reset again.
+
+The in-place retirement commands below are retained for the historical populated-schema transition and its synthetic regression rehearsal, not the selected fresh-production procedure. The tested supported starting point is the complete 0.8.1 schema. Preserve that source commit and immutable image. Never use `--fake`, delete migration metadata, delete volumes/uploads or reverse migrations to pretend recovery.
 
 ## 1. Before changing the old checkout or image
 
@@ -60,3 +62,9 @@ python scripts/restore.py --backup /recovery/ARCHIVE_ID --target /data \
 ```
 
 Use `--allow-damaged-target` only after deliberate inspection of a damaged target. The old helper retains previous data privately. Verify the restored database/files with matching old source/image before resuming old web/worker/Beat. Never invoke 0.9.0 recovery against old archives or call empty reverse-created tables a successful rollback. The isolated cleanup test restores the actual synthetic old archive and confirms the original admin, legacy rows and private file, not merely schema presence.
+
+## Already-cleaned container schema additions
+
+The destructive transition above is only for the historical populated architecture. An installation already past retirement uses forward additive container migrations: `0001_initial` creates two business tables, and `0002_reviewed_public_tracking` adds the default-off auto-publication flag and empty approved snapshot. Do not rerun a reset or destructive cleanup for these additions. Verify the actual applied graph, preserve a matching database/private-file backup and original application rows, review the pending plan, then apply only the approved forward addition in the intended installation.
+
+Existing `is_published` values are not backfilled into a public snapshot. An administrator must confirm first publication after review. Keep automatic carrier publication off until separately approved for a real journey. Rehearse backup/restore with the current matching image/schema before release; a current-source test in an older dependency image does not prove release recovery. Production additions/activation remain subject to the separate maintenance approval. The local Phase 6 development migration is not evidence that the VPS has changed.

@@ -1,0 +1,13 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls %}
+{% block content %}
+<div class="max-w-3xl">
+<p class="mb-4">{% translate "Check the saved carrier reference and update this journey. Save manual edits first. Private journeys stay private. Validated carrier updates publish only for an already reviewed public journey with automatic updates enabled." %}</p>
+<p class="mb-4"><bdi dir="ltr">{{ original.container_number|default:original.lookup_code }}</bdi></p>
+<p class="mb-4">{% translate "Source dates keep their original precision and timezone. Unknown stages require review. A failed check keeps the last good facts." %}</p>
+{% if can_refresh %}
+<form method="post">{% csrf_token %}<button type="submit" class="bg-primary-600 text-white rounded-default px-4 py-2">{% translate "Refresh now" %}</button></form>
+{% else %}<p>{% translate "Archived journeys cannot be refreshed. Restore the journey deliberately before checking." %}</p>{% endif %}
+<p class="mt-4"><a href="{% url 'admin:containers_container_change' original.pk %}">{% translate "Back to journey" %}</a></p>
+</div>
+{% endblock %}

@@ -12,6 +12,8 @@ x-app: &app
   tmpfs: ["/tmp:rw,noexec,nosuid,size=256m,mode=1777"]
   cap_drop: [ALL]
   security_opt: [no-new-privileges:true]
+  pids_limit: 128
+  cpus: 1.0
   volumes:
     - shipping_data:/data
   depends_on:
@@ -40,6 +42,8 @@ services:
     image: redis:7.4.11-alpine@sha256:858f009f9709ce576febc734aa78b8f6d624b82571f9ddb6bda4377c833b3499
     command: redis-server --appendonly yes --appendfsync everysec --maxmemory 128mb --maxmemory-policy noeviction
     mem_limit: ${SHIPPING_REDIS_MEMORY:-256m}
+    pids_limit: 64
+    cpus: 0.5
     stop_grace_period: 30s
     volumes: [redis_data:/data]
     networks: [shipping]

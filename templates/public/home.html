@@ -7,14 +7,7 @@
   </picture>
   <div class="hero-copy">
     <h1 id="home-heading">{{ c.headline_a }}<br><span>{{ c.headline_b }}</span></h1>
-    <div class="tracking-form" role="region" aria-labelledby="tracking-unavailable">
-      <label for="reference">{{ c.reference }}</label>
-      <div class="tracking-controls">
-        <input id="reference" type="text" placeholder="{{ c.placeholder }}" dir="ltr" disabled aria-describedby="tracking-unavailable">
-        <button type="button" disabled>{{ c.track }}</button>
-      </div>
-      <p id="tracking-unavailable" class="tracking-help" role="status">{{ tracking_empty }}</p>
-    </div>
+    {% include "public/tracking_form.html" %}
     <div class="trust-strip"><span><i aria-hidden="true">✓</i>{{ c.trust_a }}</span><span><i aria-hidden="true">✓</i>{{ c.trust_b }}</span><span><i aria-hidden="true">✓</i>{{ c.trust_c }}</span></div>
     {% if whatsapp_url %}<a class="hero-whatsapp" href="{{ whatsapp_url }}" rel="noreferrer"><span class="whatsapp-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 11.5a8.5 8.5 0 0 1-12.8 7.3L3 20l1.2-4.7a8.5 8.5 0 1 1 16.3-3.8Z"/><path d="m9 7 1 2-1 1a7 7 0 0 0 4 4l1-1 2 1v1a1 1 0 0 1-1 1 8 8 0 0 1-7-7 1 1 0 0 1 1-1Z"/></svg></span>{{ c.support_link }} <span aria-hidden="true">↗</span></a>{% endif %}
   </div>

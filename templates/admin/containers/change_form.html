@@ -1,0 +1,9 @@
+{% extends "admin/change_form.html" %}
+{% load i18n admin_urls %}
+{% block form_top %}{{ block.super }}{{ adminform.form.expected_revision }}{% endblock %}
+{% block object-tools-items %}
+{{ block.super }}
+{% if change and has_change_permission and not original.archived_at %}
+<li><a class="jahez-refresh-link" href="{% url 'admin:containers_container_refresh' original.pk %}">{% translate "Refresh now" %}</a></li>
+{% endif %}
+{% endblock %}

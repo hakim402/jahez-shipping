@@ -42,6 +42,10 @@ try:call_command('migrate','shipments','0003_fileremoval_alter_auditentry_shipme
 except IrreversibleError:pass
 else:raise AssertionError('Retirement must not reverse to empty tables')
 assert not set(LEGACY_TABLES)&set(connection.introspection.table_names())
+# A reverse plan may unapply newer reversible empty container tables before reaching
+# the legacy irreversible guard. Restore the latest graph before a current-image backup.
+call_command('migrate',verbosity=0)
+assert {'containers_container','containers_containerevent'}<=set(connection.introspection.table_names())
 from apps.core.recovery import backup,restore,verify
 archive=backup('/review/legacy','/review/reduced-backups',True);manifest=verify(archive)
 assert manifest['records']['auth_user']==1

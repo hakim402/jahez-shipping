@@ -1,0 +1,12 @@
+{% load i18n %}
+<div class="jahez-timeline">
+  <p class="jahez-timeline-help">{% translate "Ordered by source date text; source timezones may differ. Undated updates follow dated updates." %}</p>
+  {% for row in rows %}<article>
+    <h3>{{ row.title|default:row.origin }}</h3>
+    <p>{{ row.origin }} · {% if row.public %}{% translate "Public event" %}{% else %}{% translate "Private" %}{% endif %}</p>
+    {% if row.time %}<p>{{ row.time.designation }} <bdi dir="ltr">{{ row.time.raw }}</bdi> {{ row.time.precision }} · <bdi>{{ row.time.zone }}</bdi></p>{% else %}<p>{% translate "Undated update" %}</p>{% endif %}
+    {% if row.location %}<p><bdi>{{ row.location }}</bdi></p>{% endif %}
+    {% if row.detail %}<div class="jahez-event-detail">{{ row.detail|linebreaksbr }}</div>{% endif %}
+  </article>{% empty %}<p>{% translate "No timeline updates yet. Add a manual update below." %}</p>{% endfor %}
+  {% if limited %}<p>{% translate "First 200 timeline updates shown." %}</p>{% endif %}
+</div>

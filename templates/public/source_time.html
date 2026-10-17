@@ -1,0 +1,6 @@
+{% load i18n %}
+{% if value %}
+  <span class="time-kind">{% if value.designation == 'actual' %}{% translate 'Actual' %}{% else %}{% translate 'Estimated' %}{% endif %}</span>
+  <bdi dir="ltr">{{ value.raw }}</bdi>
+  <small>{% if value.precision == 'date' %}{% translate 'Date only' %} · {% endif %}{% if value.zone %}<bdi dir="ltr">{{ value.zone }}</bdi>{% else %}{% translate 'Timezone not supplied' %}{% endif %}</small>
+{% else %}<span class="muted">{% translate 'Not provided' %}</span>{% endif %}

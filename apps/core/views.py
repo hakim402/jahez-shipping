@@ -1,4 +1,4 @@
-"""Saved public branding only. No tracking lookup, retrieval or provider requests."""
+"""Public branding only. Container lookup reads approved snapshots in its separate view."""
 import re
 from django.conf import settings
 from django.core.cache import cache
@@ -16,13 +16,15 @@ def public_context(page):
     if not re.fullmatch(r"[1-9][0-9]{6,14}", number):
         number = ""
     path = f"/{lang}/" + ("who-we-are/" if page == "about" else "")
+    if page == "tracking":
+        path += "track/"
     return {
         "c": COPY[lang], "lang": lang, "other_lang": "en" if lang == "ar" else "ar",
         "direction": "rtl" if lang == "ar" else "ltr", "page": page,
         "page_description": COPY[lang]["about_meta"] if page == "about" else COPY[lang]["intro"],
         "canonical_url": "https://shipping.jahez.online" + path,
+        "switch_url": f"/{'en' if lang == 'ar' else 'ar'}/" + ("who-we-are/" if page == "about" else "track/" if page == "tracking" else ""),
         "whatsapp_number": number, "whatsapp_url": f"https://wa.me/{number}" if number else "",
-        "tracking_empty": "Container tracking is being prepared. Please contact JAHEZ for an update." if lang == "en" else "نعمل على تجهيز تتبع الحاويات. يرجى التواصل مع جاهز للحصول على آخر المستجدات.",
     }
 
 
