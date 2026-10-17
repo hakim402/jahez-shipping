@@ -53,5 +53,6 @@ html[lang=ar] .tracking-page .result-heading h1 { font-size: clamp(28px, 4vw, 40
   .tracking-support { padding: 22px; }
   .tracking-page .tracking-controls { display: flex; flex-direction: column; gap: 8px; padding: 8px; }
   .tracking-page .tracking-controls input, .tracking-page .tracking-controls button { width: 100%; min-height: 48px; }
+  .tracking-page .tracking-controls input { flex: none; font-size: 16px; }
   .tracking-page .shared-code bdi, .tracking-page .last-checked bdi { display: block; margin-block-start: 5px; font-size: 13px; white-space: nowrap; }
 }
